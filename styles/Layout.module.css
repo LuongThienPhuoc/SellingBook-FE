@@ -1,0 +1,40 @@
+.footerTitle{
+    font-size: 1.5rem;
+    font-weight:400;
+    color: #2BBCBA;
+}
+
+.footerItem{
+    text-decoration: none;
+    color: black;
+    font-size: 1.1rem;
+    transition: .2s ease-in-out;
+}
+
+.footerItem1{
+    text-decoration: none;
+    color: black;
+    font-size: .9rem;
+    transition: .2s ease-in-out;
+}
+.footerItem1:hover{
+    color: #2BBCBA;
+}
+
+.footerItem:hover{
+    color: #2BBCBA;
+}
+
+.footerCustomIcon{
+    font-size: 1.4rem;
+    margin-right: 7px;
+}
+
+.customIconMedia{
+    font-size: 1.5rem;
+    margin: 10px;
+    opacity: 36%;
+}
+.customIconMedia:hover{
+    color: #2BBCBA;
+}

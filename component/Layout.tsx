@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import React from 'react'
 import NavBar from './NavBar';
+import Footer from './Footer';
 
 const Layout: React.FC = ({ children }) => {
     return (
@@ -18,7 +19,7 @@ const Layout: React.FC = ({ children }) => {
                 {children}
             </main>
             <footer>
-                <h1>footer</h1>
+                <Footer></Footer>
             </footer>
         </div>
     )
