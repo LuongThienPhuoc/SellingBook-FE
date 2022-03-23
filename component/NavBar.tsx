@@ -14,7 +14,7 @@ const NavBar: React.FC = () => {
                             height="40"
                             style={{ borderRadius: '50%', marginRight: '5px' }}
                             className="d-inline-block align-top"></img> */}
-                        SellingBook
+                        GOOD BOOK
                     </Navbar.Brand>
                 </Link>
                 <Navbar.Toggle aria-controls="navbarScroll" />
