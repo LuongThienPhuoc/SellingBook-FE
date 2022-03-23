@@ -1,3 +1,37 @@
+.navItemLine::after {
+    content: "";
+    position:absolute;
+    background-color: white;
+    bottom: -2px;
+    left: 50%;
+    right: 50%;
+    border-radius: 8px;
+    /* top: 21px; */
+    height: 2px;
+    transition: right ease-out 0.3s, left ease-out 0.3s;
+    -webkit-transition: right ease-out 0.3s, left ease-out 0.3s;
+}
+
+.activeItem::after{
+    content: "";
+    position:absolute;
+    background-color: white;
+    bottom: -2px;
+    left: 0;
+    border-radius: 8px;
+    right: 0;
+    /* top: 21px; */
+    height: 2px;
+    transition: right ease-out 0.3s, left ease-out 0.3s;
+    -webkit-transition: right ease-out 0.3s, left ease-out 0.3s;
+}
+
+.navItemLine:hover::after {
+    left: 0;
+    right: 0;
+}
+
+
 .footerTitle{
     font-size: 1.5rem;
     font-weight:400;

@@ -1,6 +1,7 @@
 import React from "react";
 import { Navbar, Container, Nav, Form, FormControl, Button } from 'react-bootstrap'
 import Link from 'next/link'
+import style from '../styles/Layout.module.css';
 
 const NavBar: React.FC = () => {
     return (
@@ -24,12 +25,17 @@ const NavBar: React.FC = () => {
                         style={{ maxHeight: '100px' }}
                         navbarScroll
                     >
-                        <Link href='/' passHref>
-                            <Nav.Link style={{ color: 'white', fontWeight: '600' }}>TRANG CHỦ</Nav.Link>
-                        </Link>
-                        <Link href='/store' passHref>
-                            <Nav.Link style={{ color: 'white', fontWeight: '600' }}>SÁCH</Nav.Link>
-                        </Link>
+                        <div style={{ position: 'relative' }}>
+                            <Link href='/' passHref>
+                                <Nav.Link className={style.navItemLine} style={{ color: 'white', fontWeight: '600' }}>TRANG CHỦ</Nav.Link>
+                            </Link>
+                        </div>
+                        <div style={{ position: 'relative' }}>
+                            <Link href='/store' passHref>
+                                <Nav.Link className={style.navItemLine + ' ' +style.activeItem} style={{ color: 'white', fontWeight: '600' }}>SÁCH</Nav.Link>
+                            </Link>
+                        </div>
+
                         <Form className="d-flex">
                             <FormControl
                                 type="search"
