@@ -17,9 +17,9 @@
     position:absolute;
     background-color: white;
     bottom: -2px;
-    left: 0;
+    left: 10px;
     border-radius: 8px;
-    right: 0;
+    right: 10px;
     /* top: 21px; */
     height: 2px;
     transition: right ease-out 0.3s, left ease-out 0.3s;
@@ -27,8 +27,8 @@
 }
 
 .navItemLine:hover::after {
-    left: 0;
-    right: 0;
+    left: 10px;
+    right: 10px;
 }
 
 

@@ -40,7 +40,7 @@ const ForgetPassword: React.FC = () => {
                         </div>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                        <img height='130px' width='200px' src='https://s3-alpha-sig.figma.com/img/e8c8/7924/da09018c99d55ea49bdc6212a1810516?Expires=1649030400&Signature=hlAxB~I0ZrCnSDx2XmwYk1K8Mrco-Hqv-6ATXUP9Yh0LrcBdOSrAFJW29K2fb-~P6gMbMu8JvVqDu2mhAYxkp1wJKQb4eT125VtDKmO3RjasJFZjoLpCPXISE9XsvZg-758zUUpdxWYuZo~VbuirpIV6r1XY8axr~zDHqIqTf5V-tVSSilWk7-PA5xeF24q4E6rvXBxlj16NogG8r770Va-uKP730oTLLai4z8xpRcgiWPTDxTV3sCAKP6m-GRA~yr1GufYmnx8~-bNU3ybx4zml-OCyyz0KQe8oS2AFMDNRUisFHpVa8cZ5PLomdpdKNAx4SUZlaRtb8Q5pCQmc2A__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA'></img>
+                        <img height='130px' width='200px' src='/img/logo.png'></img>
                         <div style={{ fontSize: '2.4rem' }}>GOOD BOOK</div>
                         <div style={{ fontSize: '2rem', fontWeight: '500', color: '#2BBCBA' }}>Quên mật khẩu</div>
                         <div style={{ paddingLeft: '60px', paddingRight: '60px', width: '100%', marginTop: '20px' }}>

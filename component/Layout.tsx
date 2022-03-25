@@ -3,7 +3,7 @@ import React from 'react'
 import NavBar from './NavBar';
 import Footer from './Footer';
 
-const Layout: React.FC = ({ children }) => {
+const Layout = ({ children }) => {
     return (
         <div>
             <Head>
