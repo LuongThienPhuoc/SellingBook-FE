@@ -13,14 +13,19 @@ import { useSelector, useDispatch, RootStateOrAny } from 'react-redux'
 import { getCodeAgain } from '../redux/actions/codeAction'
 import { makeCode } from '../helper/makeCode'
 import { sendCode } from '../services/sendMail'
+import { useRouter } from 'next/router'
+import LinearProgress from '@mui/material/LinearProgress';
 
-const ConfirmCode: React.FC = () => {
+const ConfirmCode = () => {
     const dispatch = useDispatch();
     const code = useSelector((state: RootStateOrAny) => state.codeReducer.code)
     const email = useSelector((state: RootStateOrAny) => state.codeReducer.email)
     const isLoading = useSelector((state: RootStateOrAny) => state.codeReducer.loading)
     const [isCheckCode, setIsCheckCode] = useState(false);
     const [codeClient, setCodeClient] = useState('');
+    const router = useRouter();
+
+
     const [pass, setPass] = useState({
         value: '',
         isError: false,

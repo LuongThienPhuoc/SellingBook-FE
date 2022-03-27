@@ -71,3 +71,7 @@
         transform:scale(1) translateY(0) translateX(0);
     }
 }
+
+.css-1e6y48t-MuiButtonBase-root-MuiButton-root{
+    text-transform: none;
+}
