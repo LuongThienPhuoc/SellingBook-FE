@@ -10,8 +10,11 @@ import { BsFacebook } from 'react-icons/bs'
 import { AiFillGoogleCircle } from 'react-icons/ai'
 import { limitText } from '../helper/limitText'
 import { CheckSpecialCharacters } from '../helper/checkSpecialCharaters'
-const Register: React.FC = () => {
+import { userLogin } from '../redux/actions/userAction';
+import { useDispatch } from 'react-redux'
 
+const Register: React.FC = () => {
+  const dispatch = useDispatch()
   const [accountName, setAccountName] = useState({
     value: '',
     isError: false,
@@ -32,6 +35,7 @@ const Register: React.FC = () => {
       console.log('Lỗi')
       e.preventDefault()
     } else {
+      dispatch(userLogin())
       console.log('Đăng ký thành công')
     }
   }

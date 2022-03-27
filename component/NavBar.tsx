@@ -17,6 +17,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import Divider from '@mui/material/Divider';
+import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
+import { userLogout } from '../redux/actions/userAction';
 
 const pages = [
     {
@@ -28,7 +30,6 @@ const pages = [
         url: 'store'
     }
 ]
-const settings = ['Profile', 'Đăng xuất'];
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -74,6 +75,8 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 }));
 
 const NavBar = () => {
+    const dispatch = useDispatch();
+    const isLogin = useSelector((state: RootStateOrAny) => state.userReducer.isLogin)
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
@@ -91,6 +94,67 @@ const NavBar = () => {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+
+    const handleClickLogout = () => {
+        setAnchorElUser(null);
+        dispatch(userLogout())
+    }
+
+
+    const renderStatusLogin = () => {
+        if (isLogin) {
+            return (
+                <Box sx={{ flexGrow: 0 }}>
+                    <Tooltip title="Open settings">
+                        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                            <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                        </IconButton>
+                    </Tooltip>
+                    <Menu
+                        sx={{ mt: '45px' }}
+                        id="menu-appbar"
+                        anchorEl={anchorElUser}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        keepMounted
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        open={Boolean(anchorElUser)}
+                        onClose={handleCloseUserMenu}
+                    >
+                        <MenuItem onClick={handleCloseUserMenu}>
+                            <Typography textAlign="center">Profile</Typography>
+                        </MenuItem>
+                        <MenuItem onClick={handleClickLogout}>
+                            <Typography textAlign="center">Đăng xuất</Typography>
+                        </MenuItem>
+                    </Menu>
+                </Box>
+            )
+        } else {
+            return (
+                <Box sx={{ flexGrow: 1, display: { md: 'flex' }, justifyContent: 'center' }}>
+                    <div style={{ display: 'flex', justifyContent: 'end' }}>
+                        <div style={{ position: 'relative' }}>
+                            <Link href='/login' passHref>
+                                <Button className={style.navItemLine} style={{ color: 'white', fontWeight: '600', textTransform: 'none' }}>Đăng nhập</Button>
+                            </Link>
+                        </div>
+                        <Divider style={{ color: 'white', width: '3px', height: '20px', backgroundColor: 'white', transform: 'translateY(+40%)' }} orientation="vertical" flexItem />
+                        <div style={{ position: 'relative' }}>
+                            <Link href='/register' passHref>
+                                <Button className={style.navItemLine} style={{ color: 'white', fontWeight: '600', textTransform: 'none' }}>Đăng ký</Button>
+                            </Link>
+                        </div>
+                    </div>
+                </Box >
+            )
+        }
+    }
 
     return (
         <AppBar style={{ backgroundColor: '#2BBCBA' }} position="static">
@@ -141,7 +205,7 @@ const NavBar = () => {
                             }}
                         >
                             {pages.map((page, index) => (
-                                <MenuItem  onClick={handleCloseNavMenu}>
+                                <MenuItem onClick={handleCloseNavMenu}>
                                     <Typography textAlign="center">
                                         <Link href={page.url} passHref>
                                             <Button style={{ color: 'black', fontWeight: '600' }}>{page.name}</Button>
@@ -187,51 +251,9 @@ const NavBar = () => {
                             />
                         </Search>
                     </Box>
-                    <Box sx={{ flexGrow: 1, display: { md: 'flex' }, justifyContent: 'center' }}>
-                        <div style={{ display: 'flex', justifyContent: 'end' }}>
-                            <div style={{ position: 'relative' }}>
-                                <Link href='/login' passHref>
-                                    <Button className={style.navItemLine} style={{ color: 'white', fontWeight: '600', textTransform: 'none' }}>Đăng nhập</Button>
-                                </Link>
-                            </div>
-                            <Divider style={{ color: 'white', width: '3px', height: '20px', backgroundColor: 'white', transform: 'translateY(+40%)' }} orientation="vertical" flexItem />
-                            <div style={{ position: 'relative' }}>
-                                <Link href='/register' passHref>
-                                    <Button className={style.navItemLine} style={{ color: 'white', fontWeight: '600', textTransform: 'none' }}>Đăng ký</Button>
-                                </Link>
-                            </div>
-                        </div>
-                    </Box>
-                    {/* <Box sx={{ flexGrow: 0 }}>
-                        <Tooltip title="Open settings">
-                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                            </IconButton>
-                        </Tooltip>
-                        <Menu
-                            sx={{ mt: '45px' }}
-                            id="menu-appbar"
-                            anchorEl={anchorElUser}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            open={Boolean(anchorElUser)}
-                            onClose={handleCloseUserMenu}
-                        >
+                    {renderStatusLogin()}
 
-                            {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                    <Typography textAlign="center">{setting}</Typography>
-                                </MenuItem>
-                            ))}
-                        </Menu>
-                    </Box> */}
+
                 </Toolbar>
             </Container>
         </AppBar>
