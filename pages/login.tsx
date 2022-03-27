@@ -1,17 +1,90 @@
-import React from 'react'
-import Layout from '../component/Layout'
+import React, { useState } from 'react'
 import Head from 'next/head'
 import styleLogin from '../styles/Login.module.css'
-import '../styles/Login.module.css'
-import { BsArrowLeftSquareFill, BsBoxArrowRight, BsArrowRightSquareFill } from 'react-icons/bs'
+import { BsArrowLeftSquareFill, BsArrowRightSquareFill } from 'react-icons/bs'
 import Link from 'next/link'
 import TextField from '@mui/material/TextField';
 import { Divider } from '@mui/material'
 import { Button } from '@mui/material'
 import { BsFacebook } from 'react-icons/bs'
 import { AiFillGoogleCircle } from 'react-icons/ai'
-
+import { limitText } from '../helper/limitText'
+import { CheckSpecialCharacters } from '../helper/checkSpecialCharaters'
 const Register: React.FC = () => {
+
+  const [accountName, setAccountName] = useState({
+    value: '',
+    isError: false,
+    helperText: ''
+  })
+
+  const [pass, setPass] = useState({
+    value: '',
+    isError: false,
+    helperText: ''
+  })
+
+  const HandleClickLogin = (e) => {
+    if (accountName.value == '' || pass.value == '') {
+      console.log('Nhập đầy đủ các  trường')
+      e.preventDefault()
+    } else if (accountName.isError || pass.isError) {
+      console.log('Lỗi')
+      e.preventDefault()
+    } else {
+      console.log('Đăng ký thành công')
+    }
+  }
+
+  const handleChangeAccount = (e) => {
+    limitText(e, 20);
+    if (!CheckSpecialCharacters(e.target.value) || e.target.value.length === 0) {
+      setAccountName({
+        value: e.target.value,
+        isError: false,
+        helperText: null,
+      })
+    } else {
+      setAccountName({
+        ...accountName,
+        isError: true,
+        helperText: 'Tên tài khoản chứa kí tự đặc biệt'
+      })
+    }
+  }
+
+  const handleChangePass = (e) => {
+    limitText(e, 20);
+    if (e.target.value.length >= 6 || e.target.value.length === 0) {
+      if (!CheckSpecialCharacters(e.target.value)) {
+        setPass({
+          value: e.target.value,
+          isError: false,
+          helperText: null,
+        })
+      } else {
+        setPass({
+          ...pass,
+          isError: true,
+          helperText: 'Mật khẩu chứa kí tự đặc biệt'
+        })
+      }
+    } else {
+      setPass({
+        ...pass,
+        isError: true,
+        helperText: 'Mất khẩu phải từ 6 kí tự trở lên'
+      })
+    }
+  }
+
+  const handleKeyUp = (e) => {
+    if (e.key === 'Enter') {
+      let elenmentLinkToSearch: HTMLElement = document.querySelector('.btn-login')
+      elenmentLinkToSearch.click()
+    }
+  }
+
   return (
     <div>
       <Head>
@@ -23,7 +96,7 @@ const Register: React.FC = () => {
       <div style={{ display: 'flex' }}>
         <div className={styleLogin.imgLogin}>
         </div>
-        <div className={styleLogin.modalLogin}>
+        <div className={styleLogin.modalLogin + ' ' + styleLogin.formLogin}>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <div className={styleLogin.loginDirection}>
               <Link href={'/'} passHref>
@@ -51,6 +124,10 @@ const Register: React.FC = () => {
                 id="outlined-required"
                 label="Tên tài khoản"
                 fullWidth
+                error={accountName.isError}
+                helperText={accountName.helperText}
+                onChange={(e) => handleChangeAccount(e)}
+                onKeyUp={(e) => handleKeyUp(e)}
               />
             </div>
             <div style={{ paddingLeft: '60px', paddingRight: '60px', width: '100%', marginTop: '20px' }}>
@@ -59,7 +136,11 @@ const Register: React.FC = () => {
                 label="Mật khẩu"
                 type="password"
                 fullWidth
+                error={pass.isError}
+                helperText={pass.helperText}
                 autoComplete="current-password"
+                onChange={(e) => handleChangePass(e)}
+                onKeyUp={(e) => handleKeyUp(e)}
               />
             </div>
           </div>
@@ -72,7 +153,9 @@ const Register: React.FC = () => {
             </Link>
           </div>
           <div style={{ display: 'flex', textDecoration: 'none', cursor: 'pointer', justifyContent: 'space-between', paddingLeft: '60px', paddingRight: '60px', width: '100%', marginTop: '20px' }}>
-            <Button fullWidth style={{ backgroundColor: '#2BBCBA', color: 'white', height: '50px', fontSize: '1.4rem' }} variant="contained">ĐĂNG NHẬP</Button>
+            <Link href={'/'} passHref>
+              <Button onClick={(e) => HandleClickLogin(e)} className='btn-login' fullWidth style={{ backgroundColor: '#2BBCBA', color: 'white', height: '50px', fontSize: '1.4rem' }} variant="contained">ĐĂNG NHẬP</Button>
+            </Link>
           </div>
           <div style={{ color: 'rgba(0, 0, 0, 0.4)', marginBottom: '35px', paddingLeft: '60px', paddingRight: '60px', width: '100%', height: '1px', marginTop: '20px' }}>
             <Divider orientation='horizontal' flexItem>

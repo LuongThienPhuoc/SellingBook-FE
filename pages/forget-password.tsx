@@ -1,14 +1,67 @@
 
-import React from 'react'
+import React, { useState } from 'react'
 import Head from 'next/head'
 import styleLogin from '../styles/Login.module.css'
 import '../styles/Login.module.css'
-import { BsArrowLeftSquareFill, BsBoxArrowRight, BsArrowRightSquareFill } from 'react-icons/bs'
+import { BsArrowLeftSquareFill, BsArrowRightSquareFill } from 'react-icons/bs'
 import Link from 'next/link'
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material'
+import { limitText } from '../helper/limitText'
+import { CheckMail } from '../helper/checkMail'
+import { makeCode } from '../helper/makeCode'
+import {sendCode} from '../services/sendMail'
+import {getCode} from '../redux/actions/codeAction'
+import { useDispatch } from 'react-redux'
 
 const ForgetPassword: React.FC = () => {
+    const dispatch = useDispatch()
+
+    const [email, setEmail] = useState({
+        value: '',
+        isError: false,
+        helperText: ''
+    })
+
+    const HandleClickButton = (e) => {
+        if (email.value == '') {
+            console.log('Nhập đầy đủ các  trường')
+            e.preventDefault()
+        } else if (email.isError) {
+            console.log('Lỗi')
+            e.preventDefault()
+        } else {
+            let code: String = makeCode(6);
+            if(sendCode(code, email.value)){
+                dispatch(getCode(code, email.value))
+            }
+        }
+    }
+
+    const HandleChangeEmail = (e) => {
+        limitText(e, 30);
+        if (CheckMail(e.target.value) || e.target.value.length === 0) {
+            setEmail({
+                value: e.target.value,
+                isError: false,
+                helperText: null,
+            })
+        } else {
+            setEmail({
+                ...email,
+                isError: true,
+                helperText: 'Email không đúng định dạng'
+            })
+        }
+    }
+
+    const handleKeyUp = (e) => {
+        if (e.key === 'Enter') {
+            let elenmentConfirmCode: HTMLElement = document.querySelector('.confirm-code')
+            elenmentConfirmCode.click()
+        }
+    }
+
     return (
         <div>
             <Head>
@@ -20,7 +73,7 @@ const ForgetPassword: React.FC = () => {
             <div style={{ display: 'flex' }}>
                 <div className={styleLogin.imgLogin}>
                 </div>
-                <div className={styleLogin.modalLogin}>
+                <div className={styleLogin.modalLogin + ' ' + styleLogin.formForgetPass}>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <div className={styleLogin.loginDirection}>
                             <Link href={'/'} passHref>
@@ -47,14 +100,17 @@ const ForgetPassword: React.FC = () => {
                             <TextField
                                 id="outlined-required"
                                 label="Email"
+                                onChange={(e) => HandleChangeEmail(e)}
                                 fullWidth
+                                error={email.isError}
+                                helperText={email.helperText}
+                                onKeyUp={(e) => handleKeyUp(e)}
                             />
                         </div>
-
                     </div>
                     <div style={{ display: 'flex', textDecoration: 'none', cursor: 'pointer', justifyContent: 'space-between', paddingLeft: '60px', paddingRight: '60px', width: '100%', marginTop: '20px' }}>
                         <Link href='confirm-code' passHref>
-                            <Button fullWidth style={{ backgroundColor: '#2BBCBA', color: 'white', height: '50px', fontSize: '1.4rem' }} variant="contained">GỬI MÃ CODE</Button>
+                            <Button onClick={(e) => HandleClickButton(e)} className='confirm-code' fullWidth style={{ backgroundColor: '#2BBCBA', color: 'white', height: '50px', fontSize: '1.4rem' }} variant="contained">GỬI MÃ CODE</Button>
                         </Link>
                     </div>
                 </div>
@@ -62,6 +118,8 @@ const ForgetPassword: React.FC = () => {
         </div >
     )
 }
+
+
 
 export default ForgetPassword
 
