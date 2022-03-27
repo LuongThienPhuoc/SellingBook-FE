@@ -129,6 +129,7 @@ const NavBar = () => {
                         <MenuItem onClick={handleCloseUserMenu}>
                             <Typography textAlign="center">Profile</Typography>
                         </MenuItem>
+                        <Divider light />
                         <MenuItem onClick={handleClickLogout}>
                             <Typography textAlign="center">Đăng xuất</Typography>
                         </MenuItem>

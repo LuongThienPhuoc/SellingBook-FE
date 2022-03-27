@@ -1,10 +1,10 @@
 import '../styles/globals.css'
 import 'bootstrap/dist/css/bootstrap.css'
-import { AppProps } from 'next/app'
 import Head from 'next/head'
 import { createWrapper } from 'next-redux-wrapper'
 import { Provider } from 'react-redux'
 import store from '../redux/store'
+import AlertGoodBook from '../component/Alert'
 
 const MyApp = ({ Component, pageProps }) => {
   return (
@@ -15,6 +15,7 @@ const MyApp = ({ Component, pageProps }) => {
           <link rel='stylesheet' href='/css/global.css'></link>
         </Head>
         <Component {...pageProps} />
+        <AlertGoodBook></AlertGoodBook>
       </Provider>
     </div>
   )
