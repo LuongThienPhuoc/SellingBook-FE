@@ -2,7 +2,6 @@ import * as type from '../types'
 
 const initalState = {
     isLogin: false,
-
 }
 
 const userReducer = (state = initalState, action) => {

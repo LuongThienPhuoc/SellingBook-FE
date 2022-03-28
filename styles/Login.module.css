@@ -75,3 +75,14 @@
 .css-1e6y48t-MuiButtonBase-root-MuiButton-root{
     text-transform: none;
 }
+
+
+.mobileLogin{
+    height: 90%;
+    min-width: 600px;
+    position: fixed;
+    width: 80%;
+    margin-top: 3%;
+    left: 25%;
+    right: auto;
+}

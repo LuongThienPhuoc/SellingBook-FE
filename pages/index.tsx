@@ -1,7 +1,15 @@
 import React from 'react'
-import Layout from '../component/Layout'
 import { useDispatch } from 'react-redux'
 import { showAlertError, showAlertSuccess } from '../redux/actions/alertAction'
+import dynamic from 'next/dynamic';
+import LinearProgress from '@mui/material/LinearProgress';
+const Layout = dynamic(() =>
+  import('../component/Layout'),
+  {
+    loading: () => <LinearProgress></LinearProgress>
+  }
+);
+
 const Home = () => {
   const dispatch = useDispatch()
   const handleClick = () => {
@@ -16,7 +24,6 @@ const Home = () => {
     <Layout>
       <div>
         hello
-
       </div>
     </Layout>
   )
