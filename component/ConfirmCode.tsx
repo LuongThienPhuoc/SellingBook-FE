@@ -135,86 +135,89 @@ function ConfirmCode(props) {
 
 
     return (
-        <div className={styleLogin.modalLogin + ' ' + styleLogin.formForgetPass}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <div className={styleLogin.loginDirection}>
-                            <Link href={'/forget-password'} passHref>
-                                <BsArrowLeftSquareFill style={{ transform: 'translateY(-6px)', marginRight: '5px' }}></BsArrowLeftSquareFill>
-                            </Link>
-                            <Link href={'/forget-password'} passHref>
-                                <p>Nhập lại email</p>
-                            </Link>
-                        </div>
-                        <div className={styleLogin.loginDirection}>
-                            <Link href={'/login'} passHref>
-                                <p>Đăng nhập</p>
-                            </Link>
-                            <Link href={'/login'} passHref>
-                                <BsArrowRightSquareFill style={{ transform: 'translateY(-6px)', marginLeft: '5px' }}></BsArrowRightSquareFill>
-                            </Link>
-                        </div>
-                    </div>
-
-                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                        <img height='130px' width='200px' src='/img/logo.png'></img>
-                        <div style={{ fontSize: '2.4rem' }}>GOOD BOOK</div>
-                        <div style={{ fontSize: '2rem', fontWeight: '500', color: '#2BBCBA' }}>Quên mật khẩu</div>
-                        <div style={{ display: 'flex', textDecoration: 'none', justifyContent: 'start', paddingLeft: '60px', paddingRight: '60px', width: '100%', marginTop: '20px' }}>
-                            <p>Mã code đã được gửi về email {email}</p>
-                            <p>{code}</p>
-                        </div>
-                        <div style={{ paddingLeft: '60px', paddingRight: '60px', width: '100%', marginTop: '5px' }}>
-                            <TextField
-                                id="outlined-required"
-                                label="Nhập mã code"
-                                fullWidth
-                                placeholder='VD: 123456'
-                                name='code'
-                                onKeyUp={(e) => HandleKeyUp(e)}
-                                onChange={(e) => HandleChangeCode(e)}
-                            />
-                        </div>
-                        <div style={{ paddingLeft: '60px', paddingRight: '60px', width: '100%', marginTop: '20px' }}>
-                            <TextField
-                                id="outlined-password-input"
-                                label="Mật khẩu mới"
-                                type="password"
-                                fullWidth
-                                autoComplete="current-password"
-                                onKeyUp={(e) => HandleKeyUp(e)}
-                                onChange={(e) => HandleChangeNewPass(e)}
-                                error={pass.isError}
-                                helperText={pass.helperText}
-                            />
-                        </div>
-                        <div style={{ paddingLeft: '60px', paddingRight: '60px', width: '100%', marginTop: '20px' }}>
-                            <TextField
-                                id="outlined-password-input"
-                                label="Nhập lại mật khẩu"
-                                type="password"
-                                fullWidth
-                                autoComplete="current-password"
-                                error={rePass.isError}
-                                helperText={rePass.helperText}
-                                onKeyUp={(e) => HandleKeyUp(e)}
-                                onChange={(e) => HandleChangeReNewPass(e)}
-                            />
-                        </div>
-                    </div>
-                    {isCheckCode && (
-                        <div style={{ color: '#EA230F', display: 'flex', textDecoration: 'none', justifyContent: 'space-between', paddingLeft: '60px', paddingRight: '60px', width: '100%', marginTop: '5px' }}>
-                            <p>*Mã code không hợp lệ</p>
-                            <p onClick={() => sendCodeAgain()} style={{ cursor: 'pointer', textDecoration: 'underline' }}>
-                                Gửi lại mã
-                            </p>
-                        </div>
-                    )}
-                    <div style={{ display: 'flex', textDecoration: 'none', cursor: 'pointer', justifyContent: 'space-between', paddingLeft: '60px', paddingRight: '60px', width: '100%', marginTop: '10px' }}>
-                        <Link href='login' passHref>
-                            <Button onClick={(e) => HandleClickComfirmCode(e)} className='comfirm-code' fullWidth style={{ backgroundColor: '#2BBCBA', color: 'white', height: '50px', fontSize: '1.4rem' }} variant="contained">Xác nhận</Button>
-                        </Link>
-                    </div>
+        <div style={props.isMobile ? { width: '400px', height: '80%', borderRadius: '10px', boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px' } : null} className={styleLogin.modalLogin + ' ' + styleLogin.formForgetPass}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div className={styleLogin.loginDirection}>
+                    <Link href={'/forget-password'} passHref>
+                        <BsArrowLeftSquareFill style={{ transform: 'translateY(-6px)', marginRight: '5px' }}></BsArrowLeftSquareFill>
+                    </Link>
+                    <Link href={'/forget-password'} passHref>
+                        <p>Nhập lại email</p>
+                    </Link>
                 </div>
+                <div className={styleLogin.loginDirection}>
+                    <Link href={'/login'} passHref>
+                        <p>Đăng nhập</p>
+                    </Link>
+                    <Link href={'/login'} passHref>
+                        <BsArrowRightSquareFill style={{ transform: 'translateY(-6px)', marginLeft: '5px' }}></BsArrowRightSquareFill>
+                    </Link>
+                </div>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+                <img height={props.isMobile ? '80px' : '130px'} width={props.isMobile ? '130px' : '200pxpx'} src='/img/logo.png'></img>
+                <div style={props.isMobile ? { fontSize: '1.6rem' } : { fontSize: '2.4rem' }}>GOOD BOOK</div>
+                <div style={{ fontSize: props.isMobile ? '1.4rem' : '2rem', fontWeight: '500', color: '#2BBCBA' }}>Quên mật khẩu</div>
+                <div style={{ display: 'flex', textDecoration: 'none', justifyContent: 'start', paddingLeft: '60px', paddingRight: '60px', width: '100%', marginTop: '20px' }}>
+                    <p>Mã code đã được gửi về email {email}</p>
+                    <p>{code}</p>
+                </div>
+                <div style={{ paddingLeft: '60px', paddingRight: '60px', width: '100%', marginTop: '5px' }}>
+                    <TextField
+                        id="outlined-required"
+                        label="Nhập mã code"
+                        fullWidth
+                        placeholder='VD: 123456'
+                        size={props.isMobile ? 'small' : 'medium'}
+                        name='code'
+                        onKeyUp={(e) => HandleKeyUp(e)}
+                        onChange={(e) => HandleChangeCode(e)}
+                    />
+                </div>
+                <div style={{ paddingLeft: '60px', paddingRight: '60px', width: '100%', marginTop: '20px' }}>
+                    <TextField
+                        id="outlined-password-input"
+                        label="Mật khẩu mới"
+                        type="password"
+                        size={props.isMobile ? 'small' : 'medium'}
+                        fullWidth
+                        autoComplete="current-password"
+                        onKeyUp={(e) => HandleKeyUp(e)}
+                        onChange={(e) => HandleChangeNewPass(e)}
+                        error={pass.isError}
+                        helperText={pass.helperText}
+                    />
+                </div>
+                <div style={{ paddingLeft: '60px', paddingRight: '60px', width: '100%', marginTop: '20px' }}>
+                    <TextField
+                        id="outlined-password-input"
+                        label="Nhập lại mật khẩu"
+                        type="password"
+                        fullWidth
+                        autoComplete="current-password"
+                        size={props.isMobile ? 'small' : 'medium'}
+                        error={rePass.isError}
+                        helperText={rePass.helperText}
+                        onKeyUp={(e) => HandleKeyUp(e)}
+                        onChange={(e) => HandleChangeReNewPass(e)}
+                    />
+                </div>
+            </div>
+            {isCheckCode && (
+                <div style={{ color: '#EA230F', display: 'flex', textDecoration: 'none', justifyContent: 'space-between', paddingLeft: '60px', paddingRight: '60px', width: '100%', marginTop: '5px' }}>
+                    <p>*Mã code không hợp lệ</p>
+                    <p onClick={() => sendCodeAgain()} style={{ cursor: 'pointer', textDecoration: 'underline' }}>
+                        Gửi lại mã
+                    </p>
+                </div>
+            )}
+            <div style={{ display: 'flex', textDecoration: 'none', cursor: 'pointer', justifyContent: 'space-between', paddingLeft: '60px', paddingRight: '60px', width: '100%', marginTop: '10px' }}>
+                <Link href='login' passHref>
+                    <Button onClick={(e) => HandleClickComfirmCode(e)} className='comfirm-code' fullWidth style={{ backgroundColor: '#2BBCBA', color: 'white', height: props.isMobile ? '40px' : '50px', fontSize: props.isMobile ? '1.2rem' : '1.4rem' }} variant="contained">Xác nhận</Button>
+                </Link>
+            </div>
+        </div>
     );
 }
 

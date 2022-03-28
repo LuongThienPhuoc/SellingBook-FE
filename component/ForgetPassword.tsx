@@ -59,7 +59,7 @@ function ForgetPassword(props) {
     }
 
     return (
-        <div className={styleLogin.modalLogin + ' ' + styleLogin.formForgetPass}>
+        <div style={props.isMobile ? { width: '400px', height: '80%', borderRadius:'10px', boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px'} : null} className={styleLogin.modalLogin + ' ' + styleLogin.formForgetPass}>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div className={styleLogin.loginDirection}>
                     <Link href={'/'} passHref>
@@ -79,9 +79,9 @@ function ForgetPassword(props) {
                 </div>
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                <img height='130px' width='200px' src='/img/logo.png'></img>
-                <div style={{ fontSize: '2.4rem' }}>GOOD BOOK</div>
-                <div style={{ fontSize: '2rem', fontWeight: '500', color: '#2BBCBA' }}>Quên mật khẩu</div>
+                <img height={props.isMobile?'80px':'130px'} width={props.isMobile?'130px':'200pxpx'} src='/img/logo.png'></img>
+                <div style={props.isMobile?{ fontSize: '1.6rem' } : {fontSize:'2.4rem'}}>GOOD BOOK</div>
+                <div style={{ fontSize: props.isMobile?'1.4rem':'2rem', fontWeight: '500', color: '#2BBCBA' }}>Quên mật khẩu</div>
                 <div style={{ paddingLeft: '60px', paddingRight: '60px', width: '100%', marginTop: '20px' }}>
                     <TextField
                         id="outlined-required"
@@ -89,6 +89,7 @@ function ForgetPassword(props) {
                         onChange={(e) => HandleChangeEmail(e)}
                         fullWidth
                         error={email.isError}
+                        size={props.isMobile ? 'small' : 'medium'}
                         helperText={email.helperText}
                         onKeyUp={(e) => handleKeyUp(e)}
                     />
@@ -96,7 +97,7 @@ function ForgetPassword(props) {
             </div>
             <div style={{ display: 'flex', textDecoration: 'none', cursor: 'pointer', justifyContent: 'space-between', paddingLeft: '60px', paddingRight: '60px', width: '100%', marginTop: '20px' }}>
                 <Link href='confirm-code' passHref>
-                    <Button onClick={(e) => HandleClickButton(e)} className='confirm-code' fullWidth style={{ backgroundColor: '#2BBCBA', color: 'white', height: '50px', fontSize: '1.4rem' }} variant="contained">GỬI MÃ CODE</Button>
+                    <Button onClick={(e) => HandleClickButton(e)} className='confirm-code' fullWidth style={{ backgroundColor: '#2BBCBA', color: 'white', height: props.isMobile?'40px':'50px', fontSize:  props.isMobile?'1.2rem':'1.4rem' }} variant="contained">GỬI MÃ CODE</Button>
                 </Link>
             </div>
         </div>

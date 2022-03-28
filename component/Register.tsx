@@ -155,7 +155,7 @@ function Register(props) {
         console.log('click')
     }
     return (
-        <div className={styleLogin.modalLogin + ' ' + styleLogin.formRegister}>
+        <div style={props.isMobile ? { width: '400px', height: '80%', borderRadius: '10px', boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px' } : null} className={styleLogin.modalLogin + ' ' + styleLogin.formRegister}>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div className={styleLogin.loginDirection}>
                     <Link href={'/'} passHref>
@@ -175,9 +175,9 @@ function Register(props) {
                 </div>
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                <img height='130px' width='200px' src='/img/logo.png'></img>
-                <div style={{ fontSize: '2.4rem' }}>GOOD BOOK</div>
-                <div style={{ fontSize: '2rem', fontWeight: '500', color: '#2BBCBA' }}>Đăng ký</div>
+                <img style={{ display: props.isMobile ? 'none' : 'block' }} height='130px' width='200px' src='/img/logo.png'></img>
+                <div style={props.isMobile?{ fontSize: '1.6rem' } : {fontSize:'2.4rem'}}>GOOD BOOK</div>
+                <div style={{ fontSize: props.isMobile?'1.4rem':'2rem', fontWeight: '500', color: '#2BBCBA' }}>Đăng ký</div>
                 <div style={{ paddingLeft: '60px', paddingRight: '60px', width: '100%', marginTop: '20px' }}>
                     <TextField
                         id="outlined-required"

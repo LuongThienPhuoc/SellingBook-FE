@@ -2,22 +2,29 @@ import React, { useState, useEffect, useLayoutEffect } from 'react'
 import Head from 'next/head'
 import styleLogin from '../styles/Login.module.css'
 import dynamic from 'next/dynamic';
-
-const Login = dynamic(() => import('../component/Login'));
+import LinearProgress from '@mui/material/LinearProgress';
+const Login = dynamic(() => import('../component/Login'),
+  {
+    loading: () => <LinearProgress></LinearProgress>
+  }
+);
 
 
 const LoginPage = () => {
-  const [size, setSize] = useState(0);
-  
+  const [isMobile, setIsMobile] = useState(true);
   useLayoutEffect(() => {
     function updateSize() {
-      setSize(window.innerWidth);
+      if (window.innerWidth > 700) {
+        setIsMobile(false)
+      } else {
+        setIsMobile(true)
+      }
     }
     window.addEventListener('resize', updateSize);
     updateSize();
     return () => window.removeEventListener('resize', updateSize);
-  }, []);
-  
+  }, [isMobile]);
+
   return (
     <div>
       <Head>
@@ -27,9 +34,10 @@ const LoginPage = () => {
         <title>Đăng nhập</title>
       </Head>
       <div style={{ display: 'flex', position: 'relative' }}>
-        <div className={styleLogin.imgLogin}>
+        <div style={{display:'flex', justifyContent: 'center',alignItems:'center'}} className={styleLogin.imgLogin}>
+          {isMobile ? <Login isMobile={true}></Login> : null}
         </div>
-        <Login></Login>
+        {!isMobile ? <Login isMobile={false}></Login> : null}
       </div>
     </div>
   )

@@ -1,12 +1,29 @@
 
-import React, { useState } from 'react'
+import React, { useState, useLayoutEffect } from 'react'
 import Head from 'next/head'
 import styleLogin from '../styles/Login.module.css'
 import dynamic from 'next/dynamic';
-const ForgetPassword = dynamic(() => import('../component/ForgetPassword'));
+import LinearProgress from '@mui/material/LinearProgress';
+const ForgetPassword = dynamic(() => import('../component/ForgetPassword'),
+    {
+        loading: () => <LinearProgress></LinearProgress>
+    }
+);
 
 const ForgetPasswordPage: React.FC = () => {
-    
+    const [isMobile, setIsMobile] = useState(true);
+    useLayoutEffect(() => {
+        function updateSize() {
+            if (window.innerWidth > 700) {
+                setIsMobile(false)
+            } else {
+                setIsMobile(true)
+            }
+        }
+        window.addEventListener('resize', updateSize);
+        updateSize();
+        return () => window.removeEventListener('resize', updateSize);
+    }, [isMobile]);
 
     return (
         <div>
@@ -16,10 +33,11 @@ const ForgetPasswordPage: React.FC = () => {
                 <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
                 <title>Tìm lại mật khẩu</title>
             </Head>
-            <div style={{ display: 'flex' }}>
-                <div className={styleLogin.imgLogin}>
+            <div style={{ display: 'flex', position: 'relative' }}>
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} className={styleLogin.imgLogin}>
+                    {isMobile ? <ForgetPassword isMobile={true}></ForgetPassword> : null}
                 </div>
-                <ForgetPassword></ForgetPassword>
+                {!isMobile ? <ForgetPassword isMobile={false}></ForgetPassword> : null}
             </div>
         </div >
     )

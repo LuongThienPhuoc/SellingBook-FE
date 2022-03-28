@@ -111,7 +111,7 @@ function Login(props) {
 
 
     return (
-        <div className={styleLogin.modalLogin + ' ' + styleLogin.formLogin}>
+        <div style={props.isMobile ? { width: '400px', height: '80%', borderRadius:'10px', boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px'} : null} className={styleLogin.modalLogin + ' ' + styleLogin.formLogin}>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div className={styleLogin.loginDirection}>
                     <Link href={'/'} passHref>
@@ -131,15 +131,16 @@ function Login(props) {
                 </div>
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                <img height='130px' width='200px' src='/img/logo.png'></img>
-                <div style={{ fontSize: '2.4rem' }}>GOOD BOOK</div>
-                <div style={{ fontSize: '2rem', fontWeight: '500', color: '#2BBCBA' }}>Đăng nhập</div>
+                <img height={props.isMobile?'80px':'130px'} width={props.isMobile?'130px':'200pxpx'} src='/img/logo.png'></img>
+                <div style={props.isMobile?{ fontSize: '1.6rem' } : {fontSize:'2.4rem'}}>GOOD BOOK</div>
+                <div style={{ fontSize: props.isMobile?'1.4rem':'2rem', fontWeight: '500', color: '#2BBCBA' }}>Đăng nhập</div>
                 <div style={{ paddingLeft: '60px', paddingRight: '60px', width: '100%', marginTop: '20px' }}>
                     <TextField
                         id="outlined-required"
                         label="Tên tài khoản"
                         fullWidth
                         error={accountName.isError}
+                        size={props.isMobile ? 'small' : 'medium'}
                         helperText={accountName.helperText}
                         onChange={(e) => handleChangeAccount(e)}
                         onKeyUp={(e) => handleKeyUp(e)}
@@ -150,6 +151,7 @@ function Login(props) {
                         id="outlined-password-input"
                         label="Mật khẩu"
                         type="password"
+                        size={props.isMobile ? 'small' : 'medium'}
                         fullWidth
                         error={pass.isError}
                         helperText={pass.helperText}
@@ -169,7 +171,7 @@ function Login(props) {
             </div>
             <div style={{ display: 'flex', textDecoration: 'none', cursor: 'pointer', justifyContent: 'space-between', paddingLeft: '60px', paddingRight: '60px', width: '100%', marginTop: '20px' }}>
                 <Link href={'/'} passHref>
-                    <Button onClick={(e) => HandleClickLogin(e)} className='btn-login' fullWidth style={{ backgroundColor: '#2BBCBA', color: 'white', height: '50px', fontSize: '1.4rem' }} variant="contained">ĐĂNG NHẬP</Button>
+                    <Button onClick={(e) => HandleClickLogin(e)} className='btn-login' fullWidth style={{ backgroundColor: '#2BBCBA', color: 'white', height: props.isMobile?'40px':'50px', fontSize:  props.isMobile?'1.2rem':'1.4rem' }} variant="contained">ĐĂNG NHẬP</Button>
                 </Link>
             </div>
             <div style={{ color: 'rgba(0, 0, 0, 0.4)', marginBottom: '35px', paddingLeft: '60px', paddingRight: '60px', width: '100%', height: '1px', marginTop: '20px' }}>
