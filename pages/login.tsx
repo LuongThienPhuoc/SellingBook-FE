@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import Head from 'next/head'
 import styleLogin from '../styles/Login.module.css'
+
 import dynamic from 'next/dynamic';
 import LinearProgress from '@mui/material/LinearProgress';
 const Login = dynamic(() => import('../component/Login'),
@@ -34,7 +35,7 @@ const LoginPage = () => {
         <title>Đăng nhập</title>
       </Head>
       <div style={{ display: 'flex', position: 'relative' }}>
-        <div style={{display:'flex', justifyContent: 'center',alignItems:'center'}} className={styleLogin.imgLogin}>
+        <div  style={{display:'flex', justifyContent: 'center',alignItems:'center'}} className={styleLogin.imgLogin}>
           {isMobile ? <Login isMobile={true}></Login> : null}
         </div>
         {!isMobile ? <Login isMobile={false}></Login> : null}
