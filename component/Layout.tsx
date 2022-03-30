@@ -1,11 +1,11 @@
 import Head from 'next/head';
 import React from 'react'
-import NavBar1 from './NavBarTest';
 import Footer from './Footer';
 import NavBar from './NavBar'
  
-const Layout = ({ children, activeNav }) => {
-    console.log("activeNav", activeNav);
+const Layout = (props) => {
+
+    console.log("Layout"+props.active)
     return (
         <div>
             <Head>
@@ -15,10 +15,14 @@ const Layout = ({ children, activeNav }) => {
                 <title>Selling Book</title>
             </Head>
             <header>
+<<<<<<< HEAD
                 <NavBar activeNav={activeNav}></NavBar>
+=======
+                <NavBar active={props.active}></NavBar>
+>>>>>>> origin/phuoc/ui-account
             </header>
             <main>
-                {children}
+                {props.children}
             </main>
             <footer>
                 <Footer></Footer>

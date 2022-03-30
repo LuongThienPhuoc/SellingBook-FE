@@ -10,7 +10,7 @@ const Layout = dynamic(() =>
   }
 );
 
-const Home = () => {
+const Cart = () => {
   const dispatch = useDispatch()
   const handleClick = () => {
     dispatch(showAlertSuccess("Đúng rồi bạn ơi"))
@@ -21,14 +21,14 @@ const Home = () => {
   }
 
   return (
-    <Layout active="home">
+    <Layout>
       <h1 className="text-3xl font-bold underline">
-        Hello world!
+        cart
       </h1>
     </Layout>
   )
 }
 
 
-export default Home
+export default Cart
 
