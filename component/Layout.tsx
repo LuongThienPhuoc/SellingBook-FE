@@ -15,11 +15,7 @@ const Layout = (props) => {
                 <title>Selling Book</title>
             </Head>
             <header>
-<<<<<<< HEAD
-                <NavBar activeNav={activeNav}></NavBar>
-=======
                 <NavBar active={props.active}></NavBar>
->>>>>>> origin/phuoc/ui-account
             </header>
             <main>
                 {props.children}

@@ -80,11 +80,7 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
     justifyContent: 'center',
 }));
 
-<<<<<<< HEAD
-const NavBar = ({activeNav}) => {
-=======
 const NavBar = (props) => {
->>>>>>> origin/phuoc/ui-account
     const dispatch = useDispatch();
     const isLogin = useSelector((state: RootStateOrAny) => state.userReducer.isLogin)
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -340,20 +336,6 @@ const NavBar = (props) => {
                         </Search>
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-<<<<<<< HEAD
-                        {pages.map((page) => {
-                            console.log("under page", page);
-                            console.log("activeNav", activeNav);
-                            return (
-                                <div style={{ position: 'relative' }}>
-                                    <Link href={page.url} passHref>
-                                        <Button className={ page.id===activeNav ? `${style.navItemLine} ${style.activeItem}` : style.navItemLine} 
-                                            style={{ color: 'white', fontWeight: '600' }}>{page.name}</Button>
-                                    </Link>
-                                </div>
-                            );
-                        })}
-=======
                         {pages.map((page) => (
                             <div style={{ position: 'relative' }}>
                                 <Link href={page.url} passHref>
@@ -361,7 +343,6 @@ const NavBar = (props) => {
                                 </Link>
                             </div>
                         ))}
->>>>>>> origin/phuoc/ui-account
                     </Box>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         <Search style={{ backgroundColor: 'white', color: '#979797' }}>
