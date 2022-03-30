@@ -1,10 +1,11 @@
 import Head from 'next/head';
 import React from 'react'
-import NavBar1 from './NavBarTest';
 import Footer from './Footer';
 import NavBar from './NavBar'
  
-const Layout = ({ children }) => {
+const Layout = (props) => {
+
+    console.log("Layout"+props.active)
     return (
         <div>
             <Head>
@@ -14,10 +15,10 @@ const Layout = ({ children }) => {
                 <title>Selling Book</title>
             </Head>
             <header>
-                <NavBar></NavBar>
+                <NavBar active={props.active}></NavBar>
             </header>
             <main>
-                {children}
+                {props.children}
             </main>
             <footer>
                 <Footer></Footer>

@@ -21,7 +21,7 @@ const Home = () => {
   }
 
   return (
-    <Layout>
+    <Layout active="home">
       <div>
         hello
       </div>

@@ -25,11 +25,13 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 const pages = [
     {
         name: 'Trang chủ',
-        url: '/'
+        url: '/',
+        active: 'home',
     },
     {
         name: 'Sách',
-        url: 'store'
+        url: 'store',
+        active: 'store'
     }
 ]
 
@@ -76,14 +78,14 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
     justifyContent: 'center',
 }));
 
-const NavBar = () => {
+const NavBar = (props) => {
     const dispatch = useDispatch();
     const isLogin = useSelector((state: RootStateOrAny) => state.userReducer.isLogin)
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
     const [anchoElMess, setAnchorElMess] = React.useState<null | HTMLElement>(null);
     const [anchoElCart, setAnchoElCart] = React.useState<null | HTMLElement>(null);
-
+    console.log("Nav" + props.active)
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
@@ -122,7 +124,7 @@ const NavBar = () => {
             return (
                 <Box sx={{ flexGrow: 0 }}>
                     <Tooltip title="Open cart">
-                        <IconButton  onClick={handleOpenCartMenu} size="large" aria-label="show 4 new mails"  color="inherit">
+                        <IconButton onClick={handleOpenCartMenu} size="large" aria-label="show 4 new mails" color="inherit">
                             <Badge badgeContent={4} color="error">
                                 <ShoppingCartIcon />
                             </Badge>
@@ -165,13 +167,13 @@ const NavBar = () => {
                         open={Boolean(anchoElCart)}
                         onClose={handleCloseCartMenu}
                     >
-                        <div style={{width:'300px'}} onClick={handleCloseCartMenu}>
-                            <ul style={{maxHeight: '400px'}}>
-                                <li style={{height:'100px'}}>CArt</li>
-                                <li style={{height:'100px'}}>CArt</li>
-                                <li style={{height:'100px'}}>CArt</li>
-                                <li style={{height:'100px'}}>CArt</li>
-                                <li style={{height:'100px'}}>CArt</li>
+                        <div style={{ width: '300px' }} onClick={handleCloseCartMenu}>
+                            <ul style={{ maxHeight: '400px' }}>
+                                <li style={{ height: '100px' }}>CArt</li>
+                                <li style={{ height: '100px' }}>CArt</li>
+                                <li style={{ height: '100px' }}>CArt</li>
+                                <li style={{ height: '100px' }}>CArt</li>
+                                <li style={{ height: '100px' }}>CArt</li>
                             </ul>
                         </div>
                     </Menu>
@@ -217,7 +219,7 @@ const NavBar = () => {
                             horizontal: 'right',
                         }}
                         open={Boolean(anchorElUser)}
-                        onClose={handleCloseUserMenu}   
+                        onClose={handleCloseUserMenu}
                     >
                         <MenuItem onClick={handleCloseUserMenu}>
                             <Typography textAlign="center">Profile</Typography>
@@ -302,7 +304,7 @@ const NavBar = () => {
                                 <MenuItem onClick={handleCloseNavMenu}>
                                     <Typography textAlign="center">
                                         <Link href={page.url} passHref>
-                                            <Button style={{ color: 'black', fontWeight: '600' }}>{page.name}</Button>
+                                            <Button style={{ color: 'black', fontWeight: '500' }}>{page.name}</Button>
                                         </Link>
                                     </Typography>
                                 </MenuItem>
@@ -329,7 +331,7 @@ const NavBar = () => {
                         {pages.map((page) => (
                             <div style={{ position: 'relative' }}>
                                 <Link href={page.url} passHref>
-                                    <Button className={style.navItemLine} style={{ color: 'white', fontWeight: '600' }}>{page.name}</Button>
+                                    <Button className={props.active === page.active ? style.activeItem + ' ' + style.navItemLine : style.navItemLine} style={{ color: 'white', fontWeight: '600' }}>{page.name}</Button>
                                 </Link>
                             </div>
                         ))}
