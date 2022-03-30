@@ -21,7 +21,7 @@ const Home = () => {
   }
 
   return (
-    <Layout>
+    <Layout activeNav={'home'}>
       <div>
         hello
       </div>

@@ -4,7 +4,7 @@ import Layout from '../component/Layout'
 
 const Store: React.FC = () => {
   return (
-    <Layout>
+    <Layout activeNav={'book'}>
         <h2>Cửa hàng ở đây</h2>
     </Layout>
   )

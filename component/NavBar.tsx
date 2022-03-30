@@ -24,10 +24,12 @@ import Badge from '@mui/material/Badge';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 const pages = [
     {
+        id: 'home',
         name: 'Trang chủ',
         url: '/'
     },
     {
+        id: 'book',
         name: 'Sách',
         url: 'store'
     }
@@ -76,7 +78,7 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
     justifyContent: 'center',
 }));
 
-const NavBar = () => {
+const NavBar = ({activeNav}) => {
     const dispatch = useDispatch();
     const isLogin = useSelector((state: RootStateOrAny) => state.userReducer.isLogin)
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -298,15 +300,21 @@ const NavBar = () => {
                                 display: { xs: 'block', md: 'none' },
                             }}
                         >
-                            {pages.map((page, index) => (
-                                <MenuItem onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">
-                                        <Link href={page.url} passHref>
-                                            <Button style={{ color: 'black', fontWeight: '600' }}>{page.name}</Button>
-                                        </Link>
-                                    </Typography>
-                                </MenuItem>
-                            ))}
+                            {pages.map((page, index) => {
+                                console.log("page", page);
+                                console.log("activeNav", activeNav);
+                                return (
+                                    <MenuItem onClick={handleCloseNavMenu}>
+                                        <Typography textAlign="center">
+                                            <Link href={page.url} passHref>
+                                                <Button className={ page.id===activeNav ? style.activeItem : ''}
+                                                    style={{ color: 'black', fontWeight: '600' }}>{page.name}</Button>
+                                            </Link>
+                                        </Typography>
+                                    </MenuItem>
+                                );
+                            } 
+                                )}
                         </Menu>
                     </Box>
                     <Typography
@@ -326,13 +334,18 @@ const NavBar = () => {
                         </Search>
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        {pages.map((page) => (
-                            <div style={{ position: 'relative' }}>
-                                <Link href={page.url} passHref>
-                                    <Button className={style.navItemLine} style={{ color: 'white', fontWeight: '600' }}>{page.name}</Button>
-                                </Link>
-                            </div>
-                        ))}
+                        {pages.map((page) => {
+                            console.log("under page", page);
+                            console.log("activeNav", activeNav);
+                            return (
+                                <div style={{ position: 'relative' }}>
+                                    <Link href={page.url} passHref>
+                                        <Button className={ page.id===activeNav ? `${style.navItemLine} ${style.activeItem}` : style.navItemLine} 
+                                            style={{ color: 'white', fontWeight: '600' }}>{page.name}</Button>
+                                    </Link>
+                                </div>
+                            );
+                        })}
                     </Box>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         <Search style={{ backgroundColor: 'white', color: '#979797' }}>

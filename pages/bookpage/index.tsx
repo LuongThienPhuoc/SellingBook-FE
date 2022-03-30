@@ -5,7 +5,7 @@ import styles from '../../styles/BookPage.module.css'
 
 const BookPage: React.FC = () => {
   return (
-    <Layout>
+    <Layout activeNav={"book"}>
         <div className='font-bold'>
             <div className={styles.imageContainer}>
                 <img 

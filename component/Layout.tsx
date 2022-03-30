@@ -4,7 +4,8 @@ import NavBar1 from './NavBarTest';
 import Footer from './Footer';
 import NavBar from './NavBar'
  
-const Layout = ({ children }) => {
+const Layout = ({ children, activeNav }) => {
+    console.log("activeNav", activeNav);
     return (
         <div>
             <Head>
@@ -14,7 +15,7 @@ const Layout = ({ children }) => {
                 <title>Selling Book</title>
             </Head>
             <header>
-                <NavBar></NavBar>
+                <NavBar activeNav={activeNav}></NavBar>
             </header>
             <main>
                 {children}
