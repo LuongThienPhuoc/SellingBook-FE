@@ -124,7 +124,7 @@ const NavBar = (props) => {
             return (
                 <Box sx={{ flexGrow: 0 }}>
                     <Tooltip title="Open cart">
-                        <IconButton onClick={handleOpenCartMenu} size="large" aria-label="show 4 new mails" color="inherit">
+                        <IconButton  onClick={handleOpenCartMenu} size="large" aria-label="show 4 new mails" color="inherit">
                             <Badge badgeContent={4} color="error">
                                 <ShoppingCartIcon />
                             </Badge>
@@ -167,7 +167,13 @@ const NavBar = (props) => {
                         open={Boolean(anchoElCart)}
                         onClose={handleCloseCartMenu}
                     >
-                        <div style={{ width: '300px' }} onClick={handleCloseCartMenu}>
+                        <div className='p-4' style={{ width: '300px' }}  onClick={handleCloseCartMenu}>
+                            <div className='flex justify-center w-full' >
+                                <span>2 sản phẩm</span>
+                                <Link href={'/cart'} passHref>
+                                    <a className='no-underline'>Xem tất cả</a>
+                                </Link>
+                            </div>
                             <ul style={{ maxHeight: '400px' }}>
                                 <li style={{ height: '100px' }}>CArt</li>
                                 <li style={{ height: '100px' }}>CArt</li>
@@ -194,7 +200,7 @@ const NavBar = (props) => {
                         open={Boolean(anchoElMess)}
                         onClose={handleCloseMessMenu}
                     >
-                        <div onClick={handleCloseMessMenu}>
+                        <div  onClick={handleCloseMessMenu}>
                             <ul>
                                 <li>Hello</li>
                                 <li>Hello</li>
