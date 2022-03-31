@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import { showAlertError, showAlertSuccess } from '../redux/actions/alertAction'
 import dynamic from 'next/dynamic';
 import LinearProgress from '@mui/material/LinearProgress';
+
 const Layout = dynamic(() =>
   import('../component/Layout'),
   {
@@ -22,8 +23,9 @@ const Home = () => {
 
   return (
     <Layout active="home">
-      <h1 className="text-3xl font-bold underline">
+      <h1 className="text-3xl font-bold underline text-red-600">
         Hello world!
+        <div className='flex justify-center'>hello my selt</div>
       </h1>
     </Layout>
   )
