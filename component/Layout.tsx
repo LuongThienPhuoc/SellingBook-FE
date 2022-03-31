@@ -9,9 +9,9 @@ const Layout = (props) => {
         <div>
             <Head>
                 <meta charSet="UTF-8"></meta>
-                <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+                {/* <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
-                <link rel="stylesheet" href='/css/global.css'></link>
+                <link rel="stylesheet" href='/css/global.css'></link> */}
                 <title>Selling Book</title>
             </Head>
             <header>
