@@ -25,11 +25,13 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 const pages = [
     {
+        id: 'home',
         name: 'Trang chủ',
         url: '/',
         active: 'home',
     },
     {
+        id: 'book',
         name: 'Sách',
         url: 'store',
         active: 'store'
