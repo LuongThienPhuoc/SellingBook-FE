@@ -1,5 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.css'
 import '../styles/globals.css'
+import '../styles/bookpage.css'
+
 import Head from 'next/head'
 import { createWrapper } from 'next-redux-wrapper'
 import { Provider } from 'react-redux'
