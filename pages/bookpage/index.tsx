@@ -17,7 +17,7 @@ const BookPage: React.FC = () => {
                             <img 
                                 src="https://upload.wikimedia.org/wikipedia/vi/6/61/Ng%E1%BB%93i_kh%C3%B3c_tr%C3%AAn_c%C3%A2y_cover.jpg" 
                                 alt="Sách ngồi khóc trên cây" 
-                                className='w-[calc(100%-36px)] pl-[22px]'
+                                className='w-[calc(100%-24px)] pl-[18px]'
                             />
                        </div>
                     </Grid>
@@ -62,7 +62,7 @@ const BookPage: React.FC = () => {
                             </div>
                         </div>
                     </Grid>
-                    <Grid item xs={12} lg={3} md={4} sm={12} className='flex '>
+                    <Grid item xs={12} lg={3} md={12} sm={12} className='flex '>
                         <div className='divider w-[1px] h-[calc(100%-40px)] bg-[#c5c5c5] mr-[10px] ml-[-1px]'></div>
                         <div className='book-info w-[calc(100%-20px)] h-[240px] text-[16px] border-[1px] border-[#2BBCBA] 
                                 pl-[20px] p-[20px] rounded-[12px]
@@ -98,11 +98,31 @@ const BookPage: React.FC = () => {
                 </Grid>
             </div>  
             
-            <div className='book-wrapper'>
+            <div className='book-description mt-16 
+                shadow-[0px_4px_4px_4px_rgba(0,0,0,0.25)]
+                rounded-[12px] w-[100%]'>
+                <Grid container spacing={0}>
+                    <Grid item xs={12} sm={12} md={12} lg={1}>
+                        <div className='description-label text-[#2BBCBA] ml-[18px] mt-[18px] mb-[10px] text-[20px]'>
+                            Mô tả
+                        </div>
+                    </Grid>
+                    <Grid item xs={12} sm={12}  md={12} lg={11} className='flex'>
+                        <div className='divider w-[1px] h-[calc(100%-40px)] bg-[#C5C5C5] mt-[20px]'></div>
+                        <div className='description-content text-[14px] ml-[18px] py-[18px] mr-[18px]'>
+                            Nước mắt đâu phải chỉ dành cho nỗi buồn khi người ta có thể khóc vì niềm vui và hạnh phúc. Với Nguyễn Nhật Ánh nước mắt còn là một cái gì đó thiêng liêng, đẹp đẽ và đầy mơ mộng khi ông kể về câu chuyện tình yêu trong sáng và ngây thơ giữa cô bé Rùa và anh chàng Đông trong truyện ngắn “Ngồi khóc trên cây”.
+                            Tình yêu trong sáng như đóa hoa vừa chớm nở.
+                            Rùa là cô bé của thiên nhiên, hồn nhiên, trong sáng nhưng lại đầy khí chất mạnh mẽ. Hoàn cảnh cơ cực từ nhỏ đã cho em một sự cứng rắn, với mái tóc cháy nắng trên khuôn mặt khả ái. Còn Đông là cậu sinh viên thành phố về thăm quê, là đứa duy nhất chơi với con Rùa, nói chuyện, lắng nghe, và đồng tình với nó.
+                            Tâm hồn chúng đồng điệu vào nhau như những đóa hoa dại mới chớm nở đã vội hòa quyện hương thơm phảng phất đầu mùa. Nụ hôn đầu vụng dại trong khu vườn  đã diễn ra một cách nhẹ nhàng, bỡ ngỡ mà cũng thật đáng yêu. Cái ngượng đến chín mặt của Đông khi cả hai môi kề môi được tác giả miêu tả một cách tỉ mỉ đã báo hiệu cho một tình yêu trong sáng, hồn nhiên đang nảy nở.
+                            Xem tiếp review sách: Ngồi khóc trên cây-nước mắt có chỉ dành riêng cho niềm đau?
+                            Giá sản phẩm trên Goodbook đã bao gồm thuế theo luật hiện hành. Bên cạnh đó, tuỳ vào loại sản phẩm, hình thức và địa chỉ giao hàng mà có thể phát sinh thêm chi phí khác như phí vận chuyển, phụ phí hàng cồng kềnh, thuế nhập khẩu (đối với đơn hàng giao từ nước ngoài có giá trị trên 1 triệu đồng).....
+                        </div>
+                    </Grid>
+                </Grid>
                 
-                
-                
+
             </div>
+
             <h2 className="book-description bg-white mt-11">
                 Thông tin chi tiết sản phẩm ở đây
             </h2>
