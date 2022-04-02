@@ -11,6 +11,9 @@ import { getCodeAgain } from '../redux/actions/codeAction'
 import { makeCode } from '../helper/makeCode'
 import { sendCode } from '../services/sendMail'
 import { useRouter } from 'next/router'
+import { showAlertSuccess, showAlertError } from '../redux/actions/alertAction'
+import { reset } from '../redux/actions/codeAction';
+import axios from 'axios'
 
 function ConfirmCode(props) {
     const dispatch = useDispatch();
@@ -42,7 +45,6 @@ function ConfirmCode(props) {
         if (sendCode(code, email)) {
             dispatch(getCodeAgain(code))
         }
-
     }
 
     const HandleChangeCode = (e) => {
@@ -105,23 +107,33 @@ function ConfirmCode(props) {
         }
     }
 
-    const HandleClickComfirmCode = (e) => {
+    const HandleClickComfirmCode = async (e) => {
         console.log(pass.value)
         console.log(rePass.value)
         console.log(codeClient)
         if (pass.value == '' || rePass.value == '' || codeClient == '') {
-            console.log('Nhập đầy đủ các  trường')
+            dispatch(showAlertError('Nhập đầy đủ các trường'))
             e.preventDefault()
         } else if (pass.isError || rePass.isError) {
-            console.log('Lỗi')
+            dispatch(showAlertError('Mật khẩu không đúng định dạng'))
             e.preventDefault()
         }
         else if (codeClient !== code) {
+            dispatch(showAlertError('Nhập mã code không đúng'))
             setIsCheckCode(true)
             e.preventDefault();
         }
         else {
-            console.log('Đăng ký thành công')
+            await axios.post('http://localhost:3000/api/user/confirm-code', { mail: email, password: pass.value })
+                .then(res => {
+                    if (res.data.status == 0) {
+                        e.preventDefault();
+                        dispatch(showAlertError(res.data.message))
+                    } else {
+                        dispatch(showAlertSuccess(res.data.message))
+                        dispatch(reset())
+                    }
+                })
         }
     }
 
@@ -137,20 +149,20 @@ function ConfirmCode(props) {
     return (
         <div style={props.isMobile ? { width: '400px', height: '80%', borderRadius: '10px', boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px' } : null} className={styleLogin.modalLogin + ' ' + styleLogin.formForgetPass}>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <div className={styleLogin.loginDirection}>
+                <div style={{ height: '24px' }} className={styleLogin.loginDirection}>
                     <Link href={'/forget-password'} passHref>
-                        <BsArrowLeftSquareFill style={{ transform: 'translateY(-6px)', marginRight: '5px' }}></BsArrowLeftSquareFill>
+                        <BsArrowLeftSquareFill style={{ marginRight: '5px' }}></BsArrowLeftSquareFill>
                     </Link>
                     <Link href={'/forget-password'} passHref>
-                        <p>Nhập lại email</p>
+                        <p style={{ marginBottom: '0' }}>Nhập lại email</p>
                     </Link>
                 </div>
-                <div className={styleLogin.loginDirection}>
+                <div style={{ height: '24px' }} className={styleLogin.loginDirection}>
                     <Link href={'/login'} passHref>
-                        <p>Đăng nhập</p>
+                        <p style={{ marginBottom: '0' }}>Đăng nhập</p>
                     </Link>
                     <Link href={'/login'} passHref>
-                        <BsArrowRightSquareFill style={{ transform: 'translateY(-6px)', marginLeft: '5px' }}></BsArrowRightSquareFill>
+                        <BsArrowRightSquareFill style={{  marginLeft: '5px' }}></BsArrowRightSquareFill>
                     </Link>
                 </div>
             </div>
@@ -159,7 +171,7 @@ function ConfirmCode(props) {
                 <img height={props.isMobile ? '80px' : '130px'} width={props.isMobile ? '130px' : '200pxpx'} src='/img/logo.png'></img>
                 <div style={props.isMobile ? { fontSize: '1.6rem' } : { fontSize: '2.4rem' }}>GOOD BOOK</div>
                 <div style={{ fontSize: props.isMobile ? '1.4rem' : '2rem', fontWeight: '500', color: '#2BBCBA' }}>Quên mật khẩu</div>
-                <div style={{ display: 'flex', textDecoration: 'none', justifyContent: 'start', paddingLeft: '60px', paddingRight: '60px', width: '100%', marginTop: '20px' }}>
+                <div style={{ marginBottom: '15px', display: 'flex', textDecoration: 'none', justifyContent: 'start', paddingLeft: '60px', paddingRight: '60px', width: '100%', marginTop: '20px' }}>
                     <p>Mã code đã được gửi về email {email}</p>
                     <p>{code}</p>
                 </div>

@@ -14,6 +14,7 @@ import { useDispatch, useSelector, RootStateOrAny } from 'react-redux'
 import GoogleLogin from 'react-google-login';
 import { useRouter } from 'next/router'
 import { showAlertSuccess, showAlertError } from '../redux/actions/alertAction'
+import axios from 'axios'
 
 function Login(props) {
     const dispatch = useDispatch()
@@ -32,25 +33,33 @@ function Login(props) {
         helperText: ''
     })
 
-    useEffect(() => {
-        if (isLogin) {
-            router.push('/')
-        }
-    }, [isLogin])
+    // useEffect(() => {
+    //     if (isLogin) {
+    //         router.push('/')
+    //     }
+    // }, [isLogin])
 
-    const HandleClickLogin = (e) => {
+    const HandleClickLogin = async (e) => {
+        e.preventDefault()
         if (accountName.value == '' || pass.value == '') {
-            console.log('Nhập đầy đủ các  trường')
             dispatch(showAlertError('Nhập đầy đủ các trường!'))
-            e.preventDefault()
         } else if (accountName.isError || pass.isError) {
-            dispatch(showAlertError('Không đúng định dạng'))
-            console.log('Lỗi')
-            e.preventDefault()
+            dispatch(showAlertError('Không đúng định dạng!'))
         } else {
-            dispatch(showAlertSuccess('Đăng nhập thành công'))
-            dispatch(userLogin())
-            console.log('Đăng ký thành công')
+            let data: Object = {
+                username: accountName.value,
+                password: pass.value
+            }
+
+            await axios.post('http://localhost:3000/api/user/login', { ...data }).then(res => {
+                if (res.data.status == 0) {
+                    dispatch(showAlertError(res.data.message))
+                } else {
+                    dispatch(showAlertSuccess(res.data.message))
+                }
+            })
+
+            //dispatch(userLogin())
         }
     }
 
@@ -111,29 +120,29 @@ function Login(props) {
 
 
     return (
-        <div style={props.isMobile ? { width: '400px', height: '80%', borderRadius:'10px', boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px'} : null} className={styleLogin.modalLogin + ' ' + styleLogin.formLogin}>
+        <div style={props.isMobile ? { width: '400px', height: '80%', borderRadius: '10px', boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px' } : null} className={styleLogin.modalLogin + ' ' + styleLogin.formLogin}>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <div className={styleLogin.loginDirection}>
+                <div style={{ height: '24px' }} className={styleLogin.loginDirection}>
                     <Link href={'/'} passHref>
-                        <BsArrowLeftSquareFill style={{ transform: 'translateY(-6px)', marginRight: '5px' }}></BsArrowLeftSquareFill>
+                        <BsArrowLeftSquareFill style={{ lineHeight: '10px', marginRight: '5px' }}></BsArrowLeftSquareFill>
                     </Link>
                     <Link href={'/'} passHref>
-                        <p>Trang chủ</p>
+                        <p style={{ marginBottom: '0' }}>Trang chủ</p>
                     </Link>
                 </div>
-                <div className={styleLogin.loginDirection}>
+                <div style={{ height: '24px' }} className={styleLogin.loginDirection}>
                     <Link href={'/register'} passHref>
-                        <p>Đăng ký</p>
+                        <p style={{ marginBottom: '0' }}>Đăng ký</p>
                     </Link>
                     <Link href={'/register'} passHref>
-                        <BsArrowRightSquareFill style={{ transform: 'translateY(-6px)', marginLeft: '5px' }}></BsArrowRightSquareFill>
+                        <BsArrowRightSquareFill style={{ lineHeight: '10px', marginLeft: '5px' }}></BsArrowRightSquareFill>
                     </Link>
                 </div>
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                <img height={props.isMobile?'80px':'130px'} width={props.isMobile?'130px':'200pxpx'} src='/img/logo.png'></img>
-                <div style={props.isMobile?{ fontSize: '1.6rem' } : {fontSize:'2.4rem'}}>GOOD BOOK</div>
-                <div style={{ fontSize: props.isMobile?'1.4rem':'2rem', fontWeight: '500', color: '#2BBCBA' }}>Đăng nhập</div>
+                <img height={props.isMobile ? '80px' : '130px'} width={props.isMobile ? '130px' : '200pxpx'} src='/img/logo.png'></img>
+                <div style={props.isMobile ? { fontSize: '1.6rem' } : { fontSize: '2.4rem' }}>GOOD BOOK</div>
+                <div style={{ fontSize: props.isMobile ? '1.4rem' : '2rem', fontWeight: '500', color: '#2BBCBA' }}>Đăng nhập</div>
                 <div style={{ paddingLeft: '60px', paddingRight: '60px', width: '100%', marginTop: '20px' }}>
                     <TextField
                         id="outlined-required"
@@ -171,7 +180,7 @@ function Login(props) {
             </div>
             <div style={{ display: 'flex', textDecoration: 'none', cursor: 'pointer', justifyContent: 'space-between', paddingLeft: '60px', paddingRight: '60px', width: '100%', marginTop: '20px' }}>
                 <Link href={'/'} passHref>
-                    <Button onClick={(e) => HandleClickLogin(e)} className='btn-login' fullWidth style={{ backgroundColor: '#2BBCBA', color: 'white', height: props.isMobile?'40px':'50px', fontSize:  props.isMobile?'1.2rem':'1.4rem' }} variant="contained">ĐĂNG NHẬP</Button>
+                    <Button onClick={(e) => HandleClickLogin(e)} className='btn-login' fullWidth style={{ backgroundColor: '#2BBCBA', color: 'white', height: props.isMobile ? '40px' : '50px', fontSize: props.isMobile ? '1.2rem' : '1.4rem' }} variant="contained">ĐĂNG NHẬP</Button>
                 </Link>
             </div>
             <div style={{ color: 'rgba(0, 0, 0, 0.4)', marginBottom: '35px', paddingLeft: '60px', paddingRight: '60px', width: '100%', height: '1px', marginTop: '20px' }}>
