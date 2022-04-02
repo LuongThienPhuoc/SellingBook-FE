@@ -21,9 +21,9 @@ const BookItem: React.FC<BookItemProps> = ({remain}) =>{
             </div>
             {
                 remain ? null : 
-                <div className='blank-banner absolute text-center'>
-                    <div className='banner-container w-[100%] h-[64px]  text-center'>
-                        <p className='banner-title text-[#EA230F] font-extrabold'>HẾT HÀNG</p>
+                <div className='blank-banner absolute text-center w-[calc(100%+4px)] bg-white border-[2px] border-[#2BBCBA] top-[30%] left-[-2px]'>
+                    <div className='banner-container w-[100%] h-[56px]  text-center'>
+                        <p className='banner-title text-[#EA230F] font-extrabold text-[22px] leading-[56px]'>HẾT HÀNG</p>
                     </div>
                 </div>
             }
