@@ -2,6 +2,7 @@
 import React from 'react'
 import Layout from '../../component/Layout'
 import {Grid} from '@mui/material';
+import BookItem from '../../component/BookPage/BookItem';
 
 const BookPage: React.FC = () => {
   return (
@@ -119,10 +120,51 @@ const BookPage: React.FC = () => {
                         </div>
                     </Grid>
                 </Grid>
-                
-
             </div>
 
+            <div className='book-detail-addition mt-16 
+                shadow-[0px_4px_4px_4px_rgba(0,0,0,0.25)]
+                rounded-[12px] w-[100%]'>
+                <Grid container spacing={0}>
+                    <Grid item xs={12} sm={12} md={12} lg={1}>
+                        <div className='description-label text-[#2BBCBA] ml-[18px] mt-[18px] mb-[10px] text-[20px]'>
+                            Thông tin bổ sung
+                        </div>
+                    </Grid>
+                    <Grid item xs={12} sm={12}  md={12} lg={11} className='flex'>
+                        <div className='divider w-[1px] h-[calc(100%-40px)] bg-[#C5C5C5] mt-[20px]'></div>
+                        <div className='detail-content w-[calc(100%-40px)] text-[14px] ml-[18px] py-[18px] mr-[18px]'>
+                            <div className='description-item flex'>
+                                <p className="text-[#808080]">Số trang:</p>
+                                <p className='ml-[4px] text-[#555555]'>694</p>  
+                            </div>
+                            <div className='divider w-[calc(100%-10px)] h-[1px] bg-[#c5c5c5] my-[8px]'></div>
+                            <div className='description-item flex'>
+                                <p className="text-[#808080]">Kích thước:</p>
+                                <p className='ml-[4px] text-[#555555]'>16 x 24 cm</p>  
+                            </div>
+                            <div className='divider w-[calc(100%-10px)] h-[1px] bg-[#c5c5c5] my-[8px]'></div>
+                            <div className='description-item flex'>
+                                <p className="text-[#808080]">Nhà xuất bản:</p>
+                                <p className='ml-[4px] text-[#555555]'> Nhà xuất bản trẻ</p>  
+                            </div>
+                            <div className='divider w-[calc(100%-10px)] h-[1px] bg-[#c5c5c5] my-[8px]'></div>
+                            <div className='description-item flex'>
+                                <p className="text-[#808080]">Từ khoá:</p>
+                                <p className='ml-[4px] text-[#555555]'> Nguyễn Nhật Ánh, Rùa, Đông, Ngồi khóc trên cây</p>  
+                            </div>
+                        </div>
+                    </Grid>
+                </Grid>
+            </div>
+            <div className='relative-book-sectionmt-16 
+                shadow-[0px_4px_4px_4px_rgba(0,0,0,0.25)]
+                rounded-[12px] w-[100%] mt-[62px] pb-[18px] pl-[18px]'>
+                    <div className='description-label text-[#2BBCBA] pt-[28px] mb-[24px] text-[20px]'>
+                        Sản phẩm liên quan
+                    </div>
+                    <BookItem remain={false}/>
+            </div>
             <h2 className="book-description bg-white mt-11">
                 Thông tin chi tiết sản phẩm ở đây
             </h2>
