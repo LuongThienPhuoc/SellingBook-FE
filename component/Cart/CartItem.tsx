@@ -1,8 +1,10 @@
 import React from 'react'
 import { Container, Grid, Badge } from '@mui/material'
-import style from '../../styles/Cart.module.css'
 import { AiFillPlusCircle, AiFillMinusCircle } from 'react-icons/ai'
 import { MdDelete } from 'react-icons/md'
+
+
+import style from '../../styles/Cart.module.css'
 
 function CartItem(props) {
     return (

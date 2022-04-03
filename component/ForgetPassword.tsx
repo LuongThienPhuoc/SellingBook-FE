@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react'
-import styleLogin from '../styles/Login.module.css'
 import { BsArrowLeftSquareFill, BsArrowRightSquareFill } from 'react-icons/bs'
 import Link from 'next/link'
-import TextField from '@mui/material/TextField';
-import { Button } from '@mui/material'
+import { Button, TextField } from '@mui/material'
+import { useDispatch, useSelector, RootStateOrAny } from 'react-redux'
+import { useRouter } from 'next/router';
+import axios from 'axios'
+
+
+import * as URL from '../services/api/config'
+import styleLogin from '../styles/Login.module.css'
+import { showAlertSuccess, showAlertError } from '../redux/actions/alertAction'
 import { limitText } from '../helper/limitText'
 import { CheckMail } from '../helper/checkMail'
 import { makeCode } from '../helper/makeCode'
 import { sendCode } from '../services/sendMail'
 import { getCode } from '../redux/actions/codeAction'
-import { useDispatch, useSelector, RootStateOrAny } from 'react-redux'
-import { showAlertSuccess, showAlertError } from '../redux/actions/alertAction'
-import { useRouter } from 'next/router';
-import * as URL from '../services/api/config'
-
-import axios from 'axios'
 function ForgetPassword(props) {
     const dispatch = useDispatch()
     const router = useRouter()

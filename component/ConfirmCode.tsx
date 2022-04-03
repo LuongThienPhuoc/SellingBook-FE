@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from 'react'
-import styleLogin from '../styles/Login.module.css'
 import { BsArrowLeftSquareFill, BsArrowRightSquareFill } from 'react-icons/bs'
 import Link from 'next/link'
-import TextField from '@mui/material/TextField';
-import { limitText } from '../helper/limitText'
-import { Button } from '@mui/material'
-import { CheckSpecialCharacters } from '../helper/checkSpecialCharaters'
+import { Button, TextField } from '@mui/material'
 import { useSelector, useDispatch, RootStateOrAny } from 'react-redux'
+import { useRouter } from 'next/router'
+import axios from 'axios'
+
+
 import { getCodeAgain } from '../redux/actions/codeAction'
 import { makeCode } from '../helper/makeCode'
 import { sendCode } from '../services/sendMail'
-import { useRouter } from 'next/router'
-import { showAlertSuccess, showAlertError } from '../redux/actions/alertAction'
-import { reset } from '../redux/actions/codeAction';
-import axios from 'axios'
+import styleLogin from '../styles/Login.module.css'
 import * as URL from '../services/api/config'
+import { reset } from '../redux/actions/codeAction';
+import { showAlertSuccess, showAlertError } from '../redux/actions/alertAction'
+import { CheckSpecialCharacters } from '../helper/checkSpecialCharaters'
+import { limitText } from '../helper/limitText'
 
 function ConfirmCode(props) {
     const dispatch = useDispatch();

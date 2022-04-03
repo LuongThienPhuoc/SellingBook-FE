@@ -1,12 +1,14 @@
 import React from "react";
 import Link from 'next/link'
 import { Grid, Container } from '@mui/material'
-import style from '../styles/Layout.module.css'
 import { GrLocation } from 'react-icons/gr'
 import { HiOutlinePhone } from 'react-icons/hi'
 import { AiOutlineMail } from 'react-icons/ai'
 import { BsTwitter, BsFacebook, BsInstagram, BsYoutube } from 'react-icons/bs'
 import 'bootstrap/dist/css/bootstrap.css'
+
+
+import style from '../styles/Layout.module.css'
 
 const Footer = () => {
     return (

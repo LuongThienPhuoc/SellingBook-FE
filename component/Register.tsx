@@ -1,24 +1,22 @@
 import React, { useState, useEffect } from 'react'
-import styleLogin from '../styles/Login.module.css'
 import { BsArrowLeftSquareFill, BsArrowRightSquareFill } from 'react-icons/bs'
 import Link from 'next/link'
-import TextField from '@mui/material/TextField';
-import { Divider } from '@mui/material'
-import { Button } from '@mui/material'
+import { Divider, TextField, Button } from '@mui/material'
 import { BsFacebook } from 'react-icons/bs'
 import { AiFillGoogleCircle } from 'react-icons/ai'
-import { limitText } from '../helper/limitText'
-import { CheckMail } from '../helper/checkMail'
-import { CheckSpecialCharacters } from '../helper/checkSpecialCharaters'
 import GoogleLogin from 'react-google-login';
 import axios from 'axios';
 import { useDispatch, useSelector, RootStateOrAny } from 'react-redux'
-import { showAlertSuccess, showAlertError } from '../redux/actions/alertAction'
 import { useRouter } from 'next/router';
+
+
+import styleLogin from '../styles/Login.module.css'
 import { userLogin } from '../redux/actions/userAction';
+import { showAlertSuccess, showAlertError } from '../redux/actions/alertAction'
 import * as URL from '../services/api/config'
-
-
+import { limitText } from '../helper/limitText'
+import { CheckMail } from '../helper/checkMail'
+import { CheckSpecialCharacters } from '../helper/checkSpecialCharaters'
 function Register(props) {
     const router = useRouter()
     const dispatch = useDispatch()

@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react'
-import styleLogin from '../styles/Login.module.css'
 import { BsArrowLeftSquareFill, BsArrowRightSquareFill } from 'react-icons/bs'
 import Link from 'next/link'
-import TextField from '@mui/material/TextField';
-import { Divider } from '@mui/material'
-import { Button } from '@mui/material'
+import { Divider, Button, TextField } from '@mui/material'
 import { AiFillGoogleCircle } from 'react-icons/ai'
 import { BsFacebook } from 'react-icons/bs'
-import { limitText } from '../helper/limitText'
-import { CheckSpecialCharacters } from '../helper/checkSpecialCharaters'
-import { userLogin } from '../redux/actions/userAction';
 import { useDispatch, useSelector, RootStateOrAny } from 'react-redux'
 import GoogleLogin from 'react-google-login';
 import { useRouter } from 'next/router'
-import { showAlertSuccess, showAlertError } from '../redux/actions/alertAction'
 import axios from 'axios'
+
+
 import * as URL from '../services/api/config'
+import { showAlertSuccess, showAlertError } from '../redux/actions/alertAction'
+import { limitText } from '../helper/limitText'
+import { CheckSpecialCharacters } from '../helper/checkSpecialCharaters'
+import styleLogin from '../styles/Login.module.css'
+import { userLogin } from '../redux/actions/userAction';
 
 function Login(props) {
     const dispatch = useDispatch()
