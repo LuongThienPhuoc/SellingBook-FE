@@ -6,7 +6,7 @@ export const JWTAuthToken = (data) => {
     return (jwt.sign(
         { ...data },
         key,
-        { expiresIn: 600000 }
+        { expiresIn: '300s' }
     ))
 }
 
