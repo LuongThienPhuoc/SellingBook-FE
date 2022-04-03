@@ -14,22 +14,11 @@ const Layout = dynamic(() =>
 
 const Home = () => {
   const dispatch = useDispatch()
-  const test = async () => {
-    await axios.post('http://localhost:3000/api/user/refresh',
-      { phuoc: '123' },
-      {
-        headers: {
-          'Authorization': `Basic ${getAccessToken()}`
-        }
-      }
-    ).then(res => {
-      console.log(res)
-    })
-  }
+  
 
   return (
     <Layout active="home">
-      <h1 onClick={test} className="text-3xl font-bold underline text-red-600 mt-16">
+      <h1  className="text-3xl font-bold underline text-red-600 mt-16">
         Hello world!
         <div className='flex justify-center'>hello my selt</div>
       </h1>

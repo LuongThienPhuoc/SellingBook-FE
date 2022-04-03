@@ -16,6 +16,7 @@ import { useDispatch, useSelector, RootStateOrAny } from 'react-redux'
 import { showAlertSuccess, showAlertError } from '../redux/actions/alertAction'
 import { useRouter } from 'next/router';
 import { userLogin } from '../redux/actions/userAction';
+import * as URL from '../services/api/config'
 
 
 function Register(props) {
@@ -68,7 +69,7 @@ function Register(props) {
             }
 
 
-            axios.post(`http://localhost:3000/api/user/register`, { ...data })
+            axios.post(URL.URL_REGISTER, { ...data })
                 .then(res => {
                     if (res.data.status == 0) {
                         dispatch(showAlertError(res.data.message))

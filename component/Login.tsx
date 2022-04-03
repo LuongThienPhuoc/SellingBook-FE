@@ -15,6 +15,7 @@ import GoogleLogin from 'react-google-login';
 import { useRouter } from 'next/router'
 import { showAlertSuccess, showAlertError } from '../redux/actions/alertAction'
 import axios from 'axios'
+import * as URL from '../services/api/config'
 
 function Login(props) {
     const dispatch = useDispatch()
@@ -55,8 +56,8 @@ function Login(props) {
                 username: accountName.value,
                 password: pass.value
             }
-
-            await axios.post('http://localhost:3000/api/user/login', { ...data }).then(res => {
+            //Call API
+            await axios.post(URL.URL_LOGIN, { ...data }).then(res => {
                 if (res.data.status == 0) {
                     dispatch(showAlertError(res.data.message))
                 } else {

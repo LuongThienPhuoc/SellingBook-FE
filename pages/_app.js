@@ -8,11 +8,12 @@ import store from '../redux/store'
 import AlertGoodBook from '../component/Alert'
 import { getAccessToken } from '../utils/cookies'
 import axios from 'axios'
+import * as URL from '../services/api/config'
 
 const MyApp = ({ Component, pageProps }) => {
   useEffect(() => {
     const fetApi = async () => {
-      await axios.post('http://localhost:3000/api/user/refresh',
+      await axios.post(URL.URL_REFRESH,
         {
           headers: {
             'Authorization': `Basic ${getAccessToken()}`

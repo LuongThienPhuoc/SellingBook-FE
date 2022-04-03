@@ -12,6 +12,7 @@ import { getCode } from '../redux/actions/codeAction'
 import { useDispatch, useSelector, RootStateOrAny } from 'react-redux'
 import { showAlertSuccess, showAlertError } from '../redux/actions/alertAction'
 import { useRouter } from 'next/router';
+import * as URL from '../services/api/config'
 
 import axios from 'axios'
 function ForgetPassword(props) {
@@ -39,7 +40,7 @@ function ForgetPassword(props) {
         } else if (email.isError) {
             dispatch(showAlertError('Mail không đúng định dạng'))
         } else {
-            await axios.post(`http://localhost:3000/api/user/forget-password`, { mail: email.value }).then(res => {
+            await axios.post(URL.URL_FORGET_PASSWORD, { mail: email.value }).then(res => {
                 if (res.data.status == 0) {
 
                     dispatch(showAlertError(res.data.message))

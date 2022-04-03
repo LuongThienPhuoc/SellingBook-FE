@@ -14,6 +14,7 @@ import { useRouter } from 'next/router'
 import { showAlertSuccess, showAlertError } from '../redux/actions/alertAction'
 import { reset } from '../redux/actions/codeAction';
 import axios from 'axios'
+import * as URL from '../services/api/config'
 
 function ConfirmCode(props) {
     const dispatch = useDispatch();
@@ -128,7 +129,7 @@ function ConfirmCode(props) {
             e.preventDefault();
         }
         else {
-            await axios.post('http://localhost:3000/api/user/confirm-code', { mail: email, password: pass.value })
+            await axios.post(URL.URL_CONFIRM_CODE, { mail: email, password: pass.value })
                 .then(res => {
                     if (res.data.status == 0) {
                         e.preventDefault();
@@ -166,7 +167,7 @@ function ConfirmCode(props) {
                         <p style={{ marginBottom: '0' }}>Đăng nhập</p>
                     </Link>
                     <Link href={'/login'} passHref>
-                        <BsArrowRightSquareFill style={{  marginLeft: '5px' }}></BsArrowRightSquareFill>
+                        <BsArrowRightSquareFill style={{ marginLeft: '5px' }}></BsArrowRightSquareFill>
                     </Link>
                 </div>
             </div>
