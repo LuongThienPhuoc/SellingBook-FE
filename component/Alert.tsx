@@ -9,7 +9,6 @@ function AlertGoodBook(props) {
     const dispatch = useDispatch();
     const alertReducer = useSelector((state: RootStateOrAny) => state.alertReducer)
     useEffect(() => {
-        console.log(alertReducer)
         if (alertReducer.isShow) {
             var timer = setTimeout(() => {
                 dispatch(hideAlert())

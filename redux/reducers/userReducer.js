@@ -1,6 +1,7 @@
 import * as type from '../types'
 
 const initalState = {
+    infoUser: {},
     isLogin: false,
 }
 
@@ -9,12 +10,14 @@ const userReducer = (state = initalState, action) => {
         case type.USER_LOGIN_SUCCESS:
             return {
                 ...state,
+                infoUser: action.infoUser,
                 isLogin: true,
             }
         case type.USER_LOGOUT_SUCCESS:
             return {
                 ...state,
                 isLogin: false,
+                infoUser: {},
             }
         default:
             return state

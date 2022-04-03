@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styleLogin from '../styles/Login.module.css'
 import { BsArrowLeftSquareFill, BsArrowRightSquareFill } from 'react-icons/bs'
 import Link from 'next/link'
@@ -12,11 +12,16 @@ import { CheckMail } from '../helper/checkMail'
 import { CheckSpecialCharacters } from '../helper/checkSpecialCharaters'
 import GoogleLogin from 'react-google-login';
 import axios from 'axios';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector, RootStateOrAny } from 'react-redux'
 import { showAlertSuccess, showAlertError } from '../redux/actions/alertAction'
+import { useRouter } from 'next/router';
+import { userLogin } from '../redux/actions/userAction';
 
 
 function Register(props) {
+    const router = useRouter()
+    const dispatch = useDispatch()
+    const isLogin = useSelector((state: RootStateOrAny) => state.userReducer.isLogin)
     const [email, setEmail] = useState({
         value: '',
         isError: false,
@@ -41,8 +46,11 @@ function Register(props) {
         helperText: ''
     })
 
-    const dispatch = useDispatch()
-
+    useEffect(() => {
+        if (isLogin) {
+            router.push('/')
+        }
+    }, [])
 
     const HandleClickRegister = async (e) => {
         e.preventDefault()
@@ -65,6 +73,7 @@ function Register(props) {
                     if (res.data.status == 0) {
                         dispatch(showAlertError(res.data.message))
                     } else {
+                        dispatch(userLogin(res.data))
                         dispatch(showAlertSuccess(res.data.message))
                     }
                 })

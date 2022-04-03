@@ -1,5 +1,6 @@
 import dbConnect from '../../../utils/mongodb.js';
 import User from '../../../models/user.js';
+import { JWTAuthToken } from '../../../helper/JWT.js';
 const bcrypt = require("bcrypt");
 
 
@@ -19,9 +20,10 @@ export default async (req, res) => {
                     if (bcrypt.compareSync(password, user.password)) {
                         res.status(200).send(JSON.stringify({
                             success: true,
-                            message: 'Đăng ký tài khoản thành công',
+                            message: 'Đăng nhập thành công',
                             status: 1,
-                            data: user
+                            data: user,
+                            token: JWTAuthToken({ username })
                         }))
                     } else {
                         res.status(200).send(JSON.stringify({

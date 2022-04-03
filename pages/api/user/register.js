@@ -1,5 +1,6 @@
 import dbConnect from '../../../utils/mongodb.js';
 import User from '../../../models/user.js';
+import { JWTAuthToken } from '../../../helper/JWT.js';
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
@@ -40,7 +41,8 @@ export default async (req, res) => {
                                     success: true,
                                     message: 'Đăng ký tài khoản thành công',
                                     status: 1,
-                                    data: result
+                                    data: result,
+                                    token: JWTAuthToken({ username })
                                 }))
                             }
                         })

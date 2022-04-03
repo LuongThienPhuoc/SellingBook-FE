@@ -20,11 +20,15 @@ function ConfirmCode(props) {
     const code = useSelector((state: RootStateOrAny) => state.codeReducer.code)
     const email = useSelector((state: RootStateOrAny) => state.codeReducer.email)
     const isLoading = useSelector((state: RootStateOrAny) => state.codeReducer.loading)
+    const isLogin = useSelector((state: RootStateOrAny) => state.userReducer.isLogin)
     const [isCheckCode, setIsCheckCode] = useState(false);
     const [codeClient, setCodeClient] = useState('');
     const router = useRouter();
 
     useEffect(() => {
+        if (isLogin) {
+            router.push('/')
+        }
         if (!isLoading) router.push('/forget-password')
     }, [])
 

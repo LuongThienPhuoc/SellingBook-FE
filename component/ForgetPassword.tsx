@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styleLogin from '../styles/Login.module.css'
 import { BsArrowLeftSquareFill, BsArrowRightSquareFill } from 'react-icons/bs'
 import Link from 'next/link'
@@ -9,16 +9,28 @@ import { CheckMail } from '../helper/checkMail'
 import { makeCode } from '../helper/makeCode'
 import { sendCode } from '../services/sendMail'
 import { getCode } from '../redux/actions/codeAction'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector, RootStateOrAny } from 'react-redux'
 import { showAlertSuccess, showAlertError } from '../redux/actions/alertAction'
+import { useRouter } from 'next/router';
+
 import axios from 'axios'
 function ForgetPassword(props) {
     const dispatch = useDispatch()
+    const router = useRouter()
+    const isLogin = useSelector((state: RootStateOrAny) => state.userReducer.isLogin)
+
     const [email, setEmail] = useState({
         value: '',
         isError: false,
         helperText: ''
     })
+
+    useEffect(() => {
+        if (isLogin) {
+            router.push('/')
+        }
+
+    }, [])
 
     const HandleClickButton = async (e) => {
         e.preventDefault()
@@ -47,7 +59,7 @@ function ForgetPassword(props) {
         }
     }
 
-   
+
     const HandleChangeEmail = (e) => {
         limitText(e, 30);
         if (CheckMail(e.target.value) || e.target.value.length === 0) {

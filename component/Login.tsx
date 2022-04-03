@@ -20,24 +20,29 @@ function Login(props) {
     const dispatch = useDispatch()
     const isLogin = useSelector((state: RootStateOrAny) => state.userReducer.isLogin)
     const router = useRouter()
-
     const [accountName, setAccountName] = useState({
         value: '',
         isError: false,
         helperText: ''
     })
-
     const [pass, setPass] = useState({
         value: '',
         isError: false,
         helperText: ''
     })
 
-    // useEffect(() => {
-    //     if (isLogin) {
-    //         router.push('/')
-    //     }
-    // }, [isLogin])
+    useEffect(() => {
+        if (isLogin) {
+            router.push('/')
+        }
+    }, [])
+
+    useEffect(() => {
+        if (isLogin) {
+            router.push('/')
+        }
+    }, [isLogin])
+
 
     const HandleClickLogin = async (e) => {
         e.preventDefault()
@@ -55,11 +60,11 @@ function Login(props) {
                 if (res.data.status == 0) {
                     dispatch(showAlertError(res.data.message))
                 } else {
+                    dispatch(userLogin(res.data))
                     dispatch(showAlertSuccess(res.data.message))
                 }
             })
 
-            //dispatch(userLogin())
         }
     }
 
