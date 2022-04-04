@@ -3,11 +3,7 @@ import Head from 'next/head'
 import styleLogin from '../styles/Login.module.css'
 
 import dynamic from 'next/dynamic';
-import LinearProgress from '@mui/material/LinearProgress';
-const Login = dynamic(() => import('../component/Login'),
-  {
-    loading: () => <LinearProgress></LinearProgress>
-  }
+const Login = dynamic(() => import('../component/Login')
 );
 
 

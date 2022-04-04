@@ -180,7 +180,15 @@ function Register(props) {
     }
 
     const responseGoogle = async (response) => {
-        console.log(response);
+        await axios.post(URL.URL_REGISTER_WITH_GOOGLE, {...response.profileObj}).then(res => {
+            if (res.data.status == 0) {
+                dispatch(showAlertError(res.data.message))
+            } else {
+                dispatch(userLogin(res.data))
+                dispatch(showAlertSuccess(res.data.message))
+            }
+        })
+        console.log(response.profileObj);
         console.log('click')
     }
     return (
