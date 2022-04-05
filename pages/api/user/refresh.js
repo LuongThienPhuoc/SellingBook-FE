@@ -13,17 +13,18 @@ const Refresh = async (req, res, data) => {
                 console.log(data)
                 console.log(data.username)
                 const username = data.username;
-                await User.findOne({username}).then(result => {
-                    if(result) {
+                await User.findOne({ username }).then(result => {
+                    if (result) {
                         res.status(200).send(JSON.stringify({
                             success: true,
                             status: 1,
                             message: 'Refresh thành công',
-                            data: result
+                            data: result,
+                            token: JWTAuthToken({ username })
                         }))
                     }
                 })
-                
+
             }
             catch (error) {
                 console.log("error", error)

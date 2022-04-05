@@ -80,20 +80,20 @@ const Footer = () => {
                     <Grid xl={3} lg={3} sm={6} md={6} item xs={12}>
                         <div>
                             <p className={style.footerTitle}>Liên hệ</p>
-                            <p style={{display:'flex'}}>
-                                <GrLocation style={{transform: 'translateY(+4px)'}} className={style.footerCustomIcon}></GrLocation>
+                            <p style={{ display: 'flex' }}>
+                                <GrLocation style={{ transform: 'translateY(+4px)' }} className={style.footerCustomIcon}></GrLocation>
                                 <Link href='#' passHref>
                                     <a className={style.footerItem}>Trường đại học Công nghệ thông tin</a>
                                 </Link>
                             </p>
-                            <p style={{display:'flex'}}>
-                                <HiOutlinePhone style={{transform: 'translateY(+4px)'}} className={style.footerCustomIcon}></HiOutlinePhone>
+                            <p style={{ display: 'flex' }}>
+                                <HiOutlinePhone style={{ transform: 'translateY(+4px)' }} className={style.footerCustomIcon}></HiOutlinePhone>
                                 <Link href='#' passHref>
                                     <a className={style.footerItem}>(+84) 9999999999</a>
                                 </Link>
                             </p>
-                            <p style={{display:'flex'}}>
-                                <AiOutlineMail style={{transform: 'translateY(+4px)'}} className={style.footerCustomIcon}></AiOutlineMail>
+                            <p style={{ display: 'flex' }}>
+                                <AiOutlineMail style={{ transform: 'translateY(+4px)' }} className={style.footerCustomIcon}></AiOutlineMail>
                                 <Link href='#' passHref>
                                     <a className={style.footerItem}>1999999@gm.uit.edu.vn</a>
                                 </Link>
@@ -110,14 +110,19 @@ const Footer = () => {
                             <img
                                 src="https://s3-alpha-sig.figma.com/img/917c/6af9/34d279d63c39796c40ded3d98c39a196?Expires=1649030400&Signature=X8Ux1HjZpFKPi4vat9FctOmZjVvonOsoPjPsDl15Y147HNi0JESrJUcDgwSNZ36q-I8otXXLNwNNa2BVdW8Rthcfl1gjyGwwjwd18PHiPtZsqmE8p9~neyA~hgb0sfXTFFlsRWCcHjljx5jcfAd2c84suJIXAjKYxzyo1moEjF9uxjGRklgvJue~gm0JfGsolzPBiFI04TIIZBv2hs4HWvLkQnkqYcHvbIMRXfb4EWoT2DjNPeSxnt~YhJBhzyvxSDSKL1wEZefdn0YLTpcgYWf4nQNFc7KTsI2Z44soktiFceE7Akis049lMgl0EB9lG5bEWnrUqbwo3RmScFcRiw__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA" alt=""
                                 height='80px'
-                                style={{height: '80px'}}
+                                style={{ height: '80px' }}
                             />
                             <p style={{ fontSize: '1.6rem', fontWeight: '600', paddingLeft: '10px', marginTop: '12px' }}>GoodBook</p>
                         </div>
                     </Grid>
                     <Grid item md={4} xs={12}>
                         <div style={{ display: 'flex', justifyContent: 'end' }}>
-                            <Link href='#' passHref>
+                            <BsTwitter className={style.customIconMedia}></BsTwitter>
+                            <BsFacebook className={style.customIconMedia}></BsFacebook>
+                            <BsInstagram className={style.customIconMedia}></BsInstagram>
+                            <BsYoutube className={style.customIconMedia}></BsYoutube>
+
+                            {/* <Link href='#' passHref>
                                 <BsTwitter className={style.customIconMedia}></BsTwitter>
                             </Link>
                             <Link href='#' passHref>
@@ -128,7 +133,7 @@ const Footer = () => {
                             </Link>
                             <Link href='#' passHref>
                                 <BsYoutube className={style.customIconMedia}></BsYoutube>
-                            </Link>
+                            </Link> */}
                         </div>
                     </Grid>
                 </Grid>

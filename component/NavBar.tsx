@@ -233,6 +233,9 @@ const NavBar = (props) => {
                         onClose={handleCloseUserMenu}
                     >
                         <MenuItem onClick={handleCloseUserMenu}>
+                            <Typography textAlign="center" fontWeight="bold">Lương Thiện Phước</Typography>
+                        </MenuItem>
+                        <MenuItem onClick={handleCloseUserMenu}>
                             <Typography textAlign="center">Profile</Typography>
                         </MenuItem>
                         <Divider light />
@@ -312,7 +315,7 @@ const NavBar = (props) => {
                             }}
                         >
                             {pages.map((page, index) => (
-                                <MenuItem onClick={handleCloseNavMenu}>
+                                <MenuItem key={index} onClick={handleCloseNavMenu}>
                                     <Typography textAlign="center">
                                         <Link href={page.url} passHref>
                                             <Button style={{ color: 'black', fontWeight: '500' }}>{page.name}</Button>
@@ -339,8 +342,8 @@ const NavBar = (props) => {
                         </Search>
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        {pages.map((page) => (
-                            <div style={{ position: 'relative' }}>
+                        {pages.map((page, index) => (
+                            <div key={index} style={{ position: 'relative' }}>
                                 <Link href={page.url} passHref>
                                     <Button className={props.active === page.active ? style.activeItem + ' ' + style.navItemLine : style.navItemLine} style={{ color: 'white', fontWeight: '600' }}>{page.name}</Button>
                                 </Link>

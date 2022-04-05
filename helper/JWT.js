@@ -1,6 +1,9 @@
+import { getAccessToken } from '../utils/cookies'
 
 const jwt = require('jsonwebtoken') // Authentication & Authorization
 const key = 'phiphuoc'
+
+
 
 export const JWTAuthToken = (data) => {
     return (jwt.sign(
@@ -31,8 +34,17 @@ export const AuthMiddleware = (refresh) => {
     return async (req, res) => {
         try {
             const authorizationHeader = req.headers.authorization;
-            const token = authorizationHeader?.split(" ")[1];
-            // if (!token) res.sendStatus(401);
+            //const token = authorizationHeader?.split(" ")[1];
+            var token;
+            var name = '_jwt' + "=";
+            var ca = req.headers.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1);
+                if (c.indexOf(name) == 0) token = c.substring(name.length, c.length);
+            }
+            console.log(token)
+
             jwt.verify(token, key, (err, data) => {
                 if (err) {
                     res.status(200).send(JSON.stringify({
