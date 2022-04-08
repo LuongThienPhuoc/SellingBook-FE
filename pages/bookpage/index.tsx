@@ -32,7 +32,6 @@ const BookPage: React.FC = () => {
         function handleResize() {
             setDimensions(typeof window !== undefined ? window.innerWidth: 800)
             settings.slidesToShow = width / 340; 
-            console.log("Fucking change width");
         }
         if(typeof window != undefined)
             window.addEventListener('resize', handleResize)
