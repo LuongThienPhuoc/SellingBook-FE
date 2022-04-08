@@ -22,6 +22,7 @@ import { userLogout } from '../redux/actions/userAction';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Badge from '@mui/material/Badge';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+
 const pages = [
     {
         id: 'home',
@@ -87,7 +88,6 @@ const NavBar = (props) => {
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
     const [anchoElMess, setAnchorElMess] = React.useState<null | HTMLElement>(null);
     const [anchoElCart, setAnchoElCart] = React.useState<null | HTMLElement>(null);
-    console.log("Nav" + props.active)
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
@@ -166,14 +166,17 @@ const NavBar = (props) => {
                             vertical: 'top',
                             horizontal: 'right',
                         }}
+
+                        className='cart-navbar'
                         open={Boolean(anchoElCart)}
+                        style={{borderRadius:'20px'}}
                         onClose={handleCloseCartMenu}
                     >
-                        <div className='p-4' style={{ width: '300px' }}  onClick={handleCloseCartMenu}>
-                            <div className='flex justify-center w-full' >
-                                <span>2 sản phẩm</span>
+                        <div style={{ width: '300px', borderRadius:'30px' }}  onClick={handleCloseCartMenu}>
+                            <div className={style.headerCart} >
+                                <span style={{fontSize:'14px', lineHeight:'1.5',fontWeight:'500'}}>2 sản phẩm</span>
                                 <Link href={'/cart'} passHref>
-                                    <a className='no-underline'>Xem tất cả</a>
+                                    <a style={{textDecoration:'none', fontSize:'14px',fontWeight:'500',color:'#2f5acf',lineHeight:'1.5'}}>Xem tất cả</a>
                                 </Link>
                             </div>
                             <ul style={{ maxHeight: '400px' }}>
@@ -229,6 +232,9 @@ const NavBar = (props) => {
                         open={Boolean(anchorElUser)}
                         onClose={handleCloseUserMenu}
                     >
+                        <MenuItem onClick={handleCloseUserMenu}>
+                            <Typography textAlign="center" fontWeight="bold">Lương Thiện Phước</Typography>
+                        </MenuItem>
                         <MenuItem onClick={handleCloseUserMenu}>
                             <Typography textAlign="center">Profile</Typography>
                         </MenuItem>
@@ -309,7 +315,7 @@ const NavBar = (props) => {
                             }}
                         >
                             {pages.map((page, index) => (
-                                <MenuItem onClick={handleCloseNavMenu}>
+                                <MenuItem key={index} onClick={handleCloseNavMenu}>
                                     <Typography textAlign="center">
                                         <Link href={page.url} passHref>
                                             <Button style={{ color: 'black', fontWeight: '500' }}>{page.name}</Button>
@@ -336,8 +342,8 @@ const NavBar = (props) => {
                         </Search>
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        {pages.map((page) => (
-                            <div style={{ position: 'relative' }}>
+                        {pages.map((page, index) => (
+                            <div key={index} style={{ position: 'relative' }}>
                                 <Link href={page.url} passHref>
                                     <Button className={props.active === page.active ? style.activeItem + ' ' + style.navItemLine : style.navItemLine} style={{ color: 'white', fontWeight: '600' }}>{page.name}</Button>
                                 </Link>
@@ -345,7 +351,7 @@ const NavBar = (props) => {
                         ))}
                     </Box>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        <Search style={{ backgroundColor: 'white', color: '#979797' }}>
+                        <Search  style={{ backgroundColor: 'white', color: '#979797' }}>
                             <SearchIconWrapper>
                                 <SearchIcon />
                             </SearchIconWrapper>

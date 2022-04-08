@@ -1,16 +1,17 @@
 import React, { useEffect } from 'react';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
-import style from '../styles/Alert.module.css'
-import { useState } from 'react';
 import { useDispatch, useSelector, RootStateOrAny } from 'react-redux'
+
+
+
+import style from '../styles/Alert.module.css'
 import { hideAlert } from '../redux/actions/alertAction'
 
 function AlertGoodBook(props) {
     const dispatch = useDispatch();
     const alertReducer = useSelector((state: RootStateOrAny) => state.alertReducer)
     useEffect(() => {
-        console.log(alertReducer)
         if (alertReducer.isShow) {
             var timer = setTimeout(() => {
                 dispatch(hideAlert())

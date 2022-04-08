@@ -1,27 +1,36 @@
 import React, { useState, useEffect } from 'react'
-import styleLogin from '../styles/Login.module.css'
 import { BsArrowLeftSquareFill, BsArrowRightSquareFill } from 'react-icons/bs'
 import Link from 'next/link'
-import TextField from '@mui/material/TextField';
-import { limitText } from '../helper/limitText'
-import { Button } from '@mui/material'
-import { CheckSpecialCharacters } from '../helper/checkSpecialCharaters'
+import { Button, TextField } from '@mui/material'
 import { useSelector, useDispatch, RootStateOrAny } from 'react-redux'
+import { useRouter } from 'next/router'
+import axios from 'axios'
+
+
 import { getCodeAgain } from '../redux/actions/codeAction'
 import { makeCode } from '../helper/makeCode'
 import { sendCode } from '../services/sendMail'
-import { useRouter } from 'next/router'
+import styleLogin from '../styles/Login.module.css'
+import * as URL from '../services/api/config'
+import { reset } from '../redux/actions/codeAction';
+import { showAlertSuccess, showAlertError } from '../redux/actions/alertAction'
+import { CheckSpecialCharacters } from '../helper/checkSpecialCharaters'
+import { limitText } from '../helper/limitText'
 
 function ConfirmCode(props) {
     const dispatch = useDispatch();
     const code = useSelector((state: RootStateOrAny) => state.codeReducer.code)
     const email = useSelector((state: RootStateOrAny) => state.codeReducer.email)
     const isLoading = useSelector((state: RootStateOrAny) => state.codeReducer.loading)
+    const isLogin = useSelector((state: RootStateOrAny) => state.userReducer.isLogin)
     const [isCheckCode, setIsCheckCode] = useState(false);
     const [codeClient, setCodeClient] = useState('');
     const router = useRouter();
 
     useEffect(() => {
+        if (isLogin) {
+            router.push('/')
+        }
         if (!isLoading) router.push('/forget-password')
     }, [])
 
@@ -42,7 +51,6 @@ function ConfirmCode(props) {
         if (sendCode(code, email)) {
             dispatch(getCodeAgain(code))
         }
-
     }
 
     const HandleChangeCode = (e) => {
@@ -105,23 +113,33 @@ function ConfirmCode(props) {
         }
     }
 
-    const HandleClickComfirmCode = (e) => {
+    const HandleClickComfirmCode = async (e) => {
         console.log(pass.value)
         console.log(rePass.value)
         console.log(codeClient)
         if (pass.value == '' || rePass.value == '' || codeClient == '') {
-            console.log('Nhập đầy đủ các  trường')
+            dispatch(showAlertError('Nhập đầy đủ các trường'))
             e.preventDefault()
         } else if (pass.isError || rePass.isError) {
-            console.log('Lỗi')
+            dispatch(showAlertError('Mật khẩu không đúng định dạng'))
             e.preventDefault()
         }
         else if (codeClient !== code) {
+            dispatch(showAlertError('Nhập mã code không đúng'))
             setIsCheckCode(true)
             e.preventDefault();
         }
         else {
-            console.log('Đăng ký thành công')
+            await axios.post(URL.URL_CONFIRM_CODE, { mail: email, password: pass.value })
+                .then(res => {
+                    if (res.data.status == 0) {
+                        e.preventDefault();
+                        dispatch(showAlertError(res.data.message))
+                    } else {
+                        dispatch(showAlertSuccess(res.data.message))
+                        dispatch(reset())
+                    }
+                })
         }
     }
 
@@ -137,20 +155,20 @@ function ConfirmCode(props) {
     return (
         <div style={props.isMobile ? { width: '400px', height: '80%', borderRadius: '10px', boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px' } : null} className={styleLogin.modalLogin + ' ' + styleLogin.formForgetPass}>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <div className={styleLogin.loginDirection}>
+                <div style={{ height: '24px' }} className={styleLogin.loginDirection}>
                     <Link href={'/forget-password'} passHref>
-                        <BsArrowLeftSquareFill style={{ transform: 'translateY(-6px)', marginRight: '5px' }}></BsArrowLeftSquareFill>
+                        <BsArrowLeftSquareFill style={{ marginRight: '5px' }}></BsArrowLeftSquareFill>
                     </Link>
                     <Link href={'/forget-password'} passHref>
-                        <p>Nhập lại email</p>
+                        <p style={{ marginBottom: '0' }}>Nhập lại email</p>
                     </Link>
                 </div>
-                <div className={styleLogin.loginDirection}>
+                <div style={{ height: '24px' }} className={styleLogin.loginDirection}>
                     <Link href={'/login'} passHref>
-                        <p>Đăng nhập</p>
+                        <p style={{ marginBottom: '0' }}>Đăng nhập</p>
                     </Link>
                     <Link href={'/login'} passHref>
-                        <BsArrowRightSquareFill style={{ transform: 'translateY(-6px)', marginLeft: '5px' }}></BsArrowRightSquareFill>
+                        <BsArrowRightSquareFill style={{ marginLeft: '5px' }}></BsArrowRightSquareFill>
                     </Link>
                 </div>
             </div>
@@ -159,7 +177,7 @@ function ConfirmCode(props) {
                 <img height={props.isMobile ? '80px' : '130px'} width={props.isMobile ? '130px' : '200pxpx'} src='/img/logo.png'></img>
                 <div style={props.isMobile ? { fontSize: '1.6rem' } : { fontSize: '2.4rem' }}>GOOD BOOK</div>
                 <div style={{ fontSize: props.isMobile ? '1.4rem' : '2rem', fontWeight: '500', color: '#2BBCBA' }}>Quên mật khẩu</div>
-                <div style={{ display: 'flex', textDecoration: 'none', justifyContent: 'start', paddingLeft: '60px', paddingRight: '60px', width: '100%', marginTop: '20px' }}>
+                <div style={{ marginBottom: '15px', display: 'flex', textDecoration: 'none', justifyContent: 'start', paddingLeft: '60px', paddingRight: '60px', width: '100%', marginTop: '20px' }}>
                     <p>Mã code đã được gửi về email {email}</p>
                     <p>{code}</p>
                 </div>

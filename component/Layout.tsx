@@ -6,13 +6,13 @@ import NavBar from './NavBar'
 
 const Layout = (props) => {
 
-    console.log("Layout"+props.active)
     return (
         <div>
             <Head>
                 <meta charSet="UTF-8"></meta>
-                <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+                {/* <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+                <link rel="stylesheet" href='/css/global.css'></link> */}
                 <title>Selling Book</title>
                 <link rel="preconnect" href="https://fonts.googleapis.com"/>
                 <link rel="preconnect" href="https://fonts.gstatic.com"/>

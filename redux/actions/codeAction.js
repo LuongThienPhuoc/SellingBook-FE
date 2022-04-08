@@ -10,6 +10,12 @@ export const getCode = (code, email) => dispathch => {
     })
 }
 
+export const reset = () => dispatch => {
+    dispatch({
+        type: type.RESET_CODE_MAIL
+    })
+}
+
 
 export const getCodeAgain = (code) => dispatch => {
     dispatch({

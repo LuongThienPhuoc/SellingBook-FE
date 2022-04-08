@@ -17,6 +17,13 @@ const postReducer = (state = initalState, action) => {
                 loading: true,
                 error: null,
             }
+        case type.RESET_CODE_MAIL:
+            return {
+                ...state,
+                code: '',
+                email: '',
+                loading: false,
+            }
         case type.GET_CODE_AGAIN:
             return {
                 ...state,

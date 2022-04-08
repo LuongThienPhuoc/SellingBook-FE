@@ -1,19 +1,26 @@
-import React, { useState } from 'react'
-import styleLogin from '../styles/Login.module.css'
+import React, { useState, useEffect } from 'react'
 import { BsArrowLeftSquareFill, BsArrowRightSquareFill } from 'react-icons/bs'
 import Link from 'next/link'
-import TextField from '@mui/material/TextField';
-import { Divider } from '@mui/material'
-import { Button } from '@mui/material'
+import { Divider, TextField, Button } from '@mui/material'
 import { BsFacebook } from 'react-icons/bs'
 import { AiFillGoogleCircle } from 'react-icons/ai'
+import GoogleLogin from 'react-google-login';
+import axios from 'axios';
+import { useDispatch, useSelector, RootStateOrAny } from 'react-redux'
+import { useRouter } from 'next/router';
+
+
+import styleLogin from '../styles/Login.module.css'
+import { userLogin } from '../redux/actions/userAction';
+import { showAlertSuccess, showAlertError } from '../redux/actions/alertAction'
+import * as URL from '../services/api/config'
 import { limitText } from '../helper/limitText'
 import { CheckMail } from '../helper/checkMail'
 import { CheckSpecialCharacters } from '../helper/checkSpecialCharaters'
-import GoogleLogin from 'react-google-login';
-
-
 function Register(props) {
+    const router = useRouter()
+    const dispatch = useDispatch()
+    const isLogin = useSelector((state: RootStateOrAny) => state.userReducer.isLogin)
     const [email, setEmail] = useState({
         value: '',
         isError: false,
@@ -38,8 +45,14 @@ function Register(props) {
         helperText: ''
     })
 
+    useEffect(() => {
+        if (isLogin) {
+            router.push('/')
+        }
+    }, [])
 
-    const HandleClickRegister = (e) => {
+    const HandleClickRegister = async (e) => {
+        e.preventDefault()
         if (email.value == '' || accountName.value == '' || pass.value == '' || rePass.value == '') {
             console.log('Nhập đầy đủ các  trường')
             e.preventDefault()
@@ -47,7 +60,23 @@ function Register(props) {
             console.log('Lỗi')
             e.preventDefault()
         } else {
-            console.log('Đăng ký thành công')
+            let data: Object = {
+                mail: email.value,
+                username: accountName.value,
+                password: pass.value
+            }
+
+
+            axios.post(URL.URL_REGISTER, { ...data })
+                .then(res => {
+                    if (res.data.status == 0) {
+                        dispatch(showAlertError(res.data.message))
+                    } else {
+                        dispatch(userLogin(res.data))
+                        dispatch(showAlertSuccess(res.data.message))
+                    }
+                })
+
         }
     }
 
@@ -151,33 +180,41 @@ function Register(props) {
     }
 
     const responseGoogle = async (response) => {
-        console.log(response);
+        await axios.post(URL.URL_REGISTER_WITH_GOOGLE, {...response.profileObj}).then(res => {
+            if (res.data.status == 0) {
+                dispatch(showAlertError(res.data.message))
+            } else {
+                dispatch(userLogin(res.data))
+                dispatch(showAlertSuccess(res.data.message))
+            }
+        })
+        console.log(response.profileObj);
         console.log('click')
     }
     return (
         <div style={props.isMobile ? { width: '400px', height: '80%', borderRadius: '10px', boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px' } : null} className={styleLogin.modalLogin + ' ' + styleLogin.formRegister}>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <div className={styleLogin.loginDirection}>
+                <div style={{ height: '24px' }} className={styleLogin.loginDirection}>
                     <Link href={'/'} passHref>
-                        <BsArrowLeftSquareFill style={{ transform: 'translateY(-6px)', marginRight: '5px' }}></BsArrowLeftSquareFill>
+                        <BsArrowLeftSquareFill style={{ lineHeight: '10px', marginRight: '5px' }}></BsArrowLeftSquareFill>
                     </Link>
                     <Link href={'/'} passHref>
-                        <p>Trang chủ</p>
+                        <p style={{ marginBottom: '0' }}>Trang chủ</p>
                     </Link>
                 </div>
-                <div className={styleLogin.loginDirection}>
+                <div style={{ height: '24px' }} className={styleLogin.loginDirection}>
                     <Link href={'/login'} passHref>
-                        <p>Đăng nhập</p>
+                        <p style={{ marginBottom: '0' }}>Đăng nhập</p>
                     </Link>
                     <Link href={'/login'} passHref>
-                        <BsArrowRightSquareFill style={{ transform: 'translateY(-6px)', marginLeft: '5px' }}></BsArrowRightSquareFill>
+                        <BsArrowRightSquareFill style={{ lineHeight: '10px', marginLeft: '5px' }}></BsArrowRightSquareFill>
                     </Link>
                 </div>
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
                 <img style={{ display: props.isMobile ? 'none' : 'block' }} height='130px' width='200px' src='/img/logo.png'></img>
-                <div style={props.isMobile?{ fontSize: '1.6rem' } : {fontSize:'2.4rem'}}>GOOD BOOK</div>
-                <div style={{ fontSize: props.isMobile?'1.4rem':'2rem', fontWeight: '500', color: '#2BBCBA' }}>Đăng ký</div>
+                <div style={props.isMobile ? { fontSize: '1.6rem' } : { fontSize: '2.4rem' }}>GOOD BOOK</div>
+                <div style={{ fontSize: props.isMobile ? '1.4rem' : '2rem', fontWeight: '500', color: '#2BBCBA' }}>Đăng ký</div>
                 <div style={{ paddingLeft: '60px', paddingRight: '60px', width: '100%', marginTop: '20px' }}>
                     <TextField
                         id="outlined-required"

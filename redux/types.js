@@ -2,10 +2,10 @@ export const GET_POST = "GET_POST";
 export const SET_POST = "SET_POST";
 
 
-
+// Tìm lại mật khẩu
 export const GET_CODE = "GET_CODE";
 export const GET_CODE_AGAIN = "GET_CODE_AGAIN"
-
+export const RESET_CODE_MAIL = " RESET_CODE_MAIL"
 
 
 export const USER_LOGIN_SUCCESS = 'USER_LOGIN_SUCCESS'
