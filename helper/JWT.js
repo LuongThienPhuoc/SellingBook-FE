@@ -37,9 +37,15 @@ export const AuthMiddleware = (refresh) => {
             //const token = authorizationHeader?.split(" ")[1];
             var token;
             var name = '_jwt' + "=";
+            console.log("Đến đây rồi 1");
+            console.log("req.headers", req.headers);
+            // if(typeof req.headers.cookie == 'undefined'){
+
+            // }
             var ca = req.headers.cookie.split(';');
-            for (var i = 0; i < ca.length; i++) {
-                var c = ca[i];
+            console.log("Đến đây rồi");
+            for (const element of ca) {
+                var c = element;
                 while (c.charAt(0) == ' ') c = c.substring(1);
                 if (c.indexOf(name) == 0) token = c.substring(name.length, c.length);
             }
@@ -58,6 +64,7 @@ export const AuthMiddleware = (refresh) => {
                 }
             })
         } catch (err) {
+            console.log("error", err)
             return res.status(400).send(JSON.stringify({
                 success: false,
                 message: 'Refresh thất bại'

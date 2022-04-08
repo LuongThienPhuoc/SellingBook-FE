@@ -1,8 +1,8 @@
 import * as type from '../types'
 import { setAccessToken } from '../../utils/cookies'
-export const userLogin = (data) => dispathch => {
+export const userLogin = (data) => dispatch => {
     setAccessToken(data.token)
-    dispathch({
+    dispatch({
         type: type.USER_LOGIN_SUCCESS,
         infoUser: data.data
     })

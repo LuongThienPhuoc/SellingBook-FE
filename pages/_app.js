@@ -20,6 +20,7 @@ const MyApp = ({ Component, pageProps }) => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch()
   useEffect(() => {
+    console.log(getAccessToken());
     const fetApi = async () => {
       await axios.post(URL.URL_REFRESH,
         {
