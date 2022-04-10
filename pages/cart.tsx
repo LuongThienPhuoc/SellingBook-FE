@@ -1,12 +1,12 @@
-import React from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch } from 'react-redux'
-import { showAlertError, showAlertSuccess } from '../redux/actions/alertAction'
 import dynamic from 'next/dynamic';
 import LinearProgress from '@mui/material/LinearProgress';
 import { AiFillPlusCircle, AiFillMinusCircle } from 'react-icons/ai'
 import { MdDelete } from 'react-icons/md'
 import { Container, Grid, TextField, Radio, Badge, Button } from '@mui/material'
 import style from '../styles/Cart.module.css'
+import axios from 'axios'
 
 const Layout = dynamic(() =>
   import('../component/Layout'),
@@ -16,29 +16,6 @@ const Layout = dynamic(() =>
 );
 
 const Cart = () => {
-  const dispatch = useDispatch()
-
-  const [selectedValue, setSelectedValue] = React.useState('e');
-  const handleClick = () => {
-    dispatch(showAlertSuccess("Đúng rồi bạn ơi"))
-  }
-
-  const handleClick1 = () => {
-    dispatch(showAlertError("Sai rồi bạn ơi"))
-  }
-
-  const handleChangeMethoPay = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.value)
-    setSelectedValue(event.target.value);
-  }
-
-  const controlProps = (item: string) => ({
-    checked: selectedValue === item,
-    onChange: handleChangeMethoPay,
-    value: item,
-    name: 'color-radio-button-demo',
-    inputProps: { 'aria-label': item },
-  });
 
   return (
     <Layout>
@@ -61,28 +38,28 @@ const Cart = () => {
                     <CartItem></CartItem>
                     <CartItem></CartItem>
                   </div>
-                  <div style={{display:'flex',height:'50px',border: '1px solid black', borderRadius: '20px', backgroundColor: '#D9d9d9', overflow:'hidden'}}>
-                    <input placeholder='Mã giảm giá' style={{fontWeight:'500', paddingBottom:'5px',paddingLeft:'20px',width:'70%', height:'50px',borderRight: '1px solid black', outline:'none', borderRadius:'20px'}} type='text'></input>
-                    <div style={{cursor:'not-allowed',width:'30%',fontWeight:'600',height:'50px', textAlign:'center', lineHeight:'45px'}}>Áp dụng</div>
+                  <div style={{ display: 'flex', height: '50px', border: '1px solid black', borderRadius: '20px', backgroundColor: '#D9d9d9', overflow: 'hidden' }}>
+                    <input placeholder='Mã giảm giá' style={{ fontWeight: '500', paddingBottom: '5px', paddingLeft: '20px', width: '70%', height: '50px', borderRight: '1px solid black', outline: 'none', borderRadius: '20px' }} type='text'></input>
+                    <div style={{ cursor: 'not-allowed', width: '30%', fontWeight: '600', height: '50px', textAlign: 'center', lineHeight: '45px' }}>Áp dụng</div>
                   </div>
-                  <div style={{borderTop:'1px solid #00000021',borderBottom:'1px solid #00000021', marginTop:'20px'}}>
-                    <div style={{display:'flex', justifyContent:'space-between', margin:'15px 0' , fontSize:'14px', fontWeight:'500'}}>
+                  <div style={{ borderTop: '1px solid #00000021', borderBottom: '1px solid #00000021', marginTop: '20px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', margin: '15px 0', fontSize: '14px', fontWeight: '500' }}>
                       <div>Tạm tính</div>
                       <div>149000đ</div>
                     </div>
-                    <div style={{display:'flex', justifyContent:'space-between', margin:'15px 0' , fontSize:'14px', fontWeight:'500'}}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', margin: '15px 0', fontSize: '14px', fontWeight: '500' }}>
                       <div>Giảm giá</div>
                       <div>149000đ</div>
                     </div>
-                    <div style={{display:'flex', justifyContent:'space-between', margin:'15px 0' , fontSize:'14px', fontWeight:'500'}}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', margin: '15px 0', fontSize: '14px', fontWeight: '500' }}>
                       <div>Phí giao hàng</div>
                       <div>+25000đ</div>
                     </div>
                   </div>
-                  <div style={{display:'flex', justifyContent:'space-between', margin:'15px 0' , fontSize:'18px', fontWeight:'600'}}>
-                      <div>TỔNG</div>
-                      <div>149000đ</div>
-                    </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', margin: '15px 0', fontSize: '18px', fontWeight: '600' }}>
+                    <div>TỔNG</div>
+                    <div>149000đ</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -148,18 +125,31 @@ function CartItem(props) {
 
 
 
-
+// Info user to pay
 function InfoUserToPay(props) {
+
+  const districtRef = useRef()
+  const communeRef = useRef()
   const dispatch = useDispatch()
-
   const [selectedValue, setSelectedValue] = React.useState('e');
-  const handleClick = () => {
-    dispatch(showAlertSuccess("Đúng rồi bạn ơi"))
-  }
 
-  const handleClick1 = () => {
-    dispatch(showAlertError("Sai rồi bạn ơi"))
-  }
+  const [provinces, setProvinces] = useState([])
+  let provinceSelect: String 
+  const [districts, setDistricts] = useState([])
+  let districtsSelect: String
+  const [communes, setCommunes] = useState([])
+  let communesSelect: String
+
+  useEffect(() => {
+    const fetAPIProvince = async () => {
+      axios.get(`https://api.mysupership.vn/v1/partner/areas/province`).then(res => {
+
+        setProvinces(res.data.results)
+      })
+    }
+    fetAPIProvince()
+  }, [])
+
 
   const handleChangeMethoPay = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log(event.target.value)
@@ -174,8 +164,32 @@ function InfoUserToPay(props) {
     inputProps: { 'aria-label': item },
   });
 
+  const handleChangeProvince = async (e) => {
+    if (e.target.value == '0') {
+      setDistricts([])
+      setCommunes([])
+    } else {
+      await axios.get(`https://api.mysupership.vn/v1/partner/areas/district?province=${e.target.value}`).then(res => {
+        console.log(districtRef.current)
+        setDistricts(res.data.results)
+      })
+    }
+    provinceSelect = e.target.value
+  }
+
+  const handleChangeDistrict = async (e) => {
+    if(e.target.value == '0') {
+      setCommunes([])
+    } else {
+      await axios.get(`https://api.mysupership.vn/v1/partner/areas/commune?district=${e.target.value}`).then(res => {
+        setCommunes(res.data.results)
+      })
+    }
+    districtsSelect = e.target.value
+  }
+
   return (
-    <div  className={'p-4 relative' }>
+    <div className={'p-4 relative'}>
       <div className={style.line}></div>
       <div className='flex justify-between items-center pt-10'>
         <div className='text-3xl font-bold'>Thông tin vận chuyển</div>
@@ -226,67 +240,70 @@ function InfoUserToPay(props) {
           <Grid item sm={4}>
             <TextField
               fullWidth
-              label="Gender"
-              name="gender"
+              label="Tỉnh/TP"
+              name="province"
               required
               size='medium'
               variant="outlined"
               select
+              onChange={handleChangeProvince}
+              defaultValue={"0"}
               SelectProps={{ native: true }}
             >
               <option value="0">
-                --Select gender--
+                --Chọn Tỉnh/TP--
               </option>
-              <option value="male">
-                Male
-              </option>
-              <option value="female">
-                Female
-              </option>
+              {provinces.map((province, index) => (
+                <option key={index} value={province.code}>
+                  {province.name}
+                </option>
+              ))}
+
             </TextField>
           </Grid>
           <Grid item sm={4}>
             <TextField
               fullWidth
-              label="Gender"
-              name="gender"
+              label="Quận/Huyện"
+              name="district"
               required
               size='medium'
               variant="outlined"
               select
+              ref={districtRef}
+              onChange={handleChangeDistrict}
               SelectProps={{ native: true }}
             >
               <option value="0">
-                --Select gender--
+                --Chọn Quận/Huyện--
               </option>
-              <option value="male">
-                Male
-              </option>
-              <option value="female">
-                Female
-              </option>
+              {districts.map((district, index) => (
+                <option key={index} value={district.code}>
+                  {district.name}
+                </option>
+              ))}
             </TextField>
           </Grid>
           <Grid item sm={4}>
             <TextField
               fullWidth
-              label="Gender"
-              name="gender"
+              label="Xã/Phường"
+              name="commune"
               required
               size='medium'
               variant="outlined"
               select
+              ref={communeRef}
               SelectProps={{ native: true }}
             >
               <option value="0">
-                --Select gender--
+                --Chọn Xã/Phường--
               </option>
-              <option value="male">
-                Male
-              </option>
-              <option value="female">
-                Female
-              </option>
+              {communes.map((commune, index) => (
+                <option key={index} value={commune.code}>
+                  {commune.name}
+                </option>
+              ))}
             </TextField>
           </Grid>
           <Grid item sm={12}>

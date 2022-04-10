@@ -1,0 +1,9 @@
+.active{
+    color: #2BBCBA;
+    font-weight: 500;
+}
+
+.orderListActive{
+    background-color: #2BBCBA;
+    color: white !important;
+}

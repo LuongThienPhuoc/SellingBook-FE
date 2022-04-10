@@ -1,5 +1,8 @@
 import '../styles/globals.css'
 import '../styles/layout.css'
+import '../styles/profile.css'
+
+
 import Head from 'next/head'
 import { createWrapper } from 'next-redux-wrapper'
 import { useEffect } from 'react'
@@ -36,7 +39,7 @@ const MyApp = ({ Component, pageProps }) => {
 
   if (!isLoading) return (<LinearProgress></LinearProgress>)
   return (
-    <div className='root-app'>
+    <div  className='root-app'>
       <Provider store={store}>
         <Head>
           <link rel='icon' href='/img/logo.png'></link>
@@ -47,7 +50,6 @@ const MyApp = ({ Component, pageProps }) => {
       </Provider>
     </div>
   )
-
 }
 
 const makestore = () => store;
