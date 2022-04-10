@@ -14,8 +14,7 @@ import style from '../styles/Profile.module.css'
 import { ImSigma } from 'react-icons/im'
 import Card from '@mui/material/Card';
 import Pagination from '@mui/material/Pagination';
-import CardMedia from '@mui/material/CardMedia';
-
+import Rating from '@mui/material/Rating';
 //search
 import SearchIcon from '@mui/icons-material/Search';
 
@@ -24,6 +23,49 @@ const Layout = dynamic(() => import('../component/Layout'),
         loading: () => <LinearProgress></LinearProgress>
     }
 )
+
+//Review List
+const ReviewList = (props) => {
+    return (
+        <div>
+            <div className='text-xl text-[#2BBCBA]'>Danh sách review</div>
+            <div className='flex justify-center mb-3'>
+                <div className='rounded-2xl flex  px-4 py-2 mt-5' style={{ border: '1px solid black', width: '90%' }}>
+                    <SearchIcon className='pr-1 text-3xl cursor-pointer text-[#979797] mr-4' />
+                    <input className='w-full outline-none' type='text' placeholder='Tìm kiếm theo ID sách, tên sách, ID đơn hàng'></input>
+                </div>
+            </div>
+            <div>
+                <Card className='px-4 py-4 border-solid border-2 border-[#0000005c] rounded-lg    ' sx={{ display: 'flex' }}>
+                    <img className='rounded-lg border-[#2BBCBA] border-1 border-solid mr-3' height={127} width={100} src='https://upload.wikimedia.org/wikipedia/vi/6/61/Ng%E1%BB%93i_kh%C3%B3c_tr%C3%AAn_c%C3%A2y_cover.jpg'></img>
+                    <div className='w-full'>
+                        <div className='flex justify-between h-auto'>
+                            <div className='flex justify-around w-full  items-center'>
+                                <div className='font-medium text-lg'>Ngồi khóc trên cây</div>
+                                <div className='flex items-center'>
+                                    <div className='text-xl mr-2'>4</div>
+                                    <Rating name="read-only" value={4} readOnly ></Rating>
+                                </div>
+                                <div className='text-base '>12/9/2022</div>
+                            </div>
+                        </div>
+                        <div className={'border-[#333333] rounded-lg border-1 border-solid ml-4 text-justify mt-2 '+style.hiddenLine}>
+                            Không giống với nhiều tác phẩm trước đó của Nguyễn Nhật Ánh, Ngồi khóc trên
+                            cây được nhà văn đưa vào nhiều nghịch cảnh éo le, bi thương nhằm thử thách
+                            các nhân vật và giúp họ trưởng thành hơn về mặt tình cảm theo thời gian. Tác
+                            phẩm đã nằm trong tốp những quyển sách Việt Nam được nhiều người đặt mua nhất
+                            năm 2013 theo thống kê của nhiều hệ thống phân phối sách trực
+                        </div>
+
+                    </div>
+                </Card>
+            </div>
+            <div className='mt-10 flex justify-center profile-pagination'>
+                <Pagination count={10} color="primary" variant="outlined" />
+            </div>
+        </div>
+    )
+}
 
 //Purchased List/
 const PurchasedList = (props) => {
@@ -34,8 +76,8 @@ const PurchasedList = (props) => {
                 <Grid container spacing={5}>
                     <Grid item md={4}>
                         <Card className='rounded-lg border-[#2BBCBA] border-1 border-solid mb-6'>
-                            <img className='w-full h-56'  src='https://upload.wikimedia.org/wikipedia/vi/6/61/Ng%E1%BB%93i_kh%C3%B3c_tr%C3%AAn_c%C3%A2y_cover.jpg'></img>
-                                <div className='w-full'>
+                            <img className='w-full h-56' src='https://upload.wikimedia.org/wikipedia/vi/6/61/Ng%E1%BB%93i_kh%C3%B3c_tr%C3%AAn_c%C3%A2y_cover.jpg'></img>
+                            <div className='w-full'>
                                 <div className='flex flex-column items-center h-auto pt-2 px-3 pb-6'>
                                     <div className='text-[#555555] text-base'>Nhà xuất bản trẻ</div>
                                     <div className='text-xl text-[#2BBCBA] text-center'>Cánh chim xanh biết bay về</div>
@@ -46,8 +88,8 @@ const PurchasedList = (props) => {
                     </Grid>
                     <Grid item md={4}>
                         <Card className='rounded-lg border-[#2BBCBA] border-1 border-solid mb-6'>
-                            <img className='w-full h-56'  src='https://upload.wikimedia.org/wikipedia/vi/6/61/Ng%E1%BB%93i_kh%C3%B3c_tr%C3%AAn_c%C3%A2y_cover.jpg'></img>
-                                <div className='w-full'>
+                            <img className='w-full h-56' src='https://upload.wikimedia.org/wikipedia/vi/6/61/Ng%E1%BB%93i_kh%C3%B3c_tr%C3%AAn_c%C3%A2y_cover.jpg'></img>
+                            <div className='w-full'>
                                 <div className='flex flex-column items-center h-auto pt-2 px-3 pb-6'>
                                     <div className='text-[#555555] text-base'>Nhà xuất bản trẻ</div>
                                     <div className='text-xl text-[#2BBCBA] text-center'>Cánh chim xanh biết bay về</div>
@@ -58,8 +100,8 @@ const PurchasedList = (props) => {
                     </Grid>
                     <Grid item md={4}>
                         <Card className='rounded-lg border-[#2BBCBA] border-1 border-solid mb-6'>
-                            <img className='w-full h-56'  src='https://upload.wikimedia.org/wikipedia/vi/6/61/Ng%E1%BB%93i_kh%C3%B3c_tr%C3%AAn_c%C3%A2y_cover.jpg'></img>
-                                <div className='w-full'>
+                            <img className='w-full h-56' src='https://upload.wikimedia.org/wikipedia/vi/6/61/Ng%E1%BB%93i_kh%C3%B3c_tr%C3%AAn_c%C3%A2y_cover.jpg'></img>
+                            <div className='w-full'>
                                 <div className='flex flex-column items-center h-auto pt-2 px-3 pb-6'>
                                     <div className='text-[#555555] text-base'>Nhà xuất bản trẻ</div>
                                     <div className='text-xl text-[#2BBCBA] text-center'>Cánh chim xanh biết bay về</div>
@@ -70,8 +112,8 @@ const PurchasedList = (props) => {
                     </Grid>
                     <Grid item md={4}>
                         <Card className='rounded-lg border-[#2BBCBA] border-1 border-solid mb-6'>
-                            <img className='w-full h-56'  src='https://upload.wikimedia.org/wikipedia/vi/6/61/Ng%E1%BB%93i_kh%C3%B3c_tr%C3%AAn_c%C3%A2y_cover.jpg'></img>
-                                <div className='w-full'>
+                            <img className='w-full h-56' src='https://upload.wikimedia.org/wikipedia/vi/6/61/Ng%E1%BB%93i_kh%C3%B3c_tr%C3%AAn_c%C3%A2y_cover.jpg'></img>
+                            <div className='w-full'>
                                 <div className='flex flex-column items-center h-auto pt-2 px-3 pb-6'>
                                     <div className='text-[#555555] text-base'>Nhà xuất bản trẻ</div>
                                     <div className='text-xl text-[#2BBCBA] text-center'>Cánh chim xanh biết bay về</div>
@@ -82,8 +124,8 @@ const PurchasedList = (props) => {
                     </Grid>
                     <Grid item md={4}>
                         <Card className='rounded-lg border-[#2BBCBA] border-1 border-solid mb-6'>
-                            <img className='w-full h-56'  src='https://upload.wikimedia.org/wikipedia/vi/6/61/Ng%E1%BB%93i_kh%C3%B3c_tr%C3%AAn_c%C3%A2y_cover.jpg'></img>
-                                <div className='w-full'>
+                            <img className='w-full h-56' src='https://upload.wikimedia.org/wikipedia/vi/6/61/Ng%E1%BB%93i_kh%C3%B3c_tr%C3%AAn_c%C3%A2y_cover.jpg'></img>
+                            <div className='w-full'>
                                 <div className='flex flex-column items-center h-auto pt-2 px-3 pb-6'>
                                     <div className='text-[#555555] text-base'>Nhà xuất bản trẻ</div>
                                     <div className='text-xl text-[#2BBCBA] text-center'>Cánh chim xanh biết bay về</div>
@@ -94,8 +136,8 @@ const PurchasedList = (props) => {
                     </Grid>
                     <Grid item md={4}>
                         <Card className='rounded-lg border-[#2BBCBA] border-1 border-solid mb-6'>
-                            <img className='w-full h-56'  src='https://upload.wikimedia.org/wikipedia/vi/6/61/Ng%E1%BB%93i_kh%C3%B3c_tr%C3%AAn_c%C3%A2y_cover.jpg'></img>
-                                <div className='w-full'>
+                            <img className='w-full h-56' src='https://upload.wikimedia.org/wikipedia/vi/6/61/Ng%E1%BB%93i_kh%C3%B3c_tr%C3%AAn_c%C3%A2y_cover.jpg'></img>
+                            <div className='w-full'>
                                 <div className='flex flex-column items-center h-auto pt-2 px-3 pb-6'>
                                     <div className='text-[#555555] text-base'>Nhà xuất bản trẻ</div>
                                     <div className='text-xl text-[#2BBCBA] text-center'>Cánh chim xanh biết bay về</div>
@@ -105,7 +147,6 @@ const PurchasedList = (props) => {
                         </Card>
                     </Grid>
                 </Grid>
-
             </div>
             <div className='mt-10 flex justify-center profile-pagination'>
                 <Pagination count={10} color="primary" variant="outlined" />
@@ -131,7 +172,7 @@ const OrderList = (props) => {
             <div className='flex justify-center mb-2.5'>
                 <div className='rounded-2xl flex  px-4 py-2 mt-10' style={{ border: '1px solid black', width: '90%' }}>
                     <SearchIcon className='pr-1 text-3xl cursor-pointer text-[#979797] mr-4' />
-                    <input className='w-full' type='text' placeholder='Tìm kiếm theo ID sách, tên sách, ID đơn hàng'></input>
+                    <input className='w-full outline-none' type='text' placeholder='Tìm kiếm theo ID sách, tên sách, ID đơn hàng'></input>
                 </div>
             </div>
             <div>
@@ -183,7 +224,8 @@ function Profile(props) {
 
     const render = () => {
         //return (<OrderList></OrderList>)
-        return (<PurchasedList></PurchasedList>)
+        // return (<PurchasedList></PurchasedList>)
+        return (<ReviewList></ReviewList>)
     }
 
     return (
@@ -274,7 +316,6 @@ function Profile(props) {
                     </Grid>
                 </Grid>
             </Container>
-
         </Layout>
     );
 }

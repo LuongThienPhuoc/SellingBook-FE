@@ -1,9 +1,21 @@
-.active{
+.active {
     color: #2BBCBA;
     font-weight: 500;
 }
 
-.orderListActive{
+.orderListActive {
     background-color: #2BBCBA;
     color: white !important;
+}
+
+.hiddenLine {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 25px;
+    -webkit-line-clamp: 4;
+    height: 120px;
+    padding: 12px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    font-size: 14px;
 }
