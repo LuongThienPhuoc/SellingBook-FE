@@ -39,7 +39,7 @@ const MyApp = ({ Component, pageProps }) => {
 
   if (!isLoading) return (<LinearProgress></LinearProgress>)
   return (
-    <div  className='root-app'>
+    <div className='root-app'>
       <Provider store={store}>
         <Head>
           <link rel='icon' href='/img/logo.png'></link>
