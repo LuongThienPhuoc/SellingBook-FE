@@ -47,7 +47,6 @@ export const AuthMiddleware = (refresh) => {
                 if (c.indexOf(name) == 0) token = c.substring(name.length, c.length);
             }
             console.log(token)
-
             jwt.verify(token, key, (err, data) => {
                 if (err) {
                     res.status(200).send(JSON.stringify({

@@ -1,41 +1,79 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch } from 'react-redux'
+
 import { Container, Grid, TextField, Radio } from '@mui/material'
-
-
 import style from '../../styles/Cart.module.css'
-import { showAlertError, showAlertSuccess } from '../../redux/actions/alertAction'
+import axios from 'axios'
+import Link from 'next/link';
 
 function InfoUserToPay(props) {
-    const dispatch = useDispatch()
 
+    const districtRef = useRef()
+    const communeRef = useRef()
+    const dispatch = useDispatch()
     const [selectedValue, setSelectedValue] = React.useState('e');
-    const handleClick = () => {
-      dispatch(showAlertSuccess("Đúng rồi bạn ơi"))
-    }
-  
-    const handleClick1 = () => {
-      dispatch(showAlertError("Sai rồi bạn ơi"))
-    }
-  
+
+    const [provinces, setProvinces] = useState([])
+    let provinceSelect: String
+    const [districts, setDistricts] = useState([])
+    let districtsSelect: String
+    const [communes, setCommunes] = useState([])
+    let communesSelect: String
+
+    useEffect(() => {
+        const fetAPIProvince = async () => {
+            axios.get(`https://api.mysupership.vn/v1/partner/areas/province`).then(res => {
+
+                setProvinces(res.data.results)
+            })
+        }
+        fetAPIProvince()
+    }, [])
+
+
     const handleChangeMethoPay = (event: React.ChangeEvent<HTMLInputElement>) => {
-      console.log(event.target.value)
-      setSelectedValue(event.target.value);
+        console.log(event.target.value)
+        setSelectedValue(event.target.value);
     }
-  
+
     const controlProps = (item: string) => ({
-      checked: selectedValue === item,
-      onChange: handleChangeMethoPay,
-      value: item,
-      name: 'color-radio-button-demo',
-      inputProps: { 'aria-label': item },
+        checked: selectedValue === item,
+        onChange: handleChangeMethoPay,
+        value: item,
+        name: 'color-radio-button-demo',
+        inputProps: { 'aria-label': item },
     });
 
+    const handleChangeProvince = async (e) => {
+        if (e.target.value == '0') {
+            setDistricts([])
+            setCommunes([])
+        } else {
+            await axios.get(`https://api.mysupership.vn/v1/partner/areas/district?province=${e.target.value}`).then(res => {
+                console.log(districtRef.current)
+                setDistricts(res.data.results)
+            })
+        }
+        provinceSelect = e.target.value
+    }
+
+    const handleChangeDistrict = async (e) => {
+        if (e.target.value == '0') {
+            setCommunes([])
+        } else {
+            await axios.get(`https://api.mysupership.vn/v1/partner/areas/commune?district=${e.target.value}`).then(res => {
+                setCommunes(res.data.results)
+            })
+        }
+        districtsSelect = e.target.value
+    }
+
     return (
-        <div className='p-4'>
+        <div className={'p-4 relative'}>
+            <div className={style.line}></div>
             <div className='flex justify-between items-center pt-10'>
                 <div className='text-3xl font-bold'>Thông tin vận chuyển</div>
-                <div>Bạn đã có tài khoản? <span className='cursor-pointer text-[#2f5acf] font-medium'>Đăng nhập ngay</span></div>
+                <div className='text-base w-2/6'>Bạn đã có tài khoản? <span className='cursor-pointer text-[#2f5acf] font-medium'>Đăng nhập ngay</span></div>
             </div>
             <Container className='pt-10'>
                 <Grid container spacing={3}>
@@ -82,67 +120,70 @@ function InfoUserToPay(props) {
                     <Grid item sm={4}>
                         <TextField
                             fullWidth
-                            label="Gender"
-                            name="gender"
+                            label="Tỉnh/TP"
+                            name="province"
                             required
                             size='medium'
                             variant="outlined"
                             select
+                            onChange={handleChangeProvince}
+                            defaultValue={"0"}
                             SelectProps={{ native: true }}
                         >
                             <option value="0">
-                                --Select gender--
+                                --Chọn Tỉnh/TP--
                             </option>
-                            <option value="male">
-                                Male
-                            </option>
-                            <option value="female">
-                                Female
-                            </option>
+                            {provinces.map((province, index) => (
+                                <option key={index} value={province.code}>
+                                    {province.name}
+                                </option>
+                            ))}
+
                         </TextField>
                     </Grid>
                     <Grid item sm={4}>
                         <TextField
                             fullWidth
-                            label="Gender"
-                            name="gender"
+                            label="Quận/Huyện"
+                            name="district"
                             required
                             size='medium'
                             variant="outlined"
                             select
+                            ref={districtRef}
+                            onChange={handleChangeDistrict}
                             SelectProps={{ native: true }}
                         >
                             <option value="0">
-                                --Select gender--
+                                --Chọn Quận/Huyện--
                             </option>
-                            <option value="male">
-                                Male
-                            </option>
-                            <option value="female">
-                                Female
-                            </option>
+                            {districts.map((district, index) => (
+                                <option key={index} value={district.code}>
+                                    {district.name}
+                                </option>
+                            ))}
                         </TextField>
                     </Grid>
                     <Grid item sm={4}>
                         <TextField
                             fullWidth
-                            label="Gender"
-                            name="gender"
+                            label="Xã/Phường"
+                            name="commune"
                             required
                             size='medium'
                             variant="outlined"
                             select
+                            ref={communeRef}
                             SelectProps={{ native: true }}
                         >
                             <option value="0">
-                                --Select gender--
+                                --Chọn Xã/Phường--
                             </option>
-                            <option value="male">
-                                Male
-                            </option>
-                            <option value="female">
-                                Female
-                            </option>
+                            {communes.map((commune, index) => (
+                                <option key={index} value={commune.code}>
+                                    {commune.name}
+                                </option>
+                            ))}
                         </TextField>
                     </Grid>
                     <Grid item sm={12}>
@@ -235,7 +276,9 @@ function InfoUserToPay(props) {
                     </label>
                 </div>
                 <div className='mb-6'>Nếu bạn không hài lòng với sản phẩm của chúng tôi? Bạn hoàn toàn có thể trả lại sản phẩm. Tìm hiểu thêm
-                    <span className='cursor-pointer font-bold'> tại đây.</span>
+                    <Link href={'/cart/policy'} passHref>
+                        <span className='cursor-pointer font-bold'> tại đây.</span>
+                    </Link>
                 </div>
                 <div className={'transition duration-300 ease-out cursor-pointer py-4 flex justify-center w-ful bg-black text-white rounded-lg' + ' ' + style.btnPay}>
                     Thanh toán 1895k (Momo)

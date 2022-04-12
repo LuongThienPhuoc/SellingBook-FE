@@ -29,8 +29,11 @@ const MyApp = ({ Component, pageProps }) => {
           }
         }
       ).then(res => {
+        console.log(res)
+        if (res.data.status == 1) {
+          dispatch(userLogin(res.data))
+        }
         setIsLoading(true)
-        dispatch(userLogin(res.data))
       })
     }
     fetApi()
