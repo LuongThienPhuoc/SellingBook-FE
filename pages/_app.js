@@ -21,11 +21,13 @@ const MyApp = ({ Component, pageProps }) => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch()
   useEffect(() => {
+    const token = getAccessToken() ? getAccessToken : 'null'
+
     const fetApi = async () => {
       await axios.post(URL.URL_REFRESH,
         {
           headers: {
-            'authorization': `Basic ${getAccessToken()}`
+            'authorization': `Basic ${token}`
           }
         }
       ).then(res => {

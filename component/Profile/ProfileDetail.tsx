@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import { Grid, Avatar} from '@mui/material';
+import React, { useState } from 'react';
+import { Grid, Avatar } from '@mui/material';
 import { deepOrange } from '@mui/material/colors';
 import { AiOutlineMail, AiFillEdit } from 'react-icons/ai'
 import { BsTelephone, BsGenderAmbiguous } from 'react-icons/bs'
@@ -9,10 +9,24 @@ import { HiOutlineLocationMarker } from 'react-icons/hi'
 import axios from 'axios';
 import { showAlertSuccess, showAlertError } from '../../redux/actions/alertAction';
 import { useDispatch } from 'react-redux';
+import dynamic from 'next/dynamic';
+
+
+const ModalEditUser = dynamic(() => import('../../component/Profile/ModalEditUser'))
+
 
 const ProfileDetail = (props) => {
     const dispatch = useDispatch()
     const [avatar, setAvatar] = useState('');
+    const [isShow, setIsShow] = useState(false)
+
+    const handleChangeHideModal = () => {
+        setIsShow(false);
+    }
+    const handleChangeShowModal = () => {
+        setIsShow(true);
+    }
+
 
     const handleChangeImg = (fileChangeEvent) => {
         const file = fileChangeEvent.target.files[0];
@@ -36,6 +50,9 @@ const ProfileDetail = (props) => {
 
     return (
         <div className='rounded-lg ' style={{ boxShadow: 'rgb(0 0 0 / 60%) 0px 3px 8px', padding: '36px' }}>
+            {isShow ? <ModalEditUser handleChangeHideModal={handleChangeHideModal}></ModalEditUser> : (
+                null
+            )}
             <Grid container>
                 <Grid item md={5} sm={12} xs={12}>
                     <div className='items-end ' style={{ display: 'flex' }}>
@@ -92,7 +109,7 @@ const ProfileDetail = (props) => {
                             </div>
                         </div>
                         <div>
-                            <AiFillEdit className='text-2xl cursor-pointer hover:opacity-80'></AiFillEdit>
+                            <AiFillEdit onClick={handleChangeShowModal} className='text-2xl cursor-pointer hover:opacity-80'></AiFillEdit>
                         </div>
                     </div>
                 </Grid>

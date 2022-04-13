@@ -23,6 +23,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import Badge from '@mui/material/Badge';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
+
 const pages = [
     {
         id: 'home',
@@ -84,6 +85,8 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 const NavBar = (props) => {
     const dispatch = useDispatch();
     const isLogin = useSelector((state: RootStateOrAny) => state.userReducer.isLogin)
+    const infoUser = useSelector((state: RootStateOrAny) => state.userReducer.infoUser)
+    console.log(infoUser)
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
     const [anchoElMess, setAnchorElMess] = React.useState<null | HTMLElement>(null);
@@ -126,7 +129,7 @@ const NavBar = (props) => {
             return (
                 <Box sx={{ flexGrow: 0 }}>
                     <Tooltip title="Open cart">
-                        <IconButton  onClick={handleOpenCartMenu} size="large" aria-label="show 4 new mails" color="inherit">
+                        <IconButton onClick={handleOpenCartMenu} size="large" aria-label="show 4 new mails" color="inherit">
                             <Badge badgeContent={4} color="error">
                                 <ShoppingCartIcon />
                             </Badge>
@@ -149,7 +152,8 @@ const NavBar = (props) => {
 
                     <Tooltip title="Open settings">
                         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                            <Avatar alt="Remy Sharp" src="https://instagram.fsgn5-8.fna.fbcdn.net/v/t51.2885-15/276143481_2785923471713221_1336536822646766565_n.jpg?stp=dst-jpg_e35_p750x750_sh0.08&_nc_ht=instagram.fsgn5-8.fna.fbcdn.net&_nc_cat=1&_nc_ohc=swKNiEdqAhUAX_QoxOe&tn=Oj8jyi_U2Cty6KTJ&edm=ALQROFkBAAAA&ccb=7-4&ig_cache_key=Mjc5NzA4Mzc1NTI0MjQyNTE0NQ%3D%3D.2-ccb7-4&oh=00_AT_vIMFeCxyoyJLpGPjHHiSJoDtpjAiU3dxlWLuvLa7uVw&oe=62499064&_nc_sid=30a2ef" />
+                            <Avatar alt="Remy Sharp" src={infoUser.avatar ? infoUser.avatar : ''} />
+                            <div className='text-base font-medium text-white ml-[5px] md:hidden lg:block'>Lương Thiện Phước</div>
                         </IconButton>
                     </Tooltip>
                     {/* Cart */}
@@ -169,14 +173,14 @@ const NavBar = (props) => {
 
                         className='cart-navbar'
                         open={Boolean(anchoElCart)}
-                        style={{borderRadius:'20px'}}
+                        style={{ borderRadius: '20px' }}
                         onClose={handleCloseCartMenu}
                     >
-                        <div style={{ width: '300px', borderRadius:'30px' }}  onClick={handleCloseCartMenu}>
+                        <div style={{ width: '300px', borderRadius: '30px' }} onClick={handleCloseCartMenu}>
                             <div className={style.headerCart} >
-                                <span style={{fontSize:'14px', lineHeight:'1.5',fontWeight:'500'}}>2 sản phẩm</span>
+                                <span style={{ fontSize: '14px', lineHeight: '1.5', fontWeight: '500' }}>2 sản phẩm</span>
                                 <Link href={'/cart'} passHref>
-                                    <a style={{textDecoration:'none', fontSize:'14px',fontWeight:'500',color:'#2f5acf',lineHeight:'1.5'}}>Xem tất cả</a>
+                                    <a style={{ textDecoration: 'none', fontSize: '14px', fontWeight: '500', color: '#2f5acf', lineHeight: '1.5' }}>Xem tất cả</a>
                                 </Link>
                             </div>
                             <ul style={{ maxHeight: '400px' }}>
@@ -205,7 +209,7 @@ const NavBar = (props) => {
                         open={Boolean(anchoElMess)}
                         onClose={handleCloseMessMenu}
                     >
-                        <div  onClick={handleCloseMessMenu}>
+                        <div onClick={handleCloseMessMenu}>
                             <ul>
                                 <li>Hello</li>
                                 <li>Hello</li>
@@ -233,7 +237,7 @@ const NavBar = (props) => {
                         onClose={handleCloseUserMenu}
                     >
                         <MenuItem onClick={handleCloseUserMenu}>
-                            <Typography textAlign="center" fontWeight="bold">Lương Thiện Phước</Typography>
+                            <Typography textAlign="center" fontWeight="bold">{infoUser.name ? infoUser.name : 'Chưa có tên'}</Typography>
                         </MenuItem>
                         <MenuItem onClick={handleCloseUserMenu}>
                             <Typography textAlign="center">Profile</Typography>
@@ -284,7 +288,6 @@ const NavBar = (props) => {
                             style={{ borderRadius: '50%', marginRight: '5px' }}
                             className="d-inline-block align-top"></img>
                     </Typography>
-
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                         <IconButton
                             size="large"
@@ -323,6 +326,13 @@ const NavBar = (props) => {
                                     </Typography>
                                 </MenuItem>
                             ))}
+                            <MenuItem onClick={handleCloseNavMenu}>
+                                <Typography textAlign="center">
+                                    <Link href={'/admin/dashboard'} passHref>
+                                        <Button style={{ color: 'black', fontWeight: '500' }}>Thống kê</Button>
+                                    </Link>
+                                </Typography>
+                            </MenuItem>
                         </Menu>
                     </Box>
                     <Typography
@@ -349,9 +359,14 @@ const NavBar = (props) => {
                                 </Link>
                             </div>
                         ))}
+                        <div style={{ position: 'relative' }}>
+                            <Link href={'/admin/dashboard'} passHref>
+                                <Button className={props.active === 'admin' ? style.activeItem + ' ' + style.navItemLine : style.navItemLine} style={{ color: 'white', fontWeight: '600' }}>Thống kê</Button>
+                            </Link>
+                        </div>
                     </Box>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        <Search  style={{ backgroundColor: 'white', color: '#979797' }}>
+                        <Search style={{ backgroundColor: 'white', color: '#979797' }}>
                             <SearchIconWrapper>
                                 <SearchIcon />
                             </SearchIconWrapper>

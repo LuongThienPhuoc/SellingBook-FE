@@ -21,11 +21,13 @@ function Login(props) {
     const dispatch = useDispatch()
     const isLogin = useSelector((state: RootStateOrAny) => state.userReducer.isLogin)
     const router = useRouter()
+
     const [accountName, setAccountName] = useState({
         value: '',
         isError: false,
         helperText: ''
     })
+
     const [pass, setPass] = useState({
         value: '',
         isError: false,

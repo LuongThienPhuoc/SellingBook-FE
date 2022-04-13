@@ -15,7 +15,7 @@ const userSchema  = new Schema({
     mail: String,
     avatar: {
         type:String,
-        default: 'https://res.cloudinary.com/databaseimg/image/upload/v1637675049/nrqdelcxjrjotgepjqi7.jpg',
+        default: 'https://res.cloudinary.com/databaseimg/image/upload/v1634092031/samples/people/bicycle.jpg',
     },
     gem: Number,
     birthday: Date,
