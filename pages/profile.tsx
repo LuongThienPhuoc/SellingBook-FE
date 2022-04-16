@@ -5,7 +5,8 @@ import Head from 'next/head';
 import { Container, Grid, Divider } from '@mui/material';
 import { BsReverseLayoutTextWindowReverse, BsBook, BsBookmarkStar } from 'react-icons/bs'
 import style from '../styles/Profile.module.css'
-
+import { useRouter } from 'next/router';
+import { useSelector, RootStateOrAny } from 'react-redux';
 
 const Layout = dynamic(() => import('../component/Layout'),
     {
@@ -21,11 +22,16 @@ const ProfileDetail = dynamic(() => import('../component/Profile/ProfileDetail')
 
 function Profile(props) {
     const [option, setOption] = useState('Danh sách đơn hàng')
-
+    const router = useRouter()
+    const isLogin = useSelector((state: RootStateOrAny) => state.userReducer.isLogin)
+    
     useEffect(() => {
         setOption('Danh sách đơn hàng')
     }, [])
 
+    useEffect(() => {
+        if (!isLogin) router.push('/login')
+    }, [isLogin])
     const handleClickOption = (e) => {
         e.preventDefault()
         setOption(e.target.innerText)

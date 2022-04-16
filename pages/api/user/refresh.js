@@ -11,20 +11,29 @@ const Refresh = async (req, res, data) => {
         case 'POST':
             try {
                 console.log(data)
+                console.log(data['0']);
                 console.log(data.username)
                 const username = data.username;
-                await User.findOne({ username }).then(result => {
-                    if (result) {
-                        res.status(200).send(JSON.stringify({
-                            success: true,
-                            status: 1,
-                            message: 'Refresh thành công',
-                            data: result,
-                            token: JWTAuthToken({ username })
-                        }))
-                    }
-                })
-
+                if(username) {
+                    await User.findOne({ username }).then(result => {
+                        if (result) {
+                            res.status(200).send(JSON.stringify({
+                                success: true,
+                                status: 1,
+                                message: 'Refresh thành công',
+                                data: result,
+                                token: JWTAuthToken({ username: username })
+                            }))
+                        }
+                    })
+                } else {
+                    res.status(200).send(JSON.stringify({
+                        success: false,
+                        status: 401,
+                        refresh: 'Token hết hạn sử dụng'
+                    }))
+                }
+                
             }
             catch (error) {
                 console.log("error", error)

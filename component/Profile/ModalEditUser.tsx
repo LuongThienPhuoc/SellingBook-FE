@@ -5,17 +5,24 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import axios from 'axios';
-
+import * as URL from '../../services/api/config'
+import { showAlertSuccess, showAlertError } from '../../redux/actions/alertAction';
+import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
+import { updateInfoUser } from '../../redux/actions/userAction';
+import { getAccessToken, setAccessToken } from '../../utils/cookies'
 function ModalEditUser(props) {
+    const dispatch = useDispatch()
     const [provinces, setProvinces] = useState([])
-    let provinceSelect: String
+    const [provinceSelect, setProvinceSelect] = useState<String | null>('0')
     const [districts, setDistricts] = useState([])
-    let districtsSelect: String
+    const [districtSelect, setDistrictSelect] = useState<String | null>('0')
     const [communes, setCommunes] = useState([])
-    let communesSelect: String
-    const districtRef = useRef()
-    const communeRef = useRef()
-    const [value, setValue] = useState<Date | null>(null);
+    const [communeSelect, setCommuneSelect] = useState<String | null>('0')
+    const [birthday, setBirthday] = useState<Date | null>(null);
+    const [name, setName] = useState<String | null>(null)
+    const [phone, setPhone] = useState<String | null>(null)
+    const [gender, setGender] = useState<String | null>('0')
+
     useEffect(() => {
         const fetAPIProvince = async () => {
             axios.get(`https://api.mysupership.vn/v1/partner/areas/province`).then(res => {
@@ -33,8 +40,37 @@ function ModalEditUser(props) {
         e.stopPropagation()
     }
 
-    const handleSave = () => {
-        handleHide()
+    const handleSave = async () => {
+        console.log(name)
+        console.log(phone)
+        console.log(gender)
+        console.log(birthday)
+        console.log(provinceSelect)
+        console.log(districtSelect)
+        console.log(communeSelect)
+        const data = {
+            name: name,
+            phone: phone,
+            gender: gender,
+            birthday: birthday,
+            province: provinceSelect,
+            district: districtSelect,
+            commune: communeSelect,
+            token: getAccessToken()
+        }
+        await axios.post(URL.URL_UPDATE_INFO_USER, { ...data, token: getAccessToken() }).then(res => {
+            if (res.data.status == 1) {
+                dispatch(updateInfoUser(res.data.data))
+                dispatch(showAlertSuccess(res.data.message))
+                setAccessToken(res.data.token)
+            } else {
+                dispatch(showAlertError(res.data.message))
+            }
+            handleHide()
+        }).catch(err => {
+            dispatch(showAlertError('Lỗi hệ thống'))
+            handleHide()
+        })
     }
 
     const handleChangeProvince = async (e) => {
@@ -43,11 +79,13 @@ function ModalEditUser(props) {
             setCommunes([])
         } else {
             await axios.get(`https://api.mysupership.vn/v1/partner/areas/district?province=${e.target.value}`).then(res => {
-                console.log(districtRef.current)
                 setDistricts(res.data.results)
             })
         }
-        provinceSelect = e.target.value
+
+        setProvinceSelect(e.target.value)
+        setDistrictSelect('0')
+        setCommuneSelect('0')
     }
 
     const handleChangeDistrict = async (e) => {
@@ -58,7 +96,16 @@ function ModalEditUser(props) {
                 setCommunes(res.data.results)
             })
         }
-        districtsSelect = e.target.value
+        console.log(e.target)
+
+        console.log(e.target.value)
+        setDistrictSelect(e.target.value)
+        setCommuneSelect('0')
+    }
+
+    const handleChangeCommune = (e) => {
+        console.log(e.target)
+        setCommuneSelect(e.target.value)
     }
 
 
@@ -66,7 +113,7 @@ function ModalEditUser(props) {
         <div onClick={handleHide} className='profile-modal bg-[#00000040] fixed top-0 left-0 bottom-0 right-0 z-50 flex items-center justify-center'>
             <div
                 onClick={stopPropagation}
-                className='bg-white height-auto w-8/12 rounded-md shadow-md p-10 min-w-[500px] relative'
+                className='bg-white height-auto min-h-8/12 w-8/12 rounded-md shadow-md p-10 min-w-[500px] relative'
             >
                 <div onClick={handleHide} className='absolute right-0 top-0 m-3 hover:text-[#2BBCBA] cursor-pointer ease-in-out duration-100 transition hover:scale-110 '>
                     <BiExit className='text-2xl'></BiExit>
@@ -79,7 +126,16 @@ function ModalEditUser(props) {
                         Họ tên
                     </Grid>
                     <Grid xs={6}>
-                        <TextField value={'Lương Thiện Phước'} fullWidth id="outlined-basic" label='Họ tên' variant="outlined" size='small' />
+                        <TextField value={name} onChange={(e) => { setName(e.target.value) }} fullWidth id="outlined-basic" label='Họ tên' variant="outlined" size='small' />
+                    </Grid>
+                </Grid>
+                <Divider className='h-[1px] w-full text-slate-300 mb-3'></Divider>
+                <Grid className='my-3 mx-0 pr-4' container spacing={2}>
+                    <Grid className='font-medium text-base' xs={6}>
+                        Số điện thoại
+                    </Grid>
+                    <Grid xs={6}>
+                        <TextField value={phone} onChange={(e) => { setPhone(e.target.value) }} type='phone' fullWidth id="outlined-basic" label='Họ tên' variant="outlined" size='small' />
                     </Grid>
                 </Grid>
                 <Divider className='h-[1px] w-full text-slate-300 mb-3'></Divider>
@@ -91,10 +147,9 @@ function ModalEditUser(props) {
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <MobileDatePicker
                                 label="Basic example"
-                                value={value}
+                                value={birthday}
                                 onChange={(newValue) => {
-                                    console.log(newValue)
-                                    setValue(newValue);
+                                    setBirthday(newValue);
                                 }}
                                 renderInput={(params) => <TextField size='small' fullWidth {...params} />}
                             />
@@ -112,9 +167,13 @@ function ModalEditUser(props) {
                             label="Giới tính"
                             name="gender"
                             required
+                            value={gender}
                             size='small'
                             variant="outlined"
                             select
+                            onChange={(e) => {
+                                setGender(e.target.value)
+                            }}
                             defaultValue={"0"}
                             SelectProps={{ native: true }}
                         >
@@ -145,7 +204,7 @@ function ModalEditUser(props) {
                             select
                             size='small'
                             onChange={handleChangeProvince}
-                            defaultValue={"0"}
+                            defaultValue={provinceSelect}
                             SelectProps={{ native: true }}
                         >
                             <option value="0">
@@ -175,8 +234,8 @@ function ModalEditUser(props) {
                             size='small'
                             variant="outlined"
                             select
-                            ref={districtRef}
-                            onChange={handleChangeDistrict}
+                            defaultValue={districtSelect}
+                            onClick={handleChangeDistrict}
                             SelectProps={{ native: true }}
                         >
                             <option value="0">
@@ -196,7 +255,7 @@ function ModalEditUser(props) {
                         Xã
                     </Grid>
                     <Grid xs={6}>
-                    <TextField
+                        <TextField
                             fullWidth
                             label="Xã/Phường"
                             name="commune"
@@ -204,7 +263,8 @@ function ModalEditUser(props) {
                             size='small'
                             variant="outlined"
                             select
-                            ref={communeRef}
+                            onChange={handleChangeCommune}
+                            defaultValue={communeSelect}
                             SelectProps={{ native: true }}
                         >
                             <option value="0">

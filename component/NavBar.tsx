@@ -22,7 +22,7 @@ import { userLogout } from '../redux/actions/userAction';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Badge from '@mui/material/Badge';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-
+import { setAccessToken } from '../utils/cookies';
 
 const pages = [
     {
@@ -121,6 +121,7 @@ const NavBar = (props) => {
     const handleClickLogout = () => {
         setAnchorElUser(null);
         dispatch(userLogout())
+        setAccessToken(null)
     }
 
 
@@ -240,7 +241,9 @@ const NavBar = (props) => {
                             <Typography textAlign="center" fontWeight="bold">{infoUser.name ? infoUser.name : 'Chưa có tên'}</Typography>
                         </MenuItem>
                         <MenuItem onClick={handleCloseUserMenu}>
-                            <Typography textAlign="center">Profile</Typography>
+                            <Link href='/profile' passHref>
+                                <Typography textAlign="center">Profile</Typography>
+                            </Link>
                         </MenuItem>
                         <Divider light />
                         <MenuItem onClick={handleClickLogout}>

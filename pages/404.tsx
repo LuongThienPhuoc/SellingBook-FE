@@ -19,7 +19,6 @@ function NotFound(props) {
         setTimeout(() => {
             router.push('/')
         }, 1000)
-
     }, [])
 
     return (

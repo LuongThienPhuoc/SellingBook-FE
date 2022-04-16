@@ -9,7 +9,7 @@ export const JWTAuthToken = (data) => {
     return (jwt.sign(
         { ...data },
         key,
-        { expiresIn: '300s' }
+        { expiresIn: '1h' }
     ))
 }
 
@@ -34,6 +34,7 @@ export const AuthMiddleware = (refresh) => {
     return async (req, res) => {
         try {
             const authorizationHeader = req.headers.authorization;
+            console.log(authorizationHeader)
             //const token = authorizationHeader?.split(" ")[1];
             var token;
             var name = '_jwt' + "=";

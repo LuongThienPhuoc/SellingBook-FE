@@ -11,7 +11,14 @@ const userSchema  = new Schema({
     },
     name: String,
     phone: String,
-    role: String,
+    gender: String,
+    province: String,
+    district: String,
+    commune: String,
+    role: {
+        type: String,
+        default: 'user'
+    },
     mail: String,
     avatar: {
         type:String,
