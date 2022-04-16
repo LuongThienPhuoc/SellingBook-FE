@@ -32,6 +32,8 @@ function Profile(props) {
     useEffect(() => {
         if (!isLogin) router.push('/login')
     }, [isLogin])
+
+    
     const handleClickOption = (e) => {
         e.preventDefault()
         setOption(e.target.innerText)

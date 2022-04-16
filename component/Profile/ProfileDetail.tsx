@@ -22,12 +22,12 @@ const ProfileDetail = (props) => {
     const infoUser = useSelector((state: RootStateOrAny) => state.userReducer.infoUser)
     const [isShow, setIsShow] = useState(false)
     const [address, setAddress] = useState('')
-    const router = useRouter()
    
     
+    
     useEffect(() => {
-
         const fetchApi = async () => {
+            setAddress('');
             await axios.get(`https://api.mysupership.vn/v1/partner/areas/province`).then(res => {
                 res.data.results.forEach(value => {
                     if (value.code === infoUser.province) {
@@ -52,7 +52,7 @@ const ProfileDetail = (props) => {
             })
         }
         fetchApi()
-    }, [infoUser,])
+    }, [infoUser])
 
 
     const handleChangeHideModal = () => {

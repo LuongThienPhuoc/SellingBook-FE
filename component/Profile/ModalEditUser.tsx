@@ -11,23 +11,35 @@ import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
 import { updateInfoUser } from '../../redux/actions/userAction';
 import { getAccessToken, setAccessToken } from '../../utils/cookies'
 function ModalEditUser(props) {
+    const infoUser = useSelector((state: RootStateOrAny) => state.userReducer.infoUser)
     const dispatch = useDispatch()
     const [provinces, setProvinces] = useState([])
-    const [provinceSelect, setProvinceSelect] = useState<String | null>('0')
+    const [provinceSelect, setProvinceSelect] = useState<String | null>(infoUser.province ? infoUser.province : '0')
     const [districts, setDistricts] = useState([])
-    const [districtSelect, setDistrictSelect] = useState<String | null>('0')
+    const [districtSelect, setDistrictSelect] = useState<String | null>(infoUser.district ? infoUser.district : '0')
     const [communes, setCommunes] = useState([])
-    const [communeSelect, setCommuneSelect] = useState<String | null>('0')
-    const [birthday, setBirthday] = useState<Date | null>(null);
-    const [name, setName] = useState<String | null>(null)
-    const [phone, setPhone] = useState<String | null>(null)
-    const [gender, setGender] = useState<String | null>('0')
+    const [communeSelect, setCommuneSelect] = useState<String | null>(infoUser.commune ? infoUser.commune : '0')
+    const [birthday, setBirthday] = useState<Date | null>(infoUser.birthday ? infoUser.birthday : new Date());
+    const [name, setName] = useState<String | null>(infoUser.name ? infoUser.name : '')
+    const [phone, setPhone] = useState<String | null>(infoUser.phone ? infoUser.phone : '')
+    const [gender, setGender] = useState<String | null>(infoUser.gender ? infoUser.gender : '0')
+
 
     useEffect(() => {
         const fetAPIProvince = async () => {
             axios.get(`https://api.mysupership.vn/v1/partner/areas/province`).then(res => {
                 setProvinces(res.data.results)
             })
+            if (provinceSelect !== '0') {
+                await axios.get(`https://api.mysupership.vn/v1/partner/areas/district?province=${provinceSelect}`).then(res => {
+                    setDistricts(res.data.results)
+                })
+            }
+            if (districtSelect !== '0') {
+                await axios.get(`https://api.mysupership.vn/v1/partner/areas/commune?district=${districtSelect}`).then(res => {
+                    setCommunes(res.data.results)
+                })
+            }
         }
         fetAPIProvince()
     }, [])
@@ -41,13 +53,6 @@ function ModalEditUser(props) {
     }
 
     const handleSave = async () => {
-        console.log(name)
-        console.log(phone)
-        console.log(gender)
-        console.log(birthday)
-        console.log(provinceSelect)
-        console.log(districtSelect)
-        console.log(communeSelect)
         const data = {
             name: name,
             phone: phone,
@@ -74,6 +79,7 @@ function ModalEditUser(props) {
     }
 
     const handleChangeProvince = async (e) => {
+        setProvinceSelect(e.target.value)
         if (e.target.value == '0') {
             setDistricts([])
             setCommunes([])
@@ -82,13 +88,12 @@ function ModalEditUser(props) {
                 setDistricts(res.data.results)
             })
         }
-
-        setProvinceSelect(e.target.value)
         setDistrictSelect('0')
         setCommuneSelect('0')
     }
 
     const handleChangeDistrict = async (e) => {
+        setDistrictSelect(e.target.value)
         if (e.target.value == '0') {
             setCommunes([])
         } else {
@@ -96,17 +101,15 @@ function ModalEditUser(props) {
                 setCommunes(res.data.results)
             })
         }
-        console.log(e.target)
-
-        console.log(e.target.value)
-        setDistrictSelect(e.target.value)
         setCommuneSelect('0')
     }
 
     const handleChangeCommune = (e) => {
-        console.log(e.target)
         setCommuneSelect(e.target.value)
     }
+
+
+
 
 
     return (
@@ -200,11 +203,12 @@ function ModalEditUser(props) {
                             label="Tỉnh/TP"
                             name="province"
                             required
+                            value={provinceSelect}
                             variant="outlined"
                             select
                             size='small'
                             onChange={handleChangeProvince}
-                            defaultValue={provinceSelect}
+                            defaultValue={'0'}
                             SelectProps={{ native: true }}
                         >
                             <option value="0">
@@ -227,15 +231,27 @@ function ModalEditUser(props) {
                     </Grid>
                     <Grid xs={6}>
                         <TextField
+                            // fullWidth
+                            // label="Tỉnh/TP"
+                            // name="province"
+                            // required
+                            // value={provinceSelect}
+                            // variant="outlined"
+                            // select
+                            // size='small'
+                            // onChange={handleChangeProvince}
+                            // defaultValue={'0'}
+                            // SelectProps={{ native: true }}
                             fullWidth
                             label="Quận/Huyện"
                             name="district"
                             required
-                            size='small'
-                            variant="outlined"
+                            value={districtSelect}
                             select
-                            defaultValue={districtSelect}
-                            onClick={handleChangeDistrict}
+                            variant="outlined"
+                            size='small'
+                            defaultValue={'0'}
+                            onChange={handleChangeDistrict}
                             SelectProps={{ native: true }}
                         >
                             <option value="0">
@@ -260,11 +276,12 @@ function ModalEditUser(props) {
                             label="Xã/Phường"
                             name="commune"
                             required
+                            value={communeSelect}
                             size='small'
                             variant="outlined"
                             select
                             onChange={handleChangeCommune}
-                            defaultValue={communeSelect}
+                            defaultValue={'0'}
                             SelectProps={{ native: true }}
                         >
                             <option value="0">
