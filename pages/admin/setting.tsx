@@ -15,7 +15,7 @@ const Layout = dynamic(() => import('../../component/Layout'),
     }
 )
 
-function dashboard(props) {
+function product(props) {
     const [option, setOption] = useState('Danh sách đơn hàng')
     const handleClickOption = (e) => {
         e.preventDefault()
@@ -25,16 +25,16 @@ function dashboard(props) {
     return (
         <Layout>
             <Head>
-                <title>Dashboard</title>
+                <title>Cài đặt</title>
             </Head>
             <Container maxWidth='lg'>
                 <Grid className='mb-16' container spacing={3}>
-                    <Grid className='mt-16 md:hidden 900px:block' item sm={0} md={3}>
-                        <Navigation option='dashboard'></Navigation>
+                    <Grid className='mt-16 md:hidden 900px:block' item md={3}>
+                        <Navigation option='setting'></Navigation>
                     </Grid>
-                    <Grid className='mt-16' item sm={12} md={9}>
+                    <Grid className='mt-16' item md={9}>
                         <div style={{ boxShadow: 'rgb(0 0 0 / 60%) 0px 3px 8px', padding: '25px' }} className='rounded-lg '>
-                            Dashboard
+                            Setting
                         </div>
                     </Grid>
                 </Grid>
@@ -43,4 +43,4 @@ function dashboard(props) {
     );
 }
 
-export default dashboard;
+export default product;
