@@ -29,7 +29,7 @@ function dashboard(props) {
             </Head>
             <Container maxWidth='lg'>
                 <Grid className='mb-16' container spacing={3}>
-                    <Grid className='mt-16 md:hidden 900px:block' item sm={0} md={3}>
+                    <Grid className='mt-16 min:hidden 900px:block' item sm={0} md={3}>
                         <Navigation option='dashboard'></Navigation>
                     </Grid>
                     <Grid className='mt-16' item sm={12} md={9}>

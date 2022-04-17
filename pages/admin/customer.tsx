@@ -29,7 +29,7 @@ function product(props) {
             </Head>
             <Container maxWidth='lg'>
                 <Grid className='mb-16' container spacing={3}>
-                    <Grid className='mt-16 md:hidden 900px:block' item md={3}>
+                    <Grid className='mt-16 min:hidden 900px:block' item md={3}>
                         <Navigation option='customer'></Navigation>
                     </Grid>
                     <Grid className='mt-16' item md={9}>
