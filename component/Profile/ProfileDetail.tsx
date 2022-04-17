@@ -13,7 +13,6 @@ import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
 import { getAccessToken, setAccessToken } from '../../utils/cookies'
 import { updateInfoUser } from '../../redux/actions/userAction';
 import * as URL from '../../services/api/config'
-import { useRouter } from 'next/router';
 
 const ModalEditUser = dynamic(() => import('../../component/Profile/ModalEditUser'))
 
