@@ -9,7 +9,7 @@ export const JWTAuthToken = (data) => {
     return (jwt.sign(
         { ...data },
         key,
-        { expiresIn: '300s' }
+        { expiresIn: '1h' }
     ))
 }
 
@@ -34,13 +34,12 @@ export const AuthMiddleware = (refresh) => {
     return async (req, res) => {
         try {
             const authorizationHeader = req.headers.authorization;
+            console.log(authorizationHeader)
             //const token = authorizationHeader?.split(" ")[1];
             var token;
             var name = '_jwt' + "=";
-            console.log("Đến đây rồi 1");
-            console.log("req.headers", req.headers);
-            if(typeof req.headers.cookie == 'undefined'){
-                res.status(200).send({success: true})
+            if (typeof req.headers.cookie == 'undefined') {
+                res.status(200).send({ success: 'true' })
             }
             var ca = req.headers.cookie.split(';');
             console.log("Đến đây rồi");
@@ -50,7 +49,6 @@ export const AuthMiddleware = (refresh) => {
                 if (c.indexOf(name) == 0) token = c.substring(name.length, c.length);
             }
             console.log(token)
-
             jwt.verify(token, key, (err, data) => {
                 if (err) {
                     res.status(200).send(JSON.stringify({

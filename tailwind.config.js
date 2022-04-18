@@ -5,15 +5,27 @@ module.exports = {
     "./component/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-      fontFamily:{
-          'primary': ['Nunito', 'sans-serif']
-      },
-      colors: {
-        'primary': '#2BBCBA'
-      },
-      extend: {
-          
-      },  
+    screens: {
+      'min': '200px',
+      'sm': '640px',
+      'md': '768px',
+      'lg': '1024px',
+      'xl': '1280px',
+      '2xl': '1536px',
+      '900px': '900px',
+      // => @media (min-width: 900px) { ... }
+      'desktop': '1280px',
+      // => @media (min-width: 1280px) { ... }
+    },
+    fontFamily:{
+      'primary': ['Nunito', 'sans-serif']
+    },
+    colors: {
+      'primary': '#2BBCBA'
+    },
+    extend: {
+        
+    },  
   },
   plugins: [],
 }

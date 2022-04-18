@@ -8,3 +8,7 @@ export const URL_CONFIRM_CODE = URL_SYSTEM_V1 + '/user/confirm-code'
 export const URL_REFRESH = URL_SYSTEM_V1 + '/user/refresh'
 export const URL_LOGIN_WITH_GOOGLE = URL_SYSTEM_V1 + '/user/login-with-google'
 export const URL_REGISTER_WITH_GOOGLE = URL_SYSTEM_V1 + '/user/register-with-google'
+
+
+export const URL_UPDATE_AVATAR = URL_SYSTEM_V1 + '/user/update-avatar'
+export const URL_UPDATE_INFO_USER = URL_SYSTEM_V1 + '/user/update-info-user'

@@ -6,7 +6,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 
 
 const Layout = dynamic(() =>
-    import('../component/Layout'),
+    import('../../component/Layout'),
     {
         loading: () => <LinearProgress></LinearProgress>
     }
@@ -17,16 +17,14 @@ function NotFound(props) {
     useEffect(() => {
         console.log(router)
         setTimeout(() => {
-            router.push('/')
+            router.push('/admin/dashboard')
         }, 1000)
     }, [])
 
     return (
         <Layout>
-            Không tìm thấy gì
-            <Link href={'/'} passHref>
-                <a>Go back home</a>
-            </Link>
+           
+            
         </Layout>
     );
 }

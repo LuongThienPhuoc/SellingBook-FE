@@ -8,6 +8,13 @@ export const userLogin = (data) => dispatch => {
     })
 }
 
+export const updateInfoUser = (infoUser) => dispatch => {
+    dispatch({
+        type: type.USER_UPDATE_INFO_USER,
+        infoUser: infoUser
+    })
+}
+
 export const userLogout = () => dispatch => {
     dispatch({
         type: type.USER_LOGOUT_SUCCESS

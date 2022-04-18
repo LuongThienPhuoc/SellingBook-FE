@@ -7,6 +7,11 @@ const initalState = {
 
 const userReducer = (state = initalState, action) => {
     switch (action.type) {
+        case type.USER_UPDATE_INFO_USER:
+            return {
+                ...state,
+                infoUser: action.infoUser
+            }
         case type.USER_LOGIN_SUCCESS:
             return {
                 ...state,
