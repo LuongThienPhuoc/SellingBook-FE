@@ -105,7 +105,7 @@ const BookPage: React.FC = () => {
                         </Grid>
                         <Grid item xs={12} lg={3} md={12} sm={12} className='flex '>
                             <div className='divider w-[1px] h-[calc(100%-40px)] bg-[#c5c5c5] mr-[10px] ml-[-1px]'></div>
-                            <div className='book-info w-[calc(100%-20px)] h-[240px] text-[16px] border-[1px] border-[#2BBCBA] 
+                            <div className='book-info w-[calc(100%-20px)] h-[290px] text-[16px] border-[1px] border-[#2BBCBA] 
                                     pl-[20px] p-[20px] rounded-[12px]
                                     mb-[40px]
                             '>
