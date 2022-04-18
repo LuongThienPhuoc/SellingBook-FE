@@ -108,8 +108,13 @@ const Home = () => {
   return (
     <Layout active="home">
       <div className={style.backgroundHome}>
+      <div
+          className='rounded-xl  absolute  text-[#2BBCBA]  xl:text-6xl   lg:text-5xl   900px:text-4xl   md:text-3xl   sm:text-2xl   min:text-xl min:top-1/4 min:right-1/4 '
+        >
+          SELLING BOOK
+        </div>
         <div
-          className='rounded-xl cursor-pointer absolute  bg-[#2BBCBA] text-white xl:text-4xl xl:bottom-20 xl:right-20 xl:py-3 xl:px-6 lg:text-3xl lg:bottom-12 lg:right-16 lg:py-3 lg:px-6 900px:text-3xl 900px:bottom-8 900px:right-12 900px:py-2 900px:px-4 md:text-2xl md:bottom-6 md:right-10 md:py-2 md:px-4 sm:text-xl sm:bottom-6 sm:right-10 sm:py-2 sm:px-4 min:text-base min:bottom-4 min:right-4 min:py-1 min:px-3'
+          className='rounded-xl cursor-pointer absolute  bg-[#2BBCBA] text-white xl:text-4xl   xl:py-3 xl:px-6 lg:text-3xl  lg:py-3 lg:px-6 900px:text-3xl  900px:py-2 900px:px-4 md:text-2xl  md:py-2 md:px-4 sm:text-xl  sm:py-2 sm:px-4 min:text-base min:bottom-1/4 min:right-1/4 min:py-1 min:px-3'
         >
           XEM TẤT CẢ
         </div>
