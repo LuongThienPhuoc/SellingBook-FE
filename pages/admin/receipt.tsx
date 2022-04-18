@@ -8,6 +8,7 @@ import { AiOutlineDashboard } from 'react-icons/ai'
 import style from '../../styles/Admin/Dashboard.module.css'
 import Link from 'next/link';
 
+const NavigationMobile = dynamic(() => import('../../component/Admin/NavigationMobile'))
 const Navigation = dynamic(() => import('../../component/Admin/Navigation'))
 const Layout = dynamic(() => import('../../component/Layout'),
     {
@@ -27,7 +28,8 @@ function product(props) {
             <Head>
                 <title>Quản lý hóa đơn</title>
             </Head>
-            <Container maxWidth='lg'>
+            <Container className='relative' maxWidth='lg'>
+            <NavigationMobile option='receipt'></NavigationMobile>
                 <Grid className='mb-16' container spacing={3}>
                     <Grid className='mt-16 min:hidden 900px:block' item md={3}>
                         <Navigation option='receipt'></Navigation>

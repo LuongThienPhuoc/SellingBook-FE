@@ -2,13 +2,10 @@ import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 import LinearProgress from '@mui/material/LinearProgress';
 import Head from 'next/head';
-import { Container, Grid, Divider } from '@mui/material';
-import { BsReverseLayoutTextWindowReverse, BsBook, BsBookmarkStar } from 'react-icons/bs'
-import { AiOutlineDashboard } from 'react-icons/ai'
-import style from '../../styles/Admin/Dashboard.module.css'
-import Link from 'next/link';
+import { Container, Grid } from '@mui/material';
 
 const Navigation = dynamic(() => import('../../component/Admin/Navigation'))
+const NavigationMobile = dynamic(() => import('../../component/Admin/NavigationMobile'))
 const Layout = dynamic(() => import('../../component/Layout'),
     {
         loading: () => <LinearProgress></LinearProgress>
@@ -27,7 +24,8 @@ function dashboard(props) {
             <Head>
                 <title>Dashboard</title>
             </Head>
-            <Container maxWidth='lg'>
+            <Container className='relative' maxWidth='lg'>
+                <NavigationMobile option='dashboard'></NavigationMobile>
                 <Grid className='mb-16' container spacing={3}>
                     <Grid className='mt-16 min:hidden 900px:block' item sm={0} md={3}>
                         <Navigation option='dashboard'></Navigation>

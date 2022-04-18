@@ -8,6 +8,7 @@ import { AiOutlineDashboard } from 'react-icons/ai'
 import style from '../../styles/Admin/Dashboard.module.css'
 import Link from 'next/link';
 
+const NavigationMobile = dynamic(() => import('../../component/Admin/NavigationMobile'))
 const Navigation = dynamic(() => import('../../component/Admin/Navigation'))
 const Layout = dynamic(() => import('../../component/Layout'),
     {
@@ -16,18 +17,15 @@ const Layout = dynamic(() => import('../../component/Layout'),
 )
 
 function product(props) {
-    const [option, setOption] = useState('Danh sách đơn hàng')
-    const handleClickOption = (e) => {
-        e.preventDefault()
-        setOption(e.target.innerText)
-    }
+
 
     return (
         <Layout>
             <Head>
                 <title>Thống kê</title>
             </Head>
-            <Container maxWidth='lg'>
+            <Container className='relative' maxWidth='lg'>
+                <NavigationMobile option='statistic'></NavigationMobile>
                 <Grid className='mb-16' container spacing={3}>
                     <Grid className='mt-16 min:hidden 900px:block' item md={3}>
                         <Navigation option='statistic'></Navigation>

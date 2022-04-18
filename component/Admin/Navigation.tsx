@@ -1,6 +1,6 @@
 import React from 'react';
 import { Divider } from '@mui/material';
-import { BsBox, BsReceipt, BsBarChartLine } from 'react-icons/bs'
+import { BsBox, BsReceipt, BsBarChartLine, BsFillArrowLeftCircleFill } from 'react-icons/bs'
 import { AiOutlineDashboard } from 'react-icons/ai'
 import { CgUserList } from 'react-icons/cg'
 import { FiSettings } from 'react-icons/fi'
@@ -8,10 +8,8 @@ import style from '../../styles/Admin/Dashboard.module.css'
 import Link from 'next/link';
 
 function Navigation(props) {
-    console.log(props.option)
-
     return (
-        <div style={{ boxShadow: 'rgb(0 0 0 / 60%) 0px 3px 8px', padding: '25px' }} className='rounded-lg '>
+        <div style={{ boxShadow: 'rgb(0 0 0 / 60%) 0px 3px 8px', padding: '25px' }} className='min:rounded-none 900px:rounded-lg relative min:h-full 900px:h-auto z-50'>
             <div className='text-xl font-bold mb-2'>SellingBook</div>
             <div className='text-base text-[#2C6ECB] cursor-pointer mb-2'>sellingbook.com</div>
             <Divider></Divider>
@@ -46,11 +44,12 @@ function Navigation(props) {
                 </button>
             </Link>
             <Link href={'/admin/setting'} passHref>
-                <button className={props.option === 'setting' ? 'hover:opacity-80 cursor-pointer font-sans items-center mt-4 relative ' + style.active : 'hover:opacity-80 cursor-pointer font-sans items-center mt-4'} style={{ display: 'flex' }}>
+                <button className={props.option === 'setting' ? ' hover:opacity-80 cursor-pointer font-sans items-center mt-4 relative ' + style.active : 'hover:opacity-80 cursor-pointer font-sans items-center mt-4'} style={{ display: 'flex' }}>
                     <FiSettings className='mr-4 text-xl'></FiSettings>
                     <span className='text-base'>Cài đặt</span>
                 </button>
             </Link>
+            
         </div>
     );
 }

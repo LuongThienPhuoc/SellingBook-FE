@@ -9,6 +9,7 @@ import style from '../../styles/Admin/Dashboard.module.css'
 import Link from 'next/link';
 
 const Navigation = dynamic(() => import('../../component/Admin/Navigation'))
+const NavigationMobile = dynamic(() => import('../../component/Admin/NavigationMobile'))
 const Layout = dynamic(() => import('../../component/Layout'),
     {
         loading: () => <LinearProgress></LinearProgress>
@@ -27,12 +28,13 @@ function product(props) {
             <Head>
                 <title>Quản lý sản phẩm</title>
             </Head>
-            <Container maxWidth='lg'>
+            <Container className='relative' maxWidth='lg'>
+                <NavigationMobile option='product'></NavigationMobile>
                 <Grid className='mb-16' container spacing={3}>
                     <Grid className='mt-16 min:hidden 900px:block' item md={3}>
                         <Navigation option='product'></Navigation>
                     </Grid>
-                    <Grid className='mt-16'  sm={12}  item md={9}>
+                    <Grid className='mt-16' sm={12} item md={9}>
                         <div style={{ boxShadow: 'rgb(0 0 0 / 60%) 0px 3px 8px', padding: '25px' }} className='rounded-lg '>
                             Product
                         </div>
