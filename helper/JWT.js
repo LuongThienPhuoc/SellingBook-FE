@@ -33,9 +33,6 @@ export const JWTVerify = (token) => {
 export const AuthMiddleware = (refresh) => {
     return async (req, res) => {
         try {
-            const authorizationHeader = req.headers.authorization;
-            console.log(authorizationHeader)
-            //const token = authorizationHeader?.split(" ")[1];
             var token;
             var name = '_jwt' + "=";
             if (typeof req.headers.cookie == 'undefined') {

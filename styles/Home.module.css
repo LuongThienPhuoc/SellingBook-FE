@@ -117,7 +117,7 @@
 
 
 /* Background */
-.backgroundHome{
+.backgroundHome {
   background-image: url('https://valetseller.com/wp-content/uploads/2020/10/W25-cover.jpg');
   background-image: url('https://images.squarespace-cdn.com/content/v1/57c6b79629687fde090a0fdd/1642086080177-SN767WSSNHJXRIET4WQ6/Dschool_Mockups_HI-RES.jpeg');
   background-image: url('../public/img/1.jpeg');
@@ -128,4 +128,17 @@
   height: 30vw;
   max-width: 100%;
   position: relative;
+}
+
+.discount::after {
+  content: "";
+  width: 0;
+  height: 0;
+  left: 0;
+  right: 0;
+  bottom: -9px;
+  position: absolute;
+  border-color: transparent #fed738;
+  border-style: solid;
+  border-width: 10px 23px 10px;
 }
