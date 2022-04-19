@@ -2,6 +2,7 @@ import React from 'react';
 import { Grid } from '@mui/material';
 import Card from '@mui/material/Card';
 
+
 function CardPurchasedList(props) {
     return (
         <Grid item md={3}>
