@@ -20,7 +20,6 @@ const Home = () => {
   // const [fileName, setFileName] = useState();
   // const [fileContent, setFileContent] = useState<any | null>(null);;
 
-
   // const showFile = async (e) => {
   //   console.log('showfile', e)
   //   e.preventDefault();
@@ -40,7 +39,6 @@ const Home = () => {
   //   //vị trí các câu hỏi.
   //   let index: number[] = []
   //   let cauhoi: string[] = []
-
   //   for (let i = 0; i < 50; i++) {
   //     let vitri = text.search(`${i + 1}. `);
   //     if (vitri !== -1) {
@@ -109,7 +107,7 @@ const Home = () => {
     <Layout active="home">
       <div className={style.backgroundHome}>
       <div
-          className='rounded-xl  absolute  text-[#2BBCBA]  xl:text-6xl   lg:text-5xl   900px:text-4xl   md:text-3xl   sm:text-2xl   min:text-xl min:top-1/4 min:right-1/4 '
+          className='rounded-xl  absolute  text-[#2BBCBA]  xl:text-6xl xl:translate-x-20   lg:text-5xl lg:translate-x-15  900px:text-4xl 900px:translate-x-10  md:text-3xl md:translate-x-10  sm:text-2xl   min:text-xl min:translate-x-5 min:top-1/4 min:right-1/4 '
         >
           SELLING BOOK
         </div>
