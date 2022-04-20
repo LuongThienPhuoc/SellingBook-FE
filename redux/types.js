@@ -16,3 +16,7 @@ export const USER_UPDATE_INFO_USER = 'USER_UPDATE_INFO_USER'
 export const SHOW_ALERT_SUCCESS = "SHOW_ALERT_SUCCESS"
 export const SHOW_ALERT_ERROR = "SHOW_ALERT_ERROR"
 export const HIDE_ALERT = "HIDE_ALERT"
+
+
+// Search
+export const SET_SEARCH = 'SET_SEARCH'

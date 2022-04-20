@@ -23,7 +23,9 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import Badge from '@mui/material/Badge';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { setAccessToken } from '../utils/cookies';
-
+import { setSearch } from '../redux/actions/searchAction'
+import { KeyboardEvent } from "react";
+import { isBuffer } from 'util';
 const pages = [
     {
         id: 'home',
@@ -86,12 +88,12 @@ const NavBar = (props) => {
     const dispatch = useDispatch();
     const isLogin = useSelector((state: RootStateOrAny) => state.userReducer.isLogin)
     const infoUser = useSelector((state: RootStateOrAny) => state.userReducer.infoUser)
-    console.log(infoUser)
+    const search = useSelector((state: RootStateOrAny) => state.searchReducer.search)
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
     const [anchoElMess, setAnchorElMess] = React.useState<null | HTMLElement>(null);
     const [anchoElCart, setAnchoElCart] = React.useState<null | HTMLElement>(null);
-
+    const searchRef = React.useRef(null)
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -124,6 +126,11 @@ const NavBar = (props) => {
         setAccessToken(null)
     }
 
+    const handleKeyPressSearch = (e: KeyboardEvent) => {
+        if (e.key == 'Enter') {
+            searchRef?.current?.click()
+        }
+    }
 
     const renderStatusLogin = () => {
         if (isLogin) {
@@ -350,8 +357,14 @@ const NavBar = (props) => {
                             </SearchIconWrapper>
                             <StyledInputBase
                                 placeholder="Nhập tên sách cần tìm"
+                                onChange={(e) => { console.log(e.target.value); dispatch(setSearch(e.target.value)) }}
+                                defaultValue={search}
+                                onKeyDown={handleKeyPressSearch}
                                 inputProps={{ 'aria-label': 'search' }}
                             />
+                            <Link href={'search'} passHref>
+                                <div ref={searchRef} className='bg-transparent w-7 h-6 absolute top-2 left-2 z-50 cursor-pointer' onClick={() => { console.log('click') }}></div>
+                            </Link>
                         </Search>
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
@@ -370,13 +383,19 @@ const NavBar = (props) => {
                     </Box>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         <Search style={{ backgroundColor: 'white', color: '#979797' }}>
-                            <SearchIconWrapper>
+                            <SearchIconWrapper >
                                 <SearchIcon />
                             </SearchIconWrapper>
                             <StyledInputBase
+                                onChange={(e) => { console.log(e.target.value); dispatch(setSearch(e.target.value)) }}
                                 placeholder="Nhập tên sách cần tìm"
+                                defaultValue={search}
+                                onKeyDown={handleKeyPressSearch}
                                 inputProps={{ 'aria-label': 'search' }}
                             />
+                            <Link href={'search'} passHref>
+                                <div ref={searchRef} className='bg-transparent w-7 h-6 absolute top-2 left-2 z-50 cursor-pointer' onClick={() => { console.log('click') }}></div>
+                            </Link>
                         </Search>
                     </Box>
                     {renderStatusLogin()}
