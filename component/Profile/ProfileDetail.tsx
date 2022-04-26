@@ -122,7 +122,7 @@ const ProfileDetail = (props) => {
                         <Grid container>
                             <Grid className='flex items-center justify-center' item md={5} sm={12} xs={12}>
                                 <label htmlFor='profile-header-update-avatar'>
-                                    <Avatar className='cursor-pointer' src={infoUser.avatar} style={{ height: '140px', width: '140px' }} sx={{ bgcolor: deepOrange[500] }}>NONE</Avatar>
+                                    <Avatar className='cursor-pointer border-solid border-1 border-[#2BBCBA]' src={infoUser.avatar} style={{ height: '140px', width: '140px' }} sx={{ bgcolor: deepOrange[500] }}>NONE</Avatar>
                                 </label>
                                 <input id="profile-header-update-avatar" type="file" style={{ display: 'none' }} accept="image/png, image/jpeg" onChange={(e) => handleChangeImg(e)}></input>
                             </Grid>

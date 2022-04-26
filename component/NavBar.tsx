@@ -25,7 +25,9 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { setAccessToken } from '../utils/cookies';
 import { setSearch } from '../redux/actions/searchAction'
 import { KeyboardEvent } from "react";
-import { isBuffer } from 'util';
+import dynamic from 'next/dynamic';
+const CartItemInNavBar = dynamic(() => import('./Cart/CarItemInNavBar'))
+
 const pages = [
     {
         id: 'home',
@@ -83,6 +85,9 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
     alignItems: 'center',
     justifyContent: 'center',
 }));
+
+
+
 
 const NavBar = (props) => {
     const dispatch = useDispatch();
@@ -191,12 +196,22 @@ const NavBar = (props) => {
                                     <a style={{ textDecoration: 'none', fontSize: '14px', fontWeight: '500', color: '#2f5acf', lineHeight: '1.5' }}>Xem tất cả</a>
                                 </Link>
                             </div>
-                            <ul style={{ maxHeight: '400px' }}>
-                                <li style={{ height: '100px' }}>CArt</li>
-                                <li style={{ height: '100px' }}>CArt</li>
-                                <li style={{ height: '100px' }}>CArt</li>
-                                <li style={{ height: '100px' }}>CArt</li>
-                                <li style={{ height: '100px' }}>CArt</li>
+                            <ul style={{ maxHeight: '400px', paddingTop: '30px', paddingLeft: '0' }}>
+                                <li>
+                                    <CartItemInNavBar></CartItemInNavBar>
+                                </li>
+                                <li>
+                                    <CartItemInNavBar></CartItemInNavBar>
+                                </li>
+                                <li>
+                                    <CartItemInNavBar></CartItemInNavBar>
+                                </li>
+                                <li>
+                                    <CartItemInNavBar></CartItemInNavBar>
+                                </li>
+                                <li>
+                                    <CartItemInNavBar></CartItemInNavBar>
+                                </li>
                             </ul>
                         </div>
                     </Menu>
