@@ -144,7 +144,10 @@ const BookPage: React.FC = () => {
                     rounded-[12px] w-[100%]'>
                     <Grid container spacing={0}>
                         <Grid item xs={12} sm={12} md={12} lg={1}>
-                            <div className='description-label text-[#2BBCBA] ml-[18px] mt-[18px] mb-[10px] text-[20px]'>
+                            <div 
+                                className='description-label text-[#2BBCBA] ml-[18px] mt-[18px] 
+                                    mb-[10px] text-[22px] font-primary'
+                            >
                                 Mô tả
                             </div>
                         </Grid>
@@ -167,7 +170,9 @@ const BookPage: React.FC = () => {
                     rounded-[12px] w-[100%]'>
                     <Grid container spacing={0}>
                         <Grid item xs={12} sm={12} md={12} lg={1}>
-                            <div className='description-label text-[#2BBCBA] ml-[18px] mt-[18px] mb-[10px] text-[20px]'>
+                            <div 
+                                className='description-label text-[#2BBCBA] ml-[18px] 
+                                    mt-[18px] mb-[10px] text-[22px] font-primary'>
                                 Thông tin bổ sung
                             </div>
                         </Grid>
@@ -197,10 +202,13 @@ const BookPage: React.FC = () => {
                         </Grid>
                     </Grid>
                 </div>
-                <div className='relative-book-sectionmt-16 
+                <div className='relative-book-section mt-16 
                     shadow-[0px_4px_4px_4px_rgba(0,0,0,0.25)]
                     rounded-[12px] w-[100%] mt-[62px] pb-[18px] pl-[18px] mb-[62px]'>
-                        <div className='description-label text-[#2BBCBA] pt-[28px] mb-[24px] text-[20px]'>
+                        <div 
+                            className='description-label text-[#2BBCBA] 
+                                pt-[28px] mb-[24px] text-[22px] font-primary'
+                        >
                             Sản phẩm liên quan
                         </div>
                         <div className="bookitem-container">
@@ -234,6 +242,20 @@ const BookPage: React.FC = () => {
                         </div>
                         
                 </div>
+                <div className='comment-section mt-16 
+                    shadow-[0px_4px_4px_4px_rgba(0,0,0,0.25)]
+                    rounded-[12px] w-[100%] mt-[62px] pb-[18px] pl-[18px] mb-[62px]'>
+                    <Grid 
+                        xs={12} md={12} lg={12} 
+                        className='title 
+                            font-primary text-[#2BBCBA] font-[500] text-[22px]
+                                
+                        '
+                    >
+                        Nhận xét, đánh giá từ khách hàng
+                    </Grid>
+                </div>
+
             </div>
             
         </Layout>
