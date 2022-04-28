@@ -103,7 +103,6 @@ function NavigationBar(props) {
                             <FormControlLabel value="1" control={<Radio />} label={renderFromToMoney()} />
                         </RadioGroup>
                     </FormControl>
-
                 </AccordionDetails>
             </Accordion>
         </div>

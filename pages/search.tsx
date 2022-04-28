@@ -25,7 +25,7 @@ function search(props) {
             </Head>
             <Container className='relative' maxWidth='xl'>
                 <Grid className='mb-16' container spacing={3}>
-                    <Grid className='mt-16 min:hidden 900px:block' item md={3}>
+                    <Grid className='mt-16' item md={4} sm={12}>
                         <div
                             style={{ boxShadow: 'rgb(0 0 0 / 60%) 0px 3px 8px', padding: '25px' }}
                             className='rounded-lg '
@@ -33,7 +33,7 @@ function search(props) {
                             <NavigationBar></NavigationBar>
                         </div>
                     </Grid>
-                    <Grid className='mt-16' sm={12} item md={9}>
+                    <Grid className='mt-16'  item md={8} sm={12}>
                         <div style={{ boxShadow: 'rgb(0 0 0 / 60%) 0px 3px 8px', padding: '25px' }} className='rounded-lg '>
                             <div className='text-xl font-bold mb-2'>Kết quả tìm kiếm cho "<span className='text-[#2BBCBA]'>{search}</span>"</div>
                             <div className='mb-4'>Tổng cộng <span className='text-[#2BBCBA]'>340</span> sách được tìm thấy</div>

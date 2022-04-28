@@ -13,7 +13,6 @@ import axios from 'axios'
 import { useState } from 'react'
 import * as URL from '../services/api/config'
 import LinearProgress from '@mui/material/LinearProgress';
-
 import { userLogin } from '../redux/actions/userAction'
 
 const MyApp = ({ Component, pageProps }) => {

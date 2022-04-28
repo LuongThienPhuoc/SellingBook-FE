@@ -3,7 +3,8 @@ import dynamic from 'next/dynamic';
 import LinearProgress from '@mui/material/LinearProgress';
 import Head from 'next/head';
 import { Container, Grid } from '@mui/material';
-
+import { useRouter } from 'next/router';
+import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 const Navigation = dynamic(() => import('../../component/Admin/Navigation'))
 const NavigationMobile = dynamic(() => import('../../component/Admin/NavigationMobile'))
@@ -25,8 +26,18 @@ const UserChart = dynamic(() => import('../../component/Admin/Dashboard/UserChar
 )
 
 function dashboard(props) {
+    const isLogin = useSelector((state: RootStateOrAny) => state.userReducer.isLogin)
+    const infoUser = useSelector((state: RootStateOrAny) => state.userReducer.infoUser)
+    const router = useRouter()
+    useEffect(() => {
+     
+        if (!isLogin || infoUser.role == 'user') {
+            router.push('/')
+        }
+    }, [isLogin, infoUser])
+
     return (
-        <Layout>
+        <Layout active="admin">
             <Head>
                 <title>Dashboard</title>
             </Head>

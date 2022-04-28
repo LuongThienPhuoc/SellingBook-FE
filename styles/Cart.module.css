@@ -4,6 +4,7 @@
 
 .payment>label>div {
     color: #bdbdbd;
+    font-weight: 500;
 }
 
 .payment:hover {

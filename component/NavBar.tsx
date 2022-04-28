@@ -99,6 +99,11 @@ const NavBar = (props) => {
     const [anchoElMess, setAnchorElMess] = React.useState<null | HTMLElement>(null);
     const [anchoElCart, setAnchoElCart] = React.useState<null | HTMLElement>(null);
     const searchRef = React.useRef(null)
+
+    React.useEffect(() => {
+        console.log(infoUser.role)
+    }, [])
+
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -351,13 +356,18 @@ const NavBar = (props) => {
                                     </Typography>
                                 </MenuItem>
                             ))}
-                            <MenuItem onClick={handleCloseNavMenu}>
-                                <Typography textAlign="center">
-                                    <Link href={'/admin/dashboard'} passHref>
-                                        <Button style={{ color: 'black', fontWeight: '500' }}>Thống kê</Button>
-                                    </Link>
-                                </Typography>
-                            </MenuItem>
+                            {
+                                (!infoUser.role || infoUser.role === 'user') ? null : (
+                                    <MenuItem onClick={handleCloseNavMenu}>
+                                        <Typography textAlign="center">
+                                            <Link href={'/admin/dashboard'} passHref>
+                                                <Button style={{ color: 'black', fontWeight: '500' }}>Thống kê</Button>
+                                            </Link>
+                                        </Typography>
+                                    </MenuItem>
+                                )
+                            }
+
                         </Menu>
                     </Box>
                     <Typography
@@ -377,7 +387,7 @@ const NavBar = (props) => {
                                 onKeyDown={handleKeyPressSearch}
                                 inputProps={{ 'aria-label': 'search' }}
                             />
-                            <Link href={'search'} passHref>
+                            <Link href={'/search'} passHref>
                                 <div ref={searchRef} className='bg-transparent w-7 h-6 absolute top-2 left-2 z-50 cursor-pointer' onClick={() => { console.log('click') }}></div>
                             </Link>
                         </Search>
@@ -390,11 +400,15 @@ const NavBar = (props) => {
                                 </Link>
                             </div>
                         ))}
-                        <div style={{ position: 'relative' }}>
-                            <Link href={'/admin/dashboard'} passHref>
-                                <Button className={props.active === 'admin' ? style.activeItem + ' ' + style.navItemLine : style.navItemLine} style={{ color: 'white', fontWeight: '600' }}>Thống kê</Button>
-                            </Link>
-                        </div>
+                        {
+                            (!infoUser.role || infoUser.role === 'user') ? null : (
+                                <div style={{ position: 'relative' }}>
+                                    <Link href={'/admin/dashboard'} passHref>
+                                        <Button className={props.active === 'admin' ? style.activeItem + ' ' + style.navItemLine : style.navItemLine} style={{ color: 'white', fontWeight: '600' }}>Thống kê</Button>
+                                    </Link>
+                                </div>
+                            )
+                        }
                     </Box>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         <Search style={{ backgroundColor: 'white', color: '#979797' }}>
@@ -408,7 +422,7 @@ const NavBar = (props) => {
                                 onKeyDown={handleKeyPressSearch}
                                 inputProps={{ 'aria-label': 'search' }}
                             />
-                            <Link href={'search'} passHref>
+                            <Link href={'/search'} passHref>
                                 <div ref={searchRef} className='bg-transparent w-7 h-6 absolute top-2 left-2 z-50 cursor-pointer' onClick={() => { console.log('click') }}></div>
                             </Link>
                         </Search>

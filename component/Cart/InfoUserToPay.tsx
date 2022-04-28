@@ -11,7 +11,7 @@ function InfoUserToPay(props) {
     const districtRef = useRef()
     const communeRef = useRef()
     const dispatch = useDispatch()
-    const [selectedValue, setSelectedValue] = React.useState('e');
+    const [selectedValue, setSelectedValue] = React.useState('momo');
 
     const [provinces, setProvinces] = useState([])
     let provinceSelect: String
@@ -23,7 +23,6 @@ function InfoUserToPay(props) {
     useEffect(() => {
         const fetAPIProvince = async () => {
             axios.get(`https://api.mysupership.vn/v1/partner/areas/province`).then(res => {
-
                 setProvinces(res.data.results)
             })
         }
@@ -201,9 +200,9 @@ function InfoUserToPay(props) {
             <div className='pt-14 text-3xl font-bold'>Hình thức thanh toán</div>
             <div className='p-4'>
                 {/* Momoo */}
-                <div className={'transition duration-300 ease-out cursor-pointer flex rounded-md items-center h-16 mb-6 ' + ' ' + style.payment} >
+                <div className={selectedValue === 'momo' ? style.paymentActive + ' transition duration-300 ease-out cursor-pointer flex rounded-md items-center h-16 mb-6 ' + ' ' + style.payment : ' transition duration-300 ease-out cursor-pointer flex rounded-md items-center h-16 mb-6 ' + ' ' + style.payment} >
                     <Radio
-                        id='radioMethodPay'
+                        id='radioMethodPay1'
                         name='payment-method'
                         {...controlProps('momo')}
                         sx={{
@@ -219,7 +218,7 @@ function InfoUserToPay(props) {
                     </label>
                 </div>
                 {/* COD */}
-                <div className={'transition duration-300 ease-out cursor-pointer flex rounded-md items-center h-16 mb-6 hover:border-[#243c5a]' + ' ' + style.payment + ' ' + style.paymentActive} >
+                <div className={selectedValue === 'cod' ? style.paymentActive + ' transition duration-300 ease-out cursor-pointer flex rounded-md items-center h-16 mb-6 ' + ' ' + style.payment : ' transition duration-300 ease-out cursor-pointer flex rounded-md items-center h-16 mb-6 ' + ' ' + style.payment}  >
                     <Radio
                         name='payment-method'
                         id='radioMethodPay2'
@@ -240,7 +239,7 @@ function InfoUserToPay(props) {
                     </label>
                 </div>
                 {/* ZAlo pay */}
-                <div className={'transition duration-300 ease-out cursor-pointer flex rounded-md items-center h-16 mb-6 hover:border-[#243c5a]' + ' ' + style.payment} >
+                <div className={selectedValue === 'zalopay' ? style.paymentActive + ' transition duration-300 ease-out cursor-pointer flex rounded-md items-center h-16 mb-6 ' + ' ' + style.payment : ' transition duration-300 ease-out cursor-pointer flex rounded-md items-center h-16 mb-6 ' + ' ' + style.payment}  >
                     <Radio
                         name='payment-method'
                         id='radioMethodPay3'
@@ -258,11 +257,11 @@ function InfoUserToPay(props) {
                     </label>
                 </div>
                 {/* Xu  */}
-                <div className={'transition duration-300 ease-out cursor-pointer flex rounded-md items-center h-16 mb-6 hover:border-[#243c5a]' + ' ' + style.payment} >
+                <div className={selectedValue === 'diamond' ? style.paymentActive + ' transition duration-300 ease-out cursor-pointer flex rounded-md items-center h-16 mb-6 ' + ' ' + style.payment : ' transition duration-300 ease-out cursor-pointer flex rounded-md items-center h-16 mb-6 ' + ' ' + style.payment} >
                     <Radio
                         name='payment-method'
                         id='radioMethodPay4'
-                        {...controlProps('diamod')}
+                        {...controlProps('diamond')}
                         sx={{
                             color: '#bdbdbd',
                             '&.Mui-checked': {

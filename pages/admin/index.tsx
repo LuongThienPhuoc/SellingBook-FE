@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic';
 import LinearProgress from '@mui/material/LinearProgress';
-
+import { useRouter } from 'next/router';
+import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
 
 const Layout = dynamic(() =>
     import('../../component/Layout'),
