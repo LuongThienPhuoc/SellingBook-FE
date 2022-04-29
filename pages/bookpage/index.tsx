@@ -7,6 +7,8 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { MdArrowForwardIos, MdArrowBackIosNew } from "react-icons/md";
+import { AiFillStar, AiOutlineStar } from "react-icons/ai";
+import ProgressBar from "@ramonak/react-progress-bar";
 const ArrowLeft = (props) => (
     <button
         {...props}
@@ -45,6 +47,121 @@ const BookPage: React.FC = () => {
         nextArrow: <ArrowRight/>,
         prevArrow: <ArrowLeft/>
     };
+
+    const data = [ 10,10,199,89,1233];
+
+    const ratingConcreteRender = (data) => {
+        var sum = 0;
+        data.forEach(a => {
+            if(typeof a == 'number')
+                sum += a;
+        });
+        console.log("sum", sum)
+        var totalScore = 0;
+        data.forEach((a, index) => {
+            if(typeof a == 'number')
+                totalScore += a *  (index+1);
+        });
+
+
+        return (
+            <div 
+                className='rating-container 
+                    mr-[12px] 
+                    h-[200px]
+                '
+            >
+                <div className='rating-overall'>
+                    <div className='
+                        rating-heading
+                        flex
+                    '>
+                        <div 
+                            className='rating-score
+                                font-primary font-[600]
+                                text-[36px]
+                                leading-[54px]
+                            '
+                        >
+                            {Math.floor(totalScore*10/sum)/10}
+                        </div>
+                        <div className='
+                            rating-comment-overall
+                            flex flex-col
+                            mt-[7px] ml-[4px]
+                        '> 
+                            <div 
+                                className='rating-detail
+                                    flex'
+                            >
+                                <AiFillStar color={'FFD25E'} size={20}/>
+                                <AiFillStar color={'FFD25E'} size={20}/>
+                                <AiFillStar color={'FFD25E'} size={20}/>
+                                <AiFillStar color={'FFD25E'} size={20}/>
+                                <AiOutlineStar color={'FFD25E'} size={20}/>
+                            </div>
+                            <div className='
+                                comment-count 
+                                text-[12px]
+                            '>
+                                <span>{sum}</span> nhận xét
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div className='rating-detail'>
+                <div 
+                className='comment-concrete-container
+            '>
+                    {
+                        data.slice(0).reverse().map((item, index)=> {
+                            return (
+                                <div className='star-container
+                                    flex
+                                '>
+                                    <div className='comment-star-concrete
+                                        flex
+                                    '>
+                                        {
+                                            Array.from(Array(5-index).keys()).map(()=>{
+                                                return(<AiFillStar color={'FFD25E'}/>)
+                                            })
+                                        }
+                                        {
+                                            Array.from(Array(index).keys()).map(()=>{
+                                                return(<AiOutlineStar color={'FFD25E'}/>)
+                                            })
+                                        }
+                                    </div>
+                                    <ProgressBar 
+                                        completed={item*100/sum} 
+                                        isLabelVisible={false} 
+                                        width='100px'
+                                        height='6px'
+                                        className='
+                                            mt-[5px]
+                                            ml-[8px]
+                                        '
+                                    />
+                                    <div className='comment-count-concrete
+                                        text-[10px] font-primary font-[600]
+                                        ml-[8px]
+                                    '>
+                                        {item}
+                                    </div>
+                                </div>
+                            );
+                        })
+                    }
+                </div>
+                </div>
+            </div>
+            
+        );
+    }
+
     return (
         <Layout activeNav={"book"}>
             <div className='page-wrapper px-[86px]'>
@@ -105,7 +222,7 @@ const BookPage: React.FC = () => {
                         </Grid>
                         <Grid item xs={12} lg={3} md={12} sm={12} className='flex '>
                             <div className='divider w-[1px] h-[calc(100%-40px)] bg-[#c5c5c5] mr-[10px] ml-[-1px]'></div>
-                            <div className='book-info w-[calc(100%-20px)] h-[290px] text-[16px] border-[1px] border-[#2BBCBA] 
+                            <div className='book-info w-[calc(100%-20px)] h-[250px] text-[16px] border-[1px] border-[#2BBCBA] 
                                     pl-[20px] p-[20px] rounded-[12px]
                                     mb-[40px]
                             '>
@@ -113,22 +230,22 @@ const BookPage: React.FC = () => {
                                     <p className="text-[#808080]">Tác giả:</p>
                                     <p className='ml-[4px] text-[#555555]'> Nguyễn Nhật Ánh</p>  
                                 </div>
-                                <div className='divider w-[calc(100%-10px)] h-[1px] bg-[#c5c5c5] my-[8px]'></div>
+                                <div className='divider w-[calc(100%-10px)] h-[1px] bg-[#c5c5c5] mb-[8px] mt-[-6px]'></div>
                                 <div className='description-item flex'>
                                     <p className="text-[#808080]">Nhà xuất bản:</p>
                                     <p className='ml-[4px] text-[#555555]'> Nhà xuất bản trẻ</p>  
                                 </div>
-                                <div className='divider w-[calc(100%-10px)] h-[1px] bg-[#c5c5c5] my-[8px]'></div>
+                                <div className='divider w-[calc(100%-10px)] h-[1px] bg-[#c5c5c5] mb-[8px] mt-[-6px]'></div>
                                 <div className='description-item flex'>
                                     <p className="text-[#808080]">Dạng bìa:</p>
                                     <p className='ml-[4px] text-[#555555]'> Bìa mềm</p>  
                                 </div>
-                                <div className='divider w-[calc(100%-10px)] h-[1px] bg-[#c5c5c5] my-[8px]'></div>
+                                <div className='divider w-[calc(100%-10px)] h-[1px] bg-[#c5c5c5] mb-[8px] mt-[-6px]'></div>
                                 <div className='description-item flex'>
                                     <p className="text-[#808080]">Tình trạng:</p>
                                     <p className='ml-[4px] text-[#555555]'> Còn hàng</p>  
                                 </div>
-                                <div className='divider w-[calc(100%-10px)] h-[1px] bg-[#c5c5c5] my-[8px]'></div>
+                                <div className='divider w-[calc(100%-10px)] h-[1px] bg-[#c5c5c5] mb-[8px] mt-[-6px]'></div>
                                 <div className='description-item flex'>
                                     <p className="text-[#808080]">Năm phát hành:</p>
                                     <p className='ml-[4px] text-[#555555]'>2013</p>  
@@ -146,7 +263,7 @@ const BookPage: React.FC = () => {
                         <Grid item xs={12} sm={12} md={12} lg={1}>
                             <div 
                                 className='description-label text-[#2BBCBA] ml-[18px] mt-[18px] 
-                                    mb-[10px] text-[22px] font-primary'
+                                    mb-[10px] text-[20px] font-primary'
                             >
                                 Mô tả
                             </div>
@@ -172,7 +289,7 @@ const BookPage: React.FC = () => {
                         <Grid item xs={12} sm={12} md={12} lg={1}>
                             <div 
                                 className='description-label text-[#2BBCBA] ml-[18px] 
-                                    mt-[18px] mb-[10px] text-[22px] font-primary'>
+                                    mt-[18px] mb-[10px] text-[20px] font-primary'>
                                 Thông tin bổ sung
                             </div>
                         </Grid>
@@ -183,17 +300,17 @@ const BookPage: React.FC = () => {
                                     <p className="text-[#808080]">Số trang:</p>
                                     <p className='ml-[4px] text-[#555555]'>694</p>  
                                 </div>
-                                <div className='divider w-[calc(100%-10px)] h-[1px] bg-[#c5c5c5] my-[8px]'></div>
+                                <div className='divider w-[calc(100%-10px)] h-[1px] bg-[#c5c5c5] mb-[8px] mt-[-6px]'></div>
                                 <div className='description-item flex'>
                                     <p className="text-[#808080]">Kích thước:</p>
                                     <p className='ml-[4px] text-[#555555]'>16 x 24 cm</p>  
                                 </div>
-                                <div className='divider w-[calc(100%-10px)] h-[1px] bg-[#c5c5c5] my-[8px]'></div>
+                                <div className='divider w-[calc(100%-10px)] h-[1px] bg-[#c5c5c5] mb-[8px] mt-[-6px]'></div>
                                 <div className='description-item flex'>
                                     <p className="text-[#808080]">Nhà xuất bản:</p>
                                     <p className='ml-[4px] text-[#555555]'> Nhà xuất bản trẻ</p>  
                                 </div>
-                                <div className='divider w-[calc(100%-10px)] h-[1px] bg-[#c5c5c5] my-[8px]'></div>
+                                <div className='divider w-[calc(100%-10px)] h-[1px] bg-[#c5c5c5] mb-[8px] mt-[-6px]'></div>
                                 <div className='description-item flex'>
                                     <p className="text-[#808080]">Từ khoá:</p>
                                     <p className='ml-[4px] text-[#555555]'> Nguyễn Nhật Ánh, Rùa, Đông, Ngồi khóc trên cây</p>  
@@ -207,7 +324,7 @@ const BookPage: React.FC = () => {
                     rounded-[12px] w-[100%] mt-[62px] pb-[18px] pl-[18px] mb-[62px]'>
                         <div 
                             className='description-label text-[#2BBCBA] 
-                                pt-[28px] mb-[24px] text-[22px] font-primary'
+                                pt-[28px] mb-[24px] text-[20px] font-primary'
                         >
                             Sản phẩm liên quan
                         </div>
@@ -242,17 +359,48 @@ const BookPage: React.FC = () => {
                         </div>
                         
                 </div>
-                <div className='comment-section mt-16 
+                <div className='comment-section
                     shadow-[0px_4px_4px_4px_rgba(0,0,0,0.25)]
                     rounded-[12px] w-[100%] mt-[62px] pb-[18px] pl-[18px] mb-[62px]'>
                     <Grid 
                         xs={12} md={12} lg={12} 
                         className='title 
-                            font-primary text-[#2BBCBA] font-[500] text-[22px]
-                                
+                            font-primary text-[#2BBCBA] font-[500] text-[20px]
+                            mt-[38px] pt-[28px]
                         '
                     >
                         Nhận xét, đánh giá từ khách hàng
+                    </Grid>
+                    <Grid container 
+                        className='comment-container mt-[16px]'
+                    >
+                        <Grid item xs={12} md={3} lg={3}
+                            className='rating-grid  relative'
+                        >
+                            {ratingConcreteRender(data)}
+                           <div 
+                                className='divider 
+                                    h-[100%] w-[1px] 
+                                    bg-[#C5C5C5]
+                                    absolute
+                                    top-0
+                                    right-[6px]
+                                '
+                            ></div>
+
+                        </Grid>
+                        <Grid 
+                            item xs={12} md={9} lg={9}
+                            className='comment-grid'
+                        >
+                            <div 
+                                className='comment-container 
+                                    mr-[12px] 
+                                    h-[200px]
+                                    md:block xs:hidden lg:block
+                                '
+                            ></div>
+                        </Grid>
                     </Grid>
                 </div>
 
