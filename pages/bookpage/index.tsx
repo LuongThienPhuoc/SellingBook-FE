@@ -48,7 +48,7 @@ const BookPage: React.FC = () => {
         prevArrow: <ArrowLeft/>
     };
 
-    const data = [ 10,10,199,89,1233];
+    const data = [ 10,10,199,89,1443];
 
     const ratingConcreteRender = (data) => {
         var sum = 0;
@@ -68,7 +68,6 @@ const BookPage: React.FC = () => {
             <div 
                 className='rating-container 
                     mr-[12px] 
-                    h-[200px]
                 '
             >
                 <div className='rating-overall'>
@@ -94,11 +93,16 @@ const BookPage: React.FC = () => {
                                 className='rating-detail
                                     flex'
                             >
-                                <AiFillStar color={'FFD25E'} size={20}/>
-                                <AiFillStar color={'FFD25E'} size={20}/>
-                                <AiFillStar color={'FFD25E'} size={20}/>
-                                <AiFillStar color={'FFD25E'} size={20}/>
-                                <AiOutlineStar color={'FFD25E'} size={20}/>
+                                {
+                                    Array.from(Array(Math.floor(totalScore/sum)).keys()).map(()=>{
+                                        return(<AiFillStar color={'FFD25E'} size={20}/>)
+                                    })
+                                }
+                                {
+                                    Array.from(Array(5 - Math.floor( totalScore/sum)).keys()).map(()=>{
+                                        return(<AiOutlineStar color={'FFD25E'} size={20}/>)
+                                    })
+                                }
                             </div>
                             <div className='
                                 comment-count 
@@ -136,13 +140,14 @@ const BookPage: React.FC = () => {
                                         }
                                     </div>
                                     <ProgressBar 
+                                        
                                         completed={item*100/sum} 
                                         isLabelVisible={false} 
-                                        width='100px'
                                         height='6px'
                                         className='
                                             mt-[5px]
                                             ml-[8px]
+                                            w-[40%]
                                         '
                                     />
                                     <div className='comment-count-concrete
@@ -161,6 +166,139 @@ const BookPage: React.FC = () => {
             
         );
     }
+
+    const comments = [
+        {
+            userAvatar: 'https://i.pinimg.com/736x/ac/8d/41/ac8d41fffb15f91c58e62b679e998bbc.jpg',
+            username: 'Nguyễn Công Phi',
+            star: 5,
+            time: '2022/04/22',
+            content: 'Không giống với nhiều tác phẩm trước đó của Nguyễn Nhật Ánh, Ngồi khóc trên cây được nhà văn đưa vào nhiều nghịch cảnh éo le, bi thương nhằm thử thách các nhân vật và giúp họ trưởng thành hơn về mặt tình cảm theo thời gian. Tác phẩm đã nằm trong tốp những quyển sách Việt Nam được nhiều người đặt mua nhất năm 2013 theo thống kê của nhiều hệ thống phân phối sách trực '    
+        },  
+        {
+            userAvatar: 'https://i.pinimg.com/736x/ac/8d/41/ac8d41fffb15f91c58e62b679e998bbc.jpg',
+            username: 'Nguyễn Công Phi',
+            star: 5,
+            time: '2022/04/22',
+            content: 'Không giống với nhiều tác phẩm trước đó của Nguyễn Nhật Ánh, Ngồi khóc trên cây được nhà văn đưa vào nhiều nghịch cảnh éo le, bi thương nhằm thử thách các nhân vật và giúp họ trưởng thành hơn về mặt tình cảm theo thời gian. Tác phẩm đã nằm trong tốp những quyển sách Việt Nam được nhiều người đặt mua nhất năm 2013 theo thống kê của nhiều hệ thống phân phối sách trực '    
+        }, 
+        {
+            userAvatar: 'https://i.pinimg.com/736x/ac/8d/41/ac8d41fffb15f91c58e62b679e998bbc.jpg',
+            username: 'Nguyễn Công Phi',
+            star: 5,
+            time: '2022/04/22',
+            content: 'Không giống với nhiều tác phẩm trước đó của Nguyễn Nhật Ánh, Ngồi khóc trên cây được nhà văn đưa vào nhiều nghịch cảnh éo le, bi thương nhằm thử thách các nhân vật và giúp họ trưởng thành hơn về mặt tình cảm theo thời gian. Tác phẩm đã nằm trong tốp những quyển sách Việt Nam được nhiều người đặt mua nhất năm 2013 theo thống kê của nhiều hệ thống phân phối sách trực '    
+        }, 
+        // {
+        //     userAvatar: 'https://i.pinimg.com/736x/ac/8d/41/ac8d41fffb15f91c58e62b679e998bbc.jpg',
+        //     username: 'Nguyễn Công Phi',
+        //     star: 4,
+        //     time: new Date('2022-04-22'),
+        //     content: 'Không giống với nhiều tác phẩm trước đó của Nguyễn Nhật Ánh, Ngồi khóc trên cây được nhà văn đưa vào nhiều nghịch cảnh éo le, bi thương nhằm thử thách các nhân vật và giúp họ trưởng thành hơn về mặt tình cảm theo thời gian. Tác phẩm đã nằm trong tốp những quyển sách Việt Nam được nhiều người đặt mua nhất năm 2013 theo thống kê của nhiều hệ thống phân phối sách trực '    
+        // }
+    ]
+
+    const refineDateTime = (dateTime) => {
+        var dateTimeSplit = dateTime.split('/');
+        return dateTimeSplit[2] + '/' + dateTimeSplit[1] + '/' + dateTimeSplit[0];
+    }
+
+    const calculateDate = (dateTime) => {
+        let commentDate: Date = new Date(dateTime);
+        commentDate.setHours(0,0,0,0);
+        let currentDate: Date = new Date();
+        currentDate.setHours(0,0,0,0);
+        var diff = Math.abs(currentDate.getTime() - commentDate.getTime())/1000/60/60/24;
+        console.log('diff', diff);
+        return `${diff} ngày trước`;  
+    }
+
+    const commentItem = (comment) => {
+        return (
+            <div className ='comment-item-container border-[1px] border-[#333] rounded-[12px] w-[100%] flex font-primary font-[600] mb-3'>
+                <div className='avatar-container'>
+                    <img 
+                        className={
+                            'comment-avatar '
+                            +'w-[75px] h-[75px] '
+                            +'mx-[20px] my-[15px] '
+                            +' rounded-[100%]'
+                        }
+                        src={comment.userAvatar}
+                    >
+                    </img>
+                </div>
+                <div className={
+                    'comment-detail-container '+ 
+                    'mt-[15px] w-[80%]'
+                }>
+                    <div className={'comment-heading ' + 
+                        'flex relative w-[100%]'
+                    }>
+                        <div className='username'>
+                            {comment.username}
+                        </div>  
+                        <div className='star flex mt-[2px]'>
+                            <div className='star-num ml-[20px] leading-5 mr-1'>
+                                {comment.star}
+                            </div>
+                            {
+                                Array.from(Array(comment.star).keys()).map(()=>{
+                                    return(<AiFillStar color={'FFD25E'} size={20}/>)
+                                })
+                            }
+                            {
+                                Array.from(Array(5 - comment.star).keys()).map(()=>{
+                                    return(<AiOutlineStar color={'FFD25E'} size={20}/>)
+                                })
+                            }
+                        </div>
+                        <div className='comment-time ml-[20px] '>
+                            <span className='time'>
+                                {refineDateTime(comment.time)}
+                            </span>
+                            <span className='calculate-time ml-1'>
+                                {'(' + calculateDate(comment.time) +')'}
+                            </span>
+                            
+                        </div>
+                        <div className={'divider ' + 
+                            'w-[calc(108%-24px)] absolute h-[1px] bg-[#c5c5c5] ' +
+                            'top-[28px]'
+                        }>
+                            
+                        </div>
+
+                        
+                    </div>
+                    <div className={'comment-content '+ 'mt-3 w-[calc(100%+20px)] mb-3'}>
+                        {comment.content}
+                    </div>
+                </div>
+                
+            </div>
+        );
+    }
+
+    const renderCommentItems = (comments) => {
+        return (
+            <div 
+                className='comments-concrete-container 
+                    xs:mt-[24px]
+                    md:mt-[24px]
+                    lg:mt-[24px] 
+                    xl:mt-0 xl:ml-[20px]
+
+            '>
+                {
+                    comments.map((comment) =>{
+                        return (<div>{commentItem(comment)}</div>);
+                    })
+                }
+            </div>
+        )
+    }
+
 
     return (
         <Layout activeNav={"book"}>
@@ -374,8 +512,8 @@ const BookPage: React.FC = () => {
                     <Grid container 
                         className='comment-container mt-[16px]'
                     >
-                        <Grid item xs={12} md={3} lg={3}
-                            className='rating-grid  relative'
+                        <Grid item xs={12} md={12} lg={3}
+                            className='rating-grid relative'
                         >
                             {ratingConcreteRender(data)}
                            <div 
@@ -385,21 +523,22 @@ const BookPage: React.FC = () => {
                                     absolute
                                     top-0
                                     right-[6px]
+                                    md:hidden xs:hidden sm:hidden lg:hidden xl:block
                                 '
                             ></div>
 
                         </Grid>
                         <Grid 
-                            item xs={12} md={9} lg={9}
+                            item xs={12} md={12} lg={9}
                             className='comment-grid'
                         >
                             <div 
                                 className='comment-container 
                                     mr-[12px] 
-                                    h-[200px]
-                                    md:block xs:hidden lg:block
                                 '
-                            ></div>
+                            >
+                                {renderCommentItems(comments)}
+                            </div>
                         </Grid>
                     </Grid>
                 </div>
