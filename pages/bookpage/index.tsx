@@ -1,5 +1,5 @@
 
-import React from 'react'
+import React, { useState }from 'react'
 import Layout from '../../component/Layout'
 import {Grid} from '@mui/material';
 import BookItem from '../../component/BookPage/BookItem';
@@ -9,6 +9,9 @@ import "slick-carousel/slick/slick-theme.css";
 import { MdArrowForwardIos, MdArrowBackIosNew } from "react-icons/md";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import ProgressBar from "@ramonak/react-progress-bar";
+import Pagination from '@mui/material/Pagination';
+import { makeStyles } from "@material-ui/core/styles";
+
 const ArrowLeft = (props) => (
     <button
         {...props}
@@ -189,6 +192,76 @@ const BookPage: React.FC = () => {
             time: '2022/04/22',
             content: 'Không giống với nhiều tác phẩm trước đó của Nguyễn Nhật Ánh, Ngồi khóc trên cây được nhà văn đưa vào nhiều nghịch cảnh éo le, bi thương nhằm thử thách các nhân vật và giúp họ trưởng thành hơn về mặt tình cảm theo thời gian. Tác phẩm đã nằm trong tốp những quyển sách Việt Nam được nhiều người đặt mua nhất năm 2013 theo thống kê của nhiều hệ thống phân phối sách trực '    
         }, 
+        {
+            userAvatar: 'https://i.pinimg.com/736x/ac/8d/41/ac8d41fffb15f91c58e62b679e998bbc.jpg',
+            username: 'Nguyễn Công Phi',
+            star: 5,
+            time: '2022/04/22',
+            content: 'Không giống với nhiều tác phẩm trước đó của Nguyễn Nhật Ánh, Ngồi khóc trên cây được nhà văn đưa vào nhiều nghịch cảnh éo le, bi thương nhằm thử thách các nhân vật và giúp họ trưởng thành hơn về mặt tình cảm theo thời gian. Tác phẩm đã nằm trong tốp những quyển sách Việt Nam được nhiều người đặt mua nhất năm 2013 theo thống kê của nhiều hệ thống phân phối sách trực '    
+        }, 
+        {
+            userAvatar: 'https://i.pinimg.com/736x/ac/8d/41/ac8d41fffb15f91c58e62b679e998bbc.jpg',
+            username: 'Nguyễn Công Phi',
+            star: 5,
+            time: '2022/04/22',
+            content: 'Không giống với nhiều tác phẩm trước đó của Nguyễn Nhật Ánh, Ngồi khóc trên cây được nhà văn đưa vào nhiều nghịch cảnh éo le, bi thương nhằm thử thách các nhân vật và giúp họ trưởng thành hơn về mặt tình cảm theo thời gian. Tác phẩm đã nằm trong tốp những quyển sách Việt Nam được nhiều người đặt mua nhất năm 2013 theo thống kê của nhiều hệ thống phân phối sách trực '    
+        }, 
+        {
+            userAvatar: 'https://i.pinimg.com/736x/ac/8d/41/ac8d41fffb15f91c58e62b679e998bbc.jpg',
+            username: 'Raiden',
+            star: 5,
+            time: '2022/03/22',
+            content: 'Không giống với nhiều tác phẩm trước đó của Nguyễn Nhật Ánh, Ngồi khóc trên cây được nhà văn đưa vào nhiều nghịch cảnh éo le, bi thương nhằm thử thách các nhân vật và giúp họ trưởng thành hơn về mặt tình cảm theo thời gian. Tác phẩm đã nằm trong tốp những quyển sách Việt Nam được nhiều người đặt mua nhất năm 2013 theo thống kê của nhiều hệ thống phân phối sách trực '    
+        }, 
+        {
+            userAvatar: 'https://i.pinimg.com/736x/ac/8d/41/ac8d41fffb15f91c58e62b679e998bbc.jpg',
+            username: 'Raiden',
+            star: 5,
+            time: '2022/03/22',
+            content: 'Không giống với nhiều tác phẩm trước đó của Nguyễn Nhật Ánh, Ngồi khóc trên cây được nhà văn đưa vào nhiều nghịch cảnh éo le, bi thương nhằm thử thách các nhân vật và giúp họ trưởng thành hơn về mặt tình cảm theo thời gian. Tác phẩm đã nằm trong tốp những quyển sách Việt Nam được nhiều người đặt mua nhất năm 2013 theo thống kê của nhiều hệ thống phân phối sách trực '    
+        }, 
+        {
+            userAvatar: 'https://i.pinimg.com/736x/ac/8d/41/ac8d41fffb15f91c58e62b679e998bbc.jpg',
+            username: 'Raiden',
+            star: 5,
+            time: '2022/03/22',
+            content: 'Không giống với nhiều tác phẩm trước đó của Nguyễn Nhật Ánh, Ngồi khóc trên cây được nhà văn đưa vào nhiều nghịch cảnh éo le, bi thương nhằm thử thách các nhân vật và giúp họ trưởng thành hơn về mặt tình cảm theo thời gian. Tác phẩm đã nằm trong tốp những quyển sách Việt Nam được nhiều người đặt mua nhất năm 2013 theo thống kê của nhiều hệ thống phân phối sách trực '    
+        }, 
+        {
+            userAvatar: 'https://i.pinimg.com/736x/ac/8d/41/ac8d41fffb15f91c58e62b679e998bbc.jpg',
+            username: 'Raiden',
+            star: 5,
+            time: '2022/03/22',
+            content: 'Không giống với nhiều tác phẩm trước đó của Nguyễn Nhật Ánh, Ngồi khóc trên cây được nhà văn đưa vào nhiều nghịch cảnh éo le, bi thương nhằm thử thách các nhân vật và giúp họ trưởng thành hơn về mặt tình cảm theo thời gian. Tác phẩm đã nằm trong tốp những quyển sách Việt Nam được nhiều người đặt mua nhất năm 2013 theo thống kê của nhiều hệ thống phân phối sách trực '    
+        }, 
+        {
+            userAvatar: 'https://i.pinimg.com/736x/ac/8d/41/ac8d41fffb15f91c58e62b679e998bbc.jpg',
+            username: 'Raiden',
+            star: 5,
+            time: '2022/03/22',
+            content: 'Không giống với nhiều tác phẩm trước đó của Nguyễn Nhật Ánh, Ngồi khóc trên cây được nhà văn đưa vào nhiều nghịch cảnh éo le, bi thương nhằm thử thách các nhân vật và giúp họ trưởng thành hơn về mặt tình cảm theo thời gian. Tác phẩm đã nằm trong tốp những quyển sách Việt Nam được nhiều người đặt mua nhất năm 2013 theo thống kê của nhiều hệ thống phân phối sách trực '    
+        }, 
+        {
+            userAvatar: 'https://i.pinimg.com/736x/ac/8d/41/ac8d41fffb15f91c58e62b679e998bbc.jpg',
+            username: 'Raiden',
+            star: 5,
+            time: '2022/03/22',
+            content: 'Không giống với nhiều tác phẩm trước đó của Nguyễn Nhật Ánh, Ngồi khóc trên cây được nhà văn đưa vào nhiều nghịch cảnh éo le, bi thương nhằm thử thách các nhân vật và giúp họ trưởng thành hơn về mặt tình cảm theo thời gian. Tác phẩm đã nằm trong tốp những quyển sách Việt Nam được nhiều người đặt mua nhất năm 2013 theo thống kê của nhiều hệ thống phân phối sách trực '    
+        }, 
+        {
+            userAvatar: 'https://i.pinimg.com/736x/ac/8d/41/ac8d41fffb15f91c58e62b679e998bbc.jpg',
+            username: 'Raiden',
+            star: 5,
+            time: '2022/03/22',
+            content: 'Không giống với nhiều tác phẩm trước đó của Nguyễn Nhật Ánh, Ngồi khóc trên cây được nhà văn đưa vào nhiều nghịch cảnh éo le, bi thương nhằm thử thách các nhân vật và giúp họ trưởng thành hơn về mặt tình cảm theo thời gian. Tác phẩm đã nằm trong tốp những quyển sách Việt Nam được nhiều người đặt mua nhất năm 2013 theo thống kê của nhiều hệ thống phân phối sách trực '    
+        }, 
+        {
+            userAvatar: 'https://i.pinimg.com/736x/ac/8d/41/ac8d41fffb15f91c58e62b679e998bbc.jpg',
+            username: 'Raiden',
+            star: 5,
+            time: '2022/03/22',
+            content: 'Không giống với nhiều tác phẩm trước đó của Nguyễn Nhật Ánh, Ngồi khóc trên cây được nhà văn đưa vào nhiều nghịch cảnh éo le, bi thương nhằm thử thách các nhân vật và giúp họ trưởng thành hơn về mặt tình cảm theo thời gian. Tác phẩm đã nằm trong tốp những quyển sách Việt Nam được nhiều người đặt mua nhất năm 2013 theo thống kê của nhiều hệ thống phân phối sách trực '    
+        }, 
         // {
         //     userAvatar: 'https://i.pinimg.com/736x/ac/8d/41/ac8d41fffb15f91c58e62b679e998bbc.jpg',
         //     username: 'Nguyễn Công Phi',
@@ -280,22 +353,90 @@ const BookPage: React.FC = () => {
         );
     }
 
+    const useStyles = makeStyles({
+        root: {
+          "& .MuiPagination-ul": {
+            textAlign: 'center',
+            display: 'flex',
+            justifyContent: "center",
+            "& > li": {
+                "& button": {
+                    borderRadius: "50%",
+                    border: "none",
+                    width: "40px",
+                    height: "40px",
+                    boxShadow: 'rgba(0, 0, 0, 0.35) 2px 2px 10px',
+                    fontFamily: 'Nunito',
+                    fontSize: '18px',
+                    fontWeight: 600,
+                    lineHeight: '40px'
+                },
+            },
+            "& .Mui-disabled": {
+                background: "#ffffff",
+                opacity: '0.25'
+            },
+            '& .Mui-selected': { 
+                backgroundColor: '#2BBCBA',
+                color: "#ffffff",
+                
+            },
+            "& > li:first-child": {
+              "& button": {
+                borderRadius: "50%",
+                width: "40px",
+                height: "40px",
+              },
+            },
+            "& > li:last-child": {
+              "& button": {
+                borderRadius: "50%",
+                width: "40px",
+                height: "40px",
+              },
+            },
+          },
+        },
+    });
     const renderCommentItems = (comments) => {
-        return (
-            <div 
-                className='comments-concrete-container 
-                    xs:mt-[24px]
-                    md:mt-[24px]
-                    lg:mt-[24px] 
-                    xl:mt-0 xl:ml-[20px]
+        const classes = useStyles();
+        let itemPerPage: number = 5;
+        const [currentIndex, changeCurrentIndex]  = useState(0);
+        const handleChangePage = (page) => {
+            console.log("page", page);
+            changeCurrentIndex(page - 1);
+        }
 
-            '>
-                {
-                    comments.map((comment) =>{
-                        return (<div>{commentItem(comment)}</div>);
-                    })
-                }
+        return (
+            <div className='comment-and-pagination'>
+                <div 
+                    className='comments-concrete-container 
+                        xs:mt-[24px]
+                        md:mt-[24px]
+                        lg:mt-[24px] 
+                        xl:mt-0 xl:ml-[20px]
+
+                '>
+                    {
+                        comments.map((comment, index) =>{
+                            if(index >= currentIndex*itemPerPage && index < (currentIndex+1)*itemPerPage)
+                                return (<div>{commentItem(comment)}</div>);
+                            else return null;
+                        })
+                    }
+                </div>
+                <div
+                    className={classes.root + ' mt-4'}
+                >
+                    <Pagination 
+                        count={Math.ceil(comments.length/itemPerPage)} 
+                        variant="outlined" 
+                        onChange={(e, page) => handleChangePage(page)}
+                    />
+                </div>
+                
             </div>
+            
         )
     }
 
