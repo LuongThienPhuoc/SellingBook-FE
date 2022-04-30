@@ -18,7 +18,7 @@ module.exports = {
       // => @media (min-width: 1280px) { ... }
     },
     fontFamily:{
-      'primary': ['Nunito', 'sans-serif']
+      'primary': ['Nunito', 'serif']
     },
     colors: {
       'primary': '#2BBCBA'

@@ -9,9 +9,9 @@ import style from '../../styles/Admin/Dashboard.module.css'
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
-const Navigation = dynamic(() => import('../../component/Admin/Navigation'))
-const NavigationMobile = dynamic(() => import('../../component/Admin/NavigationMobile'))
-const Layout = dynamic(() => import('../../component/Layout'),
+const Navigation = dynamic(() => import('../../../component/Admin/Navigation'))
+const NavigationMobile = dynamic(() => import('../../../component/Admin/NavigationMobile'))
+const Layout = dynamic(() => import('../../../component/Layout'),
     {
         loading: () => <LinearProgress></LinearProgress>
     }
