@@ -15,7 +15,6 @@ import axios from 'axios'
 import { useState } from 'react'
 import * as URL from '../services/api/config'
 import LinearProgress from '@mui/material/LinearProgress';
-
 import { userLogin } from '../redux/actions/userAction'
 
 const MyApp = ({ Component, pageProps }) => {
@@ -24,15 +23,10 @@ const MyApp = ({ Component, pageProps }) => {
   useEffect(() => {
     console.log(getAccessToken());
     const fetApi = async () => {
-      if (getAccessToken()) {
-        const token = getAccessToken()
-        await axios.post(URL.URL_REFRESH,
-          {
-            headers: {
-              'authorization': `Basic ${token}`
-            }
-          }
-        ).then(res => {
+      const token = getAccessToken()
+      console.log(token)
+      if (token !== null || token !== undefined) {
+        await axios.post(URL.URL_REFRESH).then(res => {
           if (res.data.status == 1) {
             setAccessToken(res.data.token)
             dispatch(userLogin(res.data))

@@ -23,6 +23,10 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import Badge from '@mui/material/Badge';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { setAccessToken } from '../utils/cookies';
+import { setSearch } from '../redux/actions/searchAction'
+import { KeyboardEvent } from "react";
+import dynamic from 'next/dynamic';
+const CartItemInNavBar = dynamic(() => import('./Cart/CarItemInNavBar'))
 
 const pages = [
     {
@@ -82,15 +86,23 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
     justifyContent: 'center',
 }));
 
+
+
+
 const NavBar = (props) => {
     const dispatch = useDispatch();
     const isLogin = useSelector((state: RootStateOrAny) => state.userReducer.isLogin)
     const infoUser = useSelector((state: RootStateOrAny) => state.userReducer.infoUser)
-    console.log(infoUser)
+    const search = useSelector((state: RootStateOrAny) => state.searchReducer.search)
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
     const [anchoElMess, setAnchorElMess] = React.useState<null | HTMLElement>(null);
     const [anchoElCart, setAnchoElCart] = React.useState<null | HTMLElement>(null);
+    const searchRef = React.useRef(null)
+
+    React.useEffect(() => {
+        console.log(infoUser.role)
+    }, [])
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
@@ -124,6 +136,11 @@ const NavBar = (props) => {
         setAccessToken(null)
     }
 
+    const handleKeyPressSearch = (e: KeyboardEvent) => {
+        if (e.key == 'Enter') {
+            searchRef?.current?.click()
+        }
+    }
 
     const renderStatusLogin = () => {
         if (isLogin) {
@@ -184,12 +201,22 @@ const NavBar = (props) => {
                                     <a style={{ textDecoration: 'none', fontSize: '14px', fontWeight: '500', color: '#2f5acf', lineHeight: '1.5' }}>Xem tất cả</a>
                                 </Link>
                             </div>
-                            <ul style={{ maxHeight: '400px' }}>
-                                <li style={{ height: '100px' }}>CArt</li>
-                                <li style={{ height: '100px' }}>CArt</li>
-                                <li style={{ height: '100px' }}>CArt</li>
-                                <li style={{ height: '100px' }}>CArt</li>
-                                <li style={{ height: '100px' }}>CArt</li>
+                            <ul style={{ maxHeight: '400px', paddingTop: '30px', paddingLeft: '0' }}>
+                                <li>
+                                    <CartItemInNavBar></CartItemInNavBar>
+                                </li>
+                                <li>
+                                    <CartItemInNavBar></CartItemInNavBar>
+                                </li>
+                                <li>
+                                    <CartItemInNavBar></CartItemInNavBar>
+                                </li>
+                                <li>
+                                    <CartItemInNavBar></CartItemInNavBar>
+                                </li>
+                                <li>
+                                    <CartItemInNavBar></CartItemInNavBar>
+                                </li>
                             </ul>
                         </div>
                     </Menu>
@@ -329,13 +356,18 @@ const NavBar = (props) => {
                                     </Typography>
                                 </MenuItem>
                             ))}
-                            <MenuItem onClick={handleCloseNavMenu}>
-                                <Typography textAlign="center">
-                                    <Link href={'/admin/dashboard'} passHref>
-                                        <Button style={{ color: 'black', fontWeight: '500' }}>Thống kê</Button>
-                                    </Link>
-                                </Typography>
-                            </MenuItem>
+                            {
+                                (!infoUser.role || infoUser.role === 'user') ? null : (
+                                    <MenuItem onClick={handleCloseNavMenu}>
+                                        <Typography textAlign="center">
+                                            <Link href={'/admin/dashboard'} passHref>
+                                                <Button style={{ color: 'black', fontWeight: '500' }}>Thống kê</Button>
+                                            </Link>
+                                        </Typography>
+                                    </MenuItem>
+                                )
+                            }
+
                         </Menu>
                     </Box>
                     <Typography
@@ -350,8 +382,14 @@ const NavBar = (props) => {
                             </SearchIconWrapper>
                             <StyledInputBase
                                 placeholder="Nhập tên sách cần tìm"
+                                onChange={(e) => { console.log(e.target.value); dispatch(setSearch(e.target.value)) }}
+                                defaultValue={search}
+                                onKeyDown={handleKeyPressSearch}
                                 inputProps={{ 'aria-label': 'search' }}
                             />
+                            <Link href={'/search'} passHref>
+                                <div ref={searchRef} className='bg-transparent w-7 h-6 absolute top-2 left-2 z-50 cursor-pointer' onClick={() => { console.log('click') }}></div>
+                            </Link>
                         </Search>
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
@@ -362,21 +400,31 @@ const NavBar = (props) => {
                                 </Link>
                             </div>
                         ))}
-                        <div style={{ position: 'relative' }}>
-                            <Link href={'/admin/dashboard'} passHref>
-                                <Button className={props.active === 'admin' ? style.activeItem + ' ' + style.navItemLine : style.navItemLine} style={{ color: 'white', fontWeight: '600' }}>Thống kê</Button>
-                            </Link>
-                        </div>
+                        {
+                            (!infoUser.role || infoUser.role === 'user') ? null : (
+                                <div style={{ position: 'relative' }}>
+                                    <Link href={'/admin/dashboard'} passHref>
+                                        <Button className={props.active === 'admin' ? style.activeItem + ' ' + style.navItemLine : style.navItemLine} style={{ color: 'white', fontWeight: '600' }}>Thống kê</Button>
+                                    </Link>
+                                </div>
+                            )
+                        }
                     </Box>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         <Search style={{ backgroundColor: 'white', color: '#979797' }}>
-                            <SearchIconWrapper>
+                            <SearchIconWrapper >
                                 <SearchIcon />
                             </SearchIconWrapper>
                             <StyledInputBase
+                                onChange={(e) => { console.log(e.target.value); dispatch(setSearch(e.target.value)) }}
                                 placeholder="Nhập tên sách cần tìm"
+                                defaultValue={search}
+                                onKeyDown={handleKeyPressSearch}
                                 inputProps={{ 'aria-label': 'search' }}
                             />
+                            <Link href={'/search'} passHref>
+                                <div ref={searchRef} className='bg-transparent w-7 h-6 absolute top-2 left-2 z-50 cursor-pointer' onClick={() => { console.log('click') }}></div>
+                            </Link>
                         </Search>
                     </Box>
                     {renderStatusLogin()}
