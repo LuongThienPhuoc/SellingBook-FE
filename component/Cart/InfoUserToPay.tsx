@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, RootStateOrAny, useSelector } from 'react-redux'
 
 import { Container, Grid, TextField, Radio } from '@mui/material'
 import style from '../../styles/Cart.module.css'
@@ -7,24 +7,39 @@ import axios from 'axios'
 import Link from 'next/link';
 
 function InfoUserToPay(props) {
-
+    const infoUser = useSelector((state: RootStateOrAny) => state.userReducer.infoUser)
+    const isLogin = useSelector((state: RootStateOrAny) => state.userReducer.isLogin)
     const districtRef = useRef()
     const communeRef = useRef()
     const dispatch = useDispatch()
     const [selectedValue, setSelectedValue] = React.useState('momo');
 
     const [provinces, setProvinces] = useState([])
-    let provinceSelect: String
+    const [provinceSelect, setProvinceSelect] = useState<String | null>(infoUser.province ? infoUser.province : '0')
+
     const [districts, setDistricts] = useState([])
-    let districtsSelect: String
+    const [districtSelect, setDistrictSelect] = useState<String | null>(infoUser.district ? infoUser.district : '0')
+
     const [communes, setCommunes] = useState([])
-    let communesSelect: String
+    const [communeSelect, setCommuneSelect] = useState<String | null>(infoUser.commune ? infoUser.commune : '0')
+
 
     useEffect(() => {
+        console.log(infoUser)
         const fetAPIProvince = async () => {
             axios.get(`https://api.mysupership.vn/v1/partner/areas/province`).then(res => {
                 setProvinces(res.data.results)
             })
+            if (provinceSelect !== '0') {
+                await axios.get(`https://api.mysupership.vn/v1/partner/areas/district?province=${provinceSelect}`).then(res => {
+                    setDistricts(res.data.results)
+                })
+            }
+            if (districtSelect !== '0') {
+                await axios.get(`https://api.mysupership.vn/v1/partner/areas/commune?district=${districtSelect}`).then(res => {
+                    setCommunes(res.data.results)
+                })
+            }
         }
         fetAPIProvince()
     }, [])
@@ -44,19 +59,21 @@ function InfoUserToPay(props) {
     });
 
     const handleChangeProvince = async (e) => {
+        setProvinceSelect(e.target.value)
         if (e.target.value == '0') {
             setDistricts([])
             setCommunes([])
         } else {
             await axios.get(`https://api.mysupership.vn/v1/partner/areas/district?province=${e.target.value}`).then(res => {
-                console.log(districtRef.current)
                 setDistricts(res.data.results)
             })
         }
-        provinceSelect = e.target.value
+        setDistrictSelect('0')
+        setCommuneSelect('0')
     }
 
     const handleChangeDistrict = async (e) => {
+        setDistrictSelect(e.target.value)
         if (e.target.value == '0') {
             setCommunes([])
         } else {
@@ -64,56 +81,72 @@ function InfoUserToPay(props) {
                 setCommunes(res.data.results)
             })
         }
-        districtsSelect = e.target.value
+        setCommuneSelect('0')
     }
+
+    const handleChangeCommune = (e) => {
+        setCommuneSelect(e.target.value)
+    }
+
 
     return (
         <div className={'p-4 relative'}>
             <div className={style.line}></div>
             <div className='flex justify-between items-center pt-10'>
                 <div className='text-3xl font-bold'>Thông tin vận chuyển</div>
-                <div className='text-base w-2/6'>Bạn đã có tài khoản? <span className='cursor-pointer text-[#2f5acf] font-medium'>Đăng nhập ngay</span></div>
+                {
+                    isLogin ? null : (
+                        <div className='text-base w-2/6'>Bạn đã có tài khoản?
+                            <Link href={'/login'}>
+                                <span className='cursor-pointer text-[#2f5acf] font-medium'>Đăng nhập ngay</span>
+                            </Link>
+                        </div>
+                    )
+                }
             </div>
             <Container className='pt-10'>
                 <Grid container spacing={3}>
                     <Grid item sm={6}>
                         <TextField
-                            label="Outlined"
+                            label="Họ tên"
                             id="outlined-basic"
-                            defaultValue="normal"
                             variant="outlined"
                             size="medium"
+                            defaultValue={infoUser.name ? infoUser.name : ''}
                             fullWidth
+                            placeholder='Nguyễn Văn A'
                         />
                     </Grid>
                     <Grid item sm={6}>
                         <TextField
-                            label="Outlined"
+                            label="Số điện thoại"
                             id="outlined-basic"
-                            defaultValue="Small"
                             variant="outlined"
+                            defaultValue={infoUser.phone ? infoUser.phone : ''}
                             size="medium"
                             fullWidth
+                            placeholder='0999999999'
                         />
                     </Grid>
                     <Grid item sm={12}>
                         <TextField
-                            label="Outlined"
+                            label="Email"
                             id="outlined-basic"
-                            defaultValue="Small"
                             variant="outlined"
                             size="medium"
+                            defaultValue={infoUser.mail ? infoUser.mail : ''}
                             fullWidth
+                            placeholder='abc@gmail.com'
                         />
                     </Grid>
                     <Grid item sm={12}>
                         <TextField
-                            label="Outlined"
+                            label="Địa chỉ"
                             id="outlined-basic"
-                            defaultValue="Small"
                             variant="outlined"
                             size="medium"
                             fullWidth
+                            placeholder='43 QL91 (Số nhà)'
                         />
                     </Grid>
                     <Grid item sm={4}>
@@ -125,6 +158,7 @@ function InfoUserToPay(props) {
                             size='medium'
                             variant="outlined"
                             select
+                            value={provinceSelect}
                             onChange={handleChangeProvince}
                             defaultValue={"0"}
                             SelectProps={{ native: true }}
@@ -149,6 +183,7 @@ function InfoUserToPay(props) {
                             size='medium'
                             variant="outlined"
                             select
+                            value={districtSelect}
                             ref={districtRef}
                             onChange={handleChangeDistrict}
                             SelectProps={{ native: true }}
@@ -172,6 +207,8 @@ function InfoUserToPay(props) {
                             size='medium'
                             variant="outlined"
                             select
+                            value={communeSelect}
+                            onChange={handleChangeCommune}
                             ref={communeRef}
                             SelectProps={{ native: true }}
                         >
@@ -187,12 +224,12 @@ function InfoUserToPay(props) {
                     </Grid>
                     <Grid item sm={12}>
                         <TextField
-                            label="Outlined"
+                            label="Ghi chú thêm"
                             id="outlined-basic"
-                            defaultValue="Small"
                             variant="outlined"
                             size="medium"
                             fullWidth
+                            placeholder='Ghi chú thêm (Ví dụ: Giao giờ hành chính)'
                         />
                     </Grid>
                 </Grid>

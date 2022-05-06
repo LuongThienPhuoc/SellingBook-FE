@@ -5,6 +5,7 @@ import React from 'react';
 import { Container, Grid, Divider } from '@mui/material';
 import Pagination from '@mui/material/Pagination';
 import { useSelector, RootStateOrAny } from 'react-redux';
+
 const NavigationBar = dynamic(() => import('../component/Search/NavigationBar'))
 const CardPurchasedList = dynamic(() => import('../component/Search/CardPurchasedList'))
 const Layout = dynamic(() => import('../component/Layout'),
