@@ -5,15 +5,15 @@ import Head from 'next/head';
 import { Button, Container, Grid} from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
-const Navigation = dynamic(() => import('../../../component/Admin/Navigation'))
-const NavigationMobile = dynamic(() => import('../../../component/Admin/NavigationMobile'))
+const Navigation = dynamic(() => import('./Navigation'))
+const NavigationMobile = dynamic(() => import('./NavigationMobile'))
 const Layout = dynamic(() => import('../../../component/Layout'),
     {
         loading: () => <LinearProgress></LinearProgress>
     }
 )
 
-function product(props) {
+const product: React.FC = (props) => {
     const isLogin = useSelector((state: RootStateOrAny) => state.userReducer.isLogin)
     const infoUser = useSelector((state: RootStateOrAny) => state.userReducer.infoUser)
     // const router = useRouter()
@@ -48,7 +48,7 @@ function product(props) {
                             <div className='title 
                                 text-[22px] font-[600] text-[#000]
                             '>
-                                Thông tin sản phẩm
+                                Thông tin sản phẩm nè adfjafjafajuf
                             </div>
                             <Grid container spacing={1} className='mt-2'>
                                 <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
@@ -140,9 +140,9 @@ function product(props) {
                                         <option value="mercedes">Mercedes</option>
                                         <option value="audi">Audi</option>
                                     </select>
-                                    <Button variant="contained">
+                                    <button>
                                         Thêm 
-                                    </Button>
+                                    </button>
                                 </Grid>
                             </Grid>
                         </div>
