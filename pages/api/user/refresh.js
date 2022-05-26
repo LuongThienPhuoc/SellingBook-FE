@@ -10,7 +10,7 @@ const Refresh = async (req, res, data) => {
     switch (method) {
         case 'POST':
             try {
-                console.log(data)
+                console.log("data", data)
                 console.log(data['0']);
                 console.log(data.username)
                 const username = data.username;
@@ -20,7 +20,7 @@ const Refresh = async (req, res, data) => {
                             res.status(200).send(JSON.stringify({
                                 success: true,
                                 status: 1,
-                                message: 'Refresh thành công',
+                                message: 'Refresh ok',
                                 data: result,
                                 token: JWTAuthToken({ username: username })
                             }))
@@ -40,7 +40,6 @@ const Refresh = async (req, res, data) => {
                 res.status(400).json({ success: false });
             }
             break;
-
         default:
             res.status(400).send(JSON.stringify({ success: false }));
     }

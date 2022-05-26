@@ -36,7 +36,8 @@ export const AuthMiddleware = (refresh) => {
             var token;
             var name = '_jwt' + "=";
             if (typeof req.headers.cookie == 'undefined') {
-                res.status(200).send({ success: 'true' })
+                res.status(200).send({ success: 'true' });
+                return;
             }
             var ca = req.headers.cookie.split(';');
             console.log("Đến đây rồi");

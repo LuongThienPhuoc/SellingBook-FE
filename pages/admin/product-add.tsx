@@ -3,19 +3,18 @@ import dynamic from 'next/dynamic';
 import LinearProgress from '@mui/material/LinearProgress';
 import Head from 'next/head';
 import { Button, Container, Grid} from '@mui/material';
-import { useRouter } from 'next/router';
 import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
-const Navigation = dynamic(() => import('./Navigation'))
-const NavigationMobile = dynamic(() => import('./NavigationMobile'))
-const Layout = dynamic(() => import('../../../component/Layout'),
+const NavigationMobile = dynamic(() => import('../../component/Admin/NavigationMobile'))
+const Navigation = dynamic(() => import('../../component/Admin/Navigation'))
+const Layout = dynamic(() => import('../../component/Layout'),
     {
         loading: () => <LinearProgress></LinearProgress>
     }
 )
 
 const product: React.FC = (props) => {
-    const isLogin = useSelector((state: RootStateOrAny) => state.userReducer.isLogin)
-    const infoUser = useSelector((state: RootStateOrAny) => state.userReducer.infoUser)
+    // const isLogin = useSelector((state: RootStateOrAny) => state.userReducer.isLogin)
+    // const infoUser = useSelector((state: RootStateOrAny) => state.userReducer.infoUser)
     // const router = useRouter()
     // useEffect(() => {
      
@@ -23,11 +22,11 @@ const product: React.FC = (props) => {
     //         router.push('/')
     //     }
     // }, [isLogin, infoUser])
-    const [option, setOption] = useState('Danh sách đơn hàng')
-    const handleClickOption = (e) => {
-        e.preventDefault()
-        setOption(e.target.innerText)
-    }
+    // const [option, setOption] = useState('Danh sách đơn hàng')
+    // const handleClickOption = (e) => {
+    //     e.preventDefault()
+    //     setOption(e.target.innerText)
+    // }
 
     return (
         <Layout active="admin">
@@ -39,16 +38,16 @@ const product: React.FC = (props) => {
                 <Grid className='mb-16' container spacing={3}>
                     <Grid className='mt-16 min:hidden 900px:block' item md={3}>
                         <Navigation option='product'></Navigation>
-                    </Grid>
+                    </Grid>adada
                     <Grid className='mt-16 font-primary font-[500] text-[#000]' sm={12} item md={9}>
                         <div className='title text-[#2BBCBA] text-[24px]'>
-                            Thêm sản phẩm
-                        </div>
+                            Thêm sản phẩmầhfjahkjafâadadadaadadadadadd Fix được chưa
+                        </div> adadad
                         <div style={{ boxShadow: 'rgb(0 0 0 / 60%) 0px 3px 8px', padding: '25px' }} className='rounded-lg'>
                             <div className='title 
                                 text-[22px] font-[600] text-[#000]
                             '>
-                                Thông tin sản phẩm nè adfjafjafajuf
+                                Thông tin sản phẩm adadâdd
                             </div>
                             <Grid container spacing={1} className='mt-2'>
                                 <Grid item xs={2} sm={2} md={2} lg={2} xl={2}

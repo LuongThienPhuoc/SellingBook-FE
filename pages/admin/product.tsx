@@ -8,10 +8,11 @@ import { AiOutlineDashboard } from 'react-icons/ai'
 import style from '../../styles/Admin/Dashboard.module.css'
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+
 import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
-const Navigation = dynamic(() => import('../../../component/Admin/Navigation'))
-const NavigationMobile = dynamic(() => import('../../../component/Admin/NavigationMobile'))
-const Layout = dynamic(() => import('../../../component/Layout'),
+const NavigationMobile = dynamic(() => import('../../component/Admin/NavigationMobile'))
+const Navigation = dynamic(() => import('../../component/Admin/Navigation'))
+const Layout = dynamic(() => import('../../component/Layout'),
     {
         loading: () => <LinearProgress></LinearProgress>
     }
@@ -36,7 +37,7 @@ function product(props) {
     return (
         <Layout active="admin">
             <Head>
-                <title>Quản lý sản phẩm</title>
+                <title>Quản lý sản phẩm ủa alo</title>
             </Head>
             <Container className='relative' maxWidth='lg'>
                 <NavigationMobile option='product'></NavigationMobile>
@@ -46,7 +47,7 @@ function product(props) {
                     </Grid>
                     <Grid className='mt-16' sm={12} item md={9}>
                         <div style={{ boxShadow: 'rgb(0 0 0 / 60%) 0px 3px 8px', padding: '25px' }} className='rounded-lg '>
-                            Product
+                            Product adâd àgầhkj
                         </div>
                     </Grid>
                 </Grid>
