@@ -18,30 +18,30 @@ import LinearProgress from '@mui/material/LinearProgress';
 import { userLogin } from '../redux/actions/userAction'
 
 const MyApp = ({ Component, pageProps }) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch()
-  useEffect(() => {
-    console.log(getAccessToken());
-    const fetApi = async () => {
-      const token = getAccessToken()
-      console.log(token)
-      if (token !== null || token !== undefined) {
-        await axios.post(URL.URL_REFRESH).then(res => {
-          if (res.data.status == 1) {
-            setAccessToken(res.data.token)
-            dispatch(userLogin(res.data))
-          }
-          setIsLoading(true)
-        }).catch(err => {
-          setIsLoading(true)
-        });
-      } else {
-        setIsLoading(true)
-      }
-    }
-    fetApi()
-    //setIsLoading(true)
-  }, [])
+  // useEffect(() => {
+  //   console.log(getAccessToken());
+  //   const fetApi = async () => {
+  //     const token = getAccessToken()
+  //     console.log(token)
+  //     if (token !== null || token !== undefined) {
+  //       await axios.post(URL.URL_REFRESH).then(res => {
+  //         if (res.data.status == 1) {
+  //           setAccessToken(res.data.token)
+  //           dispatch(userLogin(res.data))
+  //         }
+  //         setIsLoading(true)
+  //       }).catch(err => {
+  //         setIsLoading(true)
+  //       });
+  //     } else {
+  //       setIsLoading(true)
+  //     }
+  //   }
+  //   fetApi()
+  //   //setIsLoading(true)
+  // }, [])
 
 
   if (!isLoading) return (<LinearProgress></LinearProgress>)

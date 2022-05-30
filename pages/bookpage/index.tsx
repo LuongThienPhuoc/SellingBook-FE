@@ -398,6 +398,7 @@ const BookPage: React.FC = () => {
           },
         },
     });
+
     const renderCommentItems = (comments) => {
         const classes = useStyles();
         let itemPerPage: number = 5;
