@@ -18,32 +18,81 @@ const CreateNewReceipt = async (req, res, data) => {
                     if (receipt) {
                         receipt.save()
                             .then(result => {
-                                res.status(200).send(JSON.stringify({
+                                return res.status(200).json({
                                     success: true,
                                     cart: result,
                                     message: 'Create receipt success'
-                                }))
+                                })
                             })
                             .catch(err => {
                                 throw new Error("Create receipt fail");
                             })
                     } else {
-                        res.status(200).send(JSON.stringify({
+                        return res.status(200).json({
                             success: false,
                             status: 401,
                             refresh: 'Create receipt success'
-                        }))
+                        })
+
                     }
                 }
             }
             catch (error) {
                 throw new Error("Create receipt fail");
+
+            }
+            break;
+        case 'DELETE':
+            const id = mongoose.Types.ObjectId(req?.body?.id);
+            try {
+                Receipt.findByIdAndUpdate(id, { deliveryStatus: 'Đã hủy' }, (err, docs) => {
+                    if (err) {
+                        return res.status(200).json({
+                            success: false,
+                            status: 401,
+                            message: 'Delete receipt fail'
+                        })
+
+                    } else {
+                        return res.status(200).json({
+                            success: true,
+                            receipt: docs,
+                            message: 'Delete receipt success'
+                        })
+
+                    }
+                })
+            } catch (err) {
+                throw new Error("Create receipt fail");
+
+            }
+            break;
+        case 'PUT':
+            const idReceipt = mongoose.Types.ObjectId(req?.body?.id);
+            try {
+                Receipt.findByIdAndUpdate(idReceipt, { deliveryStatus: 'Chờ xác nhận' }, (err, docs) => {
+                    if (err) {
+                        return res.status(200).json({
+                            success: false,
+                            status: 401,
+                            refresh: 'Buy receipt again fail'
+                        })
+                    } else {
+                        return res.status(200).json({
+                            success: true,
+                            receipt: docs,
+                            message: 'Buy receipt again success'
+                        })
+                    }
+                })
+            } catch (err) {
+                throw new Error("Create receipt fail");
+
             }
             break;
         default:
-            res.status(400).send(JSON.stringify({ success: false }));
+            return res.status(400).json({ success: false });
     }
 }
-
 
 export default AuthMiddleware(CreateNewReceipt)

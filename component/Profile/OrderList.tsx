@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { ButtonGroup, Button } from '@mui/material';
 import style from '../../styles/Profile.module.css'
 import Pagination from '@mui/material/Pagination';
@@ -12,20 +12,51 @@ const CardOrderList = dynamic(() => import('./CardOrderList'))
 const OrderList = (props) => {
     const userInfo = useSelector((state: RootStateOrAny) => state.userReducer.infoUser)
     const status = useSelector((state: RootStateOrAny) => state.userReducer)
+    const [receipts, setReceipts] = useState([])
+    const [currentReceipts, setCurrentReceipts] = useState([])
     const [active, setActive] = useState('');
     useEffect(() => {
         setActive('All')
     }, [])
 
+    useMemo(() => {
+        if (active === 'All') {
+            setCurrentReceipts(receipts)
+        } else {
+            let a = receipts.filter(value => value.deliveryStatus == active)
+            setCurrentReceipts(a)
+        }
+    }, [active])
+
+    const handleChangeStatus = (id, status) => {
+        let a = receipts
+        a = a.map(value => {
+            if (value._id == id) {
+                value.deliveryStatus = status
+            }
+            return value
+        })
+        setReceipts(a)
+        if (active === 'All') {
+            setCurrentReceipts(a)
+        } else {
+            a = receipts.filter(value => value.deliveryStatus == active)
+            setCurrentReceipts(a)
+        }
+       
+    }
+
     useEffect(() => {
         const fetApi = async () => {
-            await axios.get(URL.URL_GET_ORDER_LIST+`?id=${userInfo._id}`)
-            .then(res => {
-                console.log(res)
-            })
-            .catch(err => {
-                console.log(err)
-            })
+            await axios.get(URL.URL_GET_ORDER_LIST + `?id=${userInfo._id}`)
+                .then(res => {
+                    setReceipts(res.data.receipts)
+                    setCurrentReceipts(res.data.receipts)
+                    console.log(res)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
         }
         if (status.isLogin) {
             fetApi()
@@ -43,11 +74,11 @@ const OrderList = (props) => {
             <div className='flex justify-center mt-6'>
                 <ButtonGroup variant="outlined" size='medium' aria-label=" button group small">
                     <Button onClick={handleClickActive} name='All' className={active === 'All' ? style.orderListActive + ' normal-case border-slate-600 hover:opacity-80 hover:bg-[#2BBCBA] text-white' : 'normal-case border-slate-600'}>Tất cả</Button>
-                    <Button onClick={handleClickActive} name='WaitForConfirm' className={active === 'WaitForConfirm' ? style.orderListActive + ' normal-case border-slate-600 hover:opacity-80 hover:bg-[#2BBCBA] text-white' : 'normal-case border-slate-600 '}>Chờ xác nhận</Button>
-                    <Button onClick={handleClickActive} name='Delivering'  className={active === 'Delivering' ? style.orderListActive + ' normal-case border-slate-600 hover:opacity-80 hover:bg-[#2BBCBA] text-white' : 'normal-case border-slate-600 '}>Đang giao</Button>
-                    <Button onClick={handleClickActive} name='WaitForGoods'  className={active === 'WaitForGoods' ? style.orderListActive + ' normal-case border-slate-600 hover:opacity-80 hover:bg-[#2BBCBA] text-white' : 'normal-case border-slate-600 '}>Chờ lấy hàng</Button>
-                    <Button onClick={handleClickActive} name='Delivered'  className={active === 'Delivered' ? style.orderListActive + ' normal-case border-slate-600 hover:opacity-80 hover:bg-[#2BBCBA] text-white' : 'normal-case border-slate-600 '}>Đã giao</Button>
-                    <Button onClick={handleClickActive} name='Cancelled'  className={active === 'Cancelled' ? style.orderListActive + ' normal-case border-slate-600 hover:opacity-80 hover:bg-[#2BBCBA] text-white' : 'normal-case border-slate-600 '}>Đã hủy</Button>
+                    <Button onClick={handleClickActive} name='Chờ xác nhận' className={active === 'Chờ xác nhận' ? style.orderListActive + ' normal-case border-slate-600 hover:opacity-80 hover:bg-[#2BBCBA] text-white' : 'normal-case border-slate-600 '}>Chờ xác nhận</Button>
+                    <Button onClick={handleClickActive} name='Đã xác nhận' className={active === 'Đã xác nhận' ? style.orderListActive + ' normal-case border-slate-600 hover:opacity-80 hover:bg-[#2BBCBA] text-white' : 'normal-case border-slate-600 '}>Đã xác nhận</Button>
+                    <Button onClick={handleClickActive} name='Đang giao' className={active === 'Đang giao' ? style.orderListActive + ' normal-case border-slate-600 hover:opacity-80 hover:bg-[#2BBCBA] text-white' : 'normal-case border-slate-600 '}>Đang giao</Button>
+                    <Button onClick={handleClickActive} name='Đã giao' className={active === 'Đã giao' ? style.orderListActive + ' normal-case border-slate-600 hover:opacity-80 hover:bg-[#2BBCBA] text-white' : 'normal-case border-slate-600 '}>Đã giao</Button>
+                    <Button onClick={handleClickActive} name='Đã hủy' className={active === 'Đã hủy' ? style.orderListActive + ' normal-case border-slate-600 hover:opacity-80 hover:bg-[#2BBCBA] text-white' : 'normal-case border-slate-600 '}>Đã hủy</Button>
                 </ButtonGroup>
             </div>
             <div className='flex justify-center mb-2.5'>
@@ -57,11 +88,13 @@ const OrderList = (props) => {
                 </div>
             </div>
             <div>
-                <CardOrderList status='WaitForConfirm'></CardOrderList>
-                <CardOrderList status='Delivering'></CardOrderList>
-                <CardOrderList status='WaitForGoods'></CardOrderList>
-                <CardOrderList status='Delivered'></CardOrderList>
-                <CardOrderList status='Cancelled'></CardOrderList>
+                {
+                    currentReceipts.length !== 0 ? currentReceipts.map((value, index) => (
+                        <CardOrderList handleChangeStatus={handleChangeStatus} key={index} receipt={value} status={value.deliveryStatus}></CardOrderList>
+                    )) : (
+                        <h3 style={{ textAlign: 'center', padding: '30px' }}>Đơn hàng trống</h3>
+                    )
+                }
             </div>
             <div className='mt-10 flex justify-center profile-pagination'>
                 <Pagination count={10} color="primary" variant="outlined" />

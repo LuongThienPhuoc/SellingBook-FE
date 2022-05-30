@@ -19,7 +19,7 @@ const GetOrderList = async (req, res, data) => {
                         if (result) {
                             res.status(200).send(JSON.stringify({
                                 success: true,
-                                cart: result,
+                                receipts: result,
                                 message: 'Get receipt user success'
                             }))
                         } else {

@@ -20,6 +20,8 @@ export const URL_UPDATE_INFO_USER = URL_SYSTEM_V1 + '/user/update-info-user'
 export const URL_CREATE_RECEIPT = URL_SYSTEM_V1 + '/receipt/create-new-receipt'
 
 //Profile
+
 export const URL_GET_ORDER_LIST = URL_SYSTEM_V1 + '/receipt/get-order-list'
+export const URL_DELETE_RECEIPT = URL_SYSTEM_V1 + '/receipt/delete-receipt'
 
 
