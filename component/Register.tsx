@@ -65,8 +65,6 @@ function Register(props) {
                 username: accountName.value,
                 password: pass.value
             }
-
-
             axios.post(URL.URL_REGISTER, { ...data })
                 .then(res => {
                     if (res.data.status == 0) {

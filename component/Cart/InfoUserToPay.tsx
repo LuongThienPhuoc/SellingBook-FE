@@ -13,7 +13,16 @@ function InfoUserToPay(props) {
     const communeRef = useRef()
     const dispatch = useDispatch()
     const [selectedValue, setSelectedValue] = React.useState('momo');
-
+    const [infoReceipt, setInfoReceipt] = useState({
+        district: '',
+        province: '',
+        commune: '',
+        address: '',
+        note: '',
+        paymentMethod: '',
+        phone: '',
+        name: infoUser.name,
+    })
     const [provinces, setProvinces] = useState([])
     const [provinceSelect, setProvinceSelect] = useState<String | null>(infoUser.province ? infoUser.province : '0')
 
@@ -23,6 +32,7 @@ function InfoUserToPay(props) {
     const [communes, setCommunes] = useState([])
     const [communeSelect, setCommuneSelect] = useState<String | null>(infoUser.commune ? infoUser.commune : '0')
 
+    
 
     useEffect(() => {
         console.log(infoUser)
@@ -47,6 +57,12 @@ function InfoUserToPay(props) {
 
     const handleChangeMethoPay = (event: React.ChangeEvent<HTMLInputElement>) => {
         console.log(event.target.value)
+        setInfoReceipt(state => (
+            {
+                ...state,
+                paymentMethod: event.target.value,
+            }
+        ))
         setSelectedValue(event.target.value);
     }
 
@@ -59,6 +75,10 @@ function InfoUserToPay(props) {
     });
 
     const handleChangeProvince = async (e) => {
+        setInfoReceipt(state => ({
+            ...state,
+            province: e.target.selectedOptions[0].text
+        }))
         setProvinceSelect(e.target.value)
         if (e.target.value == '0') {
             setDistricts([])
@@ -73,6 +93,10 @@ function InfoUserToPay(props) {
     }
 
     const handleChangeDistrict = async (e) => {
+        setInfoReceipt(state => ({
+            ...state,
+            district: e.target.selectedOptions[0].text
+        }))
         setDistrictSelect(e.target.value)
         if (e.target.value == '0') {
             setCommunes([])
@@ -85,9 +109,16 @@ function InfoUserToPay(props) {
     }
 
     const handleChangeCommune = (e) => {
+        setInfoReceipt(state => ({
+            ...state,
+            commune: e.target.selectedOptions[0].text
+        }))
         setCommuneSelect(e.target.value)
     }
 
+    const handleClickPayment = (e) => {
+        props.handleClickPayment(infoReceipt)
+    }
 
     return (
         <div className={'p-4 relative'}>
@@ -112,8 +143,16 @@ function InfoUserToPay(props) {
                             id="outlined-basic"
                             variant="outlined"
                             size="medium"
-                            defaultValue={infoUser.name ? infoUser.name : ''}
+                            value={infoReceipt.name}
                             fullWidth
+                            onChange={(e) => {
+                                setInfoReceipt(state => (
+                                    {
+                                        ...state,
+                                        name: e.target.value
+                                    }
+                                ))
+                            }}
                             placeholder='Nguyễn Văn A'
                         />
                     </Grid>
@@ -125,6 +164,14 @@ function InfoUserToPay(props) {
                             defaultValue={infoUser.phone ? infoUser.phone : ''}
                             size="medium"
                             fullWidth
+                            onChange={(e) => {
+                                setInfoReceipt(state => (
+                                    {
+                                        ...state,
+                                        phone: e.target.value
+                                    }
+                                ))
+                            }}
                             placeholder='0999999999'
                         />
                     </Grid>
@@ -134,6 +181,7 @@ function InfoUserToPay(props) {
                             id="outlined-basic"
                             variant="outlined"
                             size="medium"
+                            disabled
                             defaultValue={infoUser.mail ? infoUser.mail : ''}
                             fullWidth
                             placeholder='abc@gmail.com'
@@ -146,6 +194,14 @@ function InfoUserToPay(props) {
                             variant="outlined"
                             size="medium"
                             fullWidth
+                            onChange={(e) => {
+                                setInfoReceipt(state => (
+                                    {
+                                        ...state,
+                                        address: e.target.value
+                                    }
+                                ))
+                            }}
                             placeholder='43 QL91 (Số nhà)'
                         />
                     </Grid>
@@ -167,11 +223,10 @@ function InfoUserToPay(props) {
                                 --Chọn Tỉnh/TP--
                             </option>
                             {provinces.map((province, index) => (
-                                <option key={index} value={province.code}>
+                                <option key={index} results={province.name} value={province.code}>
                                     {province.name}
                                 </option>
                             ))}
-
                         </TextField>
                     </Grid>
                     <Grid item sm={4}>
@@ -228,6 +283,14 @@ function InfoUserToPay(props) {
                             id="outlined-basic"
                             variant="outlined"
                             size="medium"
+                            onChange={(e) => {
+                                setInfoReceipt(state => (
+                                    {
+                                        ...state,
+                                        note: e.target.value
+                                    }
+                                ))
+                            }}
                             fullWidth
                             placeholder='Ghi chú thêm (Ví dụ: Giao giờ hành chính)'
                         />
@@ -237,11 +300,11 @@ function InfoUserToPay(props) {
             <div className='pt-14 text-3xl font-bold'>Hình thức thanh toán</div>
             <div className='p-4'>
                 {/* Momoo */}
-                <div className={selectedValue === 'momo' ? style.paymentActive + ' transition duration-300 ease-out cursor-pointer flex rounded-md items-center h-16 mb-6 ' + ' ' + style.payment : ' transition duration-300 ease-out cursor-pointer flex rounded-md items-center h-16 mb-6 ' + ' ' + style.payment} >
+                <div className={selectedValue === 'Momo' ? style.paymentActive + ' transition duration-300 ease-out cursor-pointer flex rounded-md items-center h-16 mb-6 ' + ' ' + style.payment : ' transition duration-300 ease-out cursor-pointer flex rounded-md items-center h-16 mb-6 ' + ' ' + style.payment} >
                     <Radio
                         id='radioMethodPay1'
                         name='payment-method'
-                        {...controlProps('momo')}
+                        {...controlProps('Momo')}
                         sx={{
                             color: '#bdbdbd',
                             '&.Mui-checked': {
@@ -255,11 +318,11 @@ function InfoUserToPay(props) {
                     </label>
                 </div>
                 {/* COD */}
-                <div className={selectedValue === 'cod' ? style.paymentActive + ' transition duration-300 ease-out cursor-pointer flex rounded-md items-center h-16 mb-6 ' + ' ' + style.payment : ' transition duration-300 ease-out cursor-pointer flex rounded-md items-center h-16 mb-6 ' + ' ' + style.payment}  >
+                <div className={selectedValue === 'Cod' ? style.paymentActive + ' transition duration-300 ease-out cursor-pointer flex rounded-md items-center h-16 mb-6 ' + ' ' + style.payment : ' transition duration-300 ease-out cursor-pointer flex rounded-md items-center h-16 mb-6 ' + ' ' + style.payment}  >
                     <Radio
                         name='payment-method'
                         id='radioMethodPay2'
-                        {...controlProps('cod')}
+                        {...controlProps('Cod')}
                         sx={{
                             color: '#bdbdbd',
                             '&.Mui-checked': {
@@ -276,11 +339,11 @@ function InfoUserToPay(props) {
                     </label>
                 </div>
                 {/* ZAlo pay */}
-                <div className={selectedValue === 'zalopay' ? style.paymentActive + ' transition duration-300 ease-out cursor-pointer flex rounded-md items-center h-16 mb-6 ' + ' ' + style.payment : ' transition duration-300 ease-out cursor-pointer flex rounded-md items-center h-16 mb-6 ' + ' ' + style.payment}  >
+                <div className={selectedValue === 'ZaloPay' ? style.paymentActive + ' transition duration-300 ease-out cursor-pointer flex rounded-md items-center h-16 mb-6 ' + ' ' + style.payment : ' transition duration-300 ease-out cursor-pointer flex rounded-md items-center h-16 mb-6 ' + ' ' + style.payment}  >
                     <Radio
                         name='payment-method'
                         id='radioMethodPay3'
-                        {...controlProps('zalopay')}
+                        {...controlProps('ZaloPay')}
                         sx={{
                             color: '#bdbdbd',
                             '&.Mui-checked': {
@@ -294,11 +357,11 @@ function InfoUserToPay(props) {
                     </label>
                 </div>
                 {/* Xu  */}
-                <div className={selectedValue === 'diamond' ? style.paymentActive + ' transition duration-300 ease-out cursor-pointer flex rounded-md items-center h-16 mb-6 ' + ' ' + style.payment : ' transition duration-300 ease-out cursor-pointer flex rounded-md items-center h-16 mb-6 ' + ' ' + style.payment} >
+                <div className={selectedValue === 'Diamond' ? style.paymentActive + ' transition duration-300 ease-out cursor-pointer flex rounded-md items-center h-16 mb-6 ' + ' ' + style.payment : ' transition duration-300 ease-out cursor-pointer flex rounded-md items-center h-16 mb-6 ' + ' ' + style.payment} >
                     <Radio
                         name='payment-method'
                         id='radioMethodPay4'
-                        {...controlProps('diamond')}
+                        {...controlProps('Diamond')}
                         sx={{
                             color: '#bdbdbd',
                             '&.Mui-checked': {
@@ -316,7 +379,7 @@ function InfoUserToPay(props) {
                         <span className='cursor-pointer font-bold'> tại đây.</span>
                     </Link>
                 </div>
-                <div className={'transition duration-300 ease-out cursor-pointer py-4 flex justify-center w-ful bg-black text-white rounded-lg' + ' ' + style.btnPay}>
+                <div onClick={handleClickPayment} className={'transition duration-300 ease-out cursor-pointer py-4 flex justify-center w-ful bg-black text-white rounded-lg' + ' ' + style.btnPay}>
                     Thanh toán 1895k (Momo)
                 </div>
             </div>

@@ -3,6 +3,7 @@ import * as type from '../types'
 const initalState = {
     infoUser: {},
     isLogin: false,
+    isLoading: false,
 }
 
 const userReducer = (state = initalState, action) => {
@@ -12,11 +13,18 @@ const userReducer = (state = initalState, action) => {
                 ...state,
                 infoUser: action.infoUser
             }
+        case type.USER_LOGIN_FAIL:
+            return {
+                infoUser: {},
+                isLogin: false,
+                isLoading: true, 
+            }
         case type.USER_LOGIN_SUCCESS:
             return {
                 ...state,
                 infoUser: action.infoUser,
                 isLogin: true,
+                isLoading: true,
             }
         case type.USER_LOGOUT_SUCCESS:
             return {

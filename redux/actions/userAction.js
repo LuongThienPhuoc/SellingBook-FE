@@ -7,6 +7,11 @@ export const userLogin = (data) => dispathch => {
         infoUser: data.data
     })
 }
+export const userLoginFail = () => dispatch => {
+    dispatch({
+        type: type.USER_LOGIN_FAIL
+    })
+}
 
 export const updateInfoUser = (infoUser) => dispatch => {
     dispatch({

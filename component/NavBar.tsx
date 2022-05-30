@@ -19,13 +19,15 @@ import InputBase from '@mui/material/InputBase';
 import Divider from '@mui/material/Divider';
 import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
 import { userLogout } from '../redux/actions/userAction';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import Badge from '@mui/material/Badge';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { setAccessToken } from '../utils/cookies';
 import { setSearch } from '../redux/actions/searchAction'
 import { KeyboardEvent } from "react";
 import dynamic from 'next/dynamic';
+import * as URL from '../services/api/config'
+import { loadingCart } from '../redux/actions/cartAction'
+import axios from 'axios';
 const CartItemInNavBar = dynamic(() => import('./Cart/CarItemInNavBar'))
 
 const pages = [
@@ -94,15 +96,26 @@ const NavBar = (props) => {
     const isLogin = useSelector((state: RootStateOrAny) => state.userReducer.isLogin)
     const infoUser = useSelector((state: RootStateOrAny) => state.userReducer.infoUser)
     const search = useSelector((state: RootStateOrAny) => state.searchReducer.search)
+    const cart = useSelector((state: RootStateOrAny) => state.cart);
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
     const [anchoElMess, setAnchorElMess] = React.useState<null | HTMLElement>(null);
     const [anchoElCart, setAnchoElCart] = React.useState<null | HTMLElement>(null);
     const searchRef = React.useRef(null)
-
     React.useEffect(() => {
-        console.log(infoUser.role)
-    }, [])
+        const fetApi = async () => {
+            if (isLogin) {
+                axios.post(URL.URL_GET_CART, { id: infoUser._id })
+                    .then(res => {
+                        dispatch(loadingCart(res.data.cart.listProduct))
+                    })
+                    .catch(err => {
+                        console.log('Lỗi')
+                    })
+            }
+        }
+        fetApi()
+    }, [isLogin])
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
@@ -148,26 +161,11 @@ const NavBar = (props) => {
                 <Box sx={{ flexGrow: 0 }}>
                     <Tooltip title="Open cart">
                         <IconButton onClick={handleOpenCartMenu} size="large" aria-label="show 4 new mails" color="inherit">
-                            <Badge badgeContent={4} color="error">
+                            <Badge badgeContent={cart.cart.length} color="error">
                                 <ShoppingCartIcon />
                             </Badge>
                         </IconButton>
                     </Tooltip>
-
-                    <Tooltip title="Open message">
-                        <IconButton
-                            size="large"
-                            onClick={handleOpenMessMenu}
-                            aria-label="show 17 new notifications"
-                            color="inherit"
-                            style={{ marginRight: '10px' }}
-                        >
-                            <Badge badgeContent={17} color="error">
-                                <NotificationsIcon />
-                            </Badge>
-                        </IconButton>
-                    </Tooltip>
-
                     <Tooltip title="Open settings">
                         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                             <Avatar alt="Remy Sharp" src={infoUser.avatar ? infoUser.avatar : ''} />
@@ -196,27 +194,21 @@ const NavBar = (props) => {
                     >
                         <div style={{ width: '300px', borderRadius: '30px' }} onClick={handleCloseCartMenu}>
                             <div className={style.headerCart} >
-                                <span style={{ fontSize: '14px', lineHeight: '1.5', fontWeight: '500' }}>2 sản phẩm</span>
+                                <span style={{ fontSize: '14px', lineHeight: '1.5', fontWeight: '500' }}>{cart.length} sản phẩm</span>
                                 <Link href={'/cart'} passHref>
                                     <a style={{ textDecoration: 'none', fontSize: '14px', fontWeight: '500', color: '#2f5acf', lineHeight: '1.5' }}>Xem tất cả</a>
                                 </Link>
                             </div>
                             <ul style={{ maxHeight: '400px', paddingTop: '30px', paddingLeft: '0' }}>
-                                <li>
-                                    <CartItemInNavBar></CartItemInNavBar>
-                                </li>
-                                <li>
-                                    <CartItemInNavBar></CartItemInNavBar>
-                                </li>
-                                <li>
-                                    <CartItemInNavBar></CartItemInNavBar>
-                                </li>
-                                <li>
-                                    <CartItemInNavBar></CartItemInNavBar>
-                                </li>
-                                <li>
-                                    <CartItemInNavBar></CartItemInNavBar>
-                                </li>
+                                {
+                                    cart.cart.length !== 0 ? cart.cart.map(value => (
+                                        <li>
+                                            <CartItemInNavBar></CartItemInNavBar>
+                                        </li>
+                                    )) : (
+                                        <h2 style={{ textAlign: 'center' }}>Giỏ hàng trống</h2>
+                                    )
+                                }
                             </ul>
                         </div>
                     </Menu>
@@ -277,7 +269,7 @@ const NavBar = (props) => {
                             <Typography textAlign="center">Đăng xuất</Typography>
                         </MenuItem>
                     </Menu>
-                </Box>
+                </Box >
             )
         } else {
             return (

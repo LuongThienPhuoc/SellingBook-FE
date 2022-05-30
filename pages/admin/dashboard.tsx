@@ -30,7 +30,6 @@ function dashboard(props) {
     const infoUser = useSelector((state: RootStateOrAny) => state.userReducer.infoUser)
     const router = useRouter()
     useEffect(() => {
-     
         if (!isLogin || infoUser.role == 'user') {
             router.push('/')
         }
@@ -57,7 +56,7 @@ function dashboard(props) {
                             <div className='flex justify-end mr-5 mt-3'>
                                 <div className='flex bg-[#2BBCBA] shadow-sm rounded text-lg items-center py-1 px-2 text-white cursor-pointer'>
                                     <PictureAsPdfIcon className='mr-2'></PictureAsPdfIcon>
-                                    <div>XUẤT PDF</div>
+                                    <div>XUẤT PDF1</div>
                                 </div>
                             </div>
                         </div>

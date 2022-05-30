@@ -4,14 +4,34 @@ import style from '../../styles/Profile.module.css'
 import Pagination from '@mui/material/Pagination';
 import SearchIcon from '@mui/icons-material/Search';
 import dynamic from 'next/dynamic';
-
+import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
+import axios from 'axios';
+import * as URL from '../../services/api/config'
 const CardOrderList = dynamic(() => import('./CardOrderList'))
 
 const OrderList = (props) => {
+    const userInfo = useSelector((state: RootStateOrAny) => state.userReducer.infoUser)
+    const status = useSelector((state: RootStateOrAny) => state.userReducer)
     const [active, setActive] = useState('');
     useEffect(() => {
         setActive('All')
     }, [])
+
+    useEffect(() => {
+        const fetApi = async () => {
+            await axios.get(URL.URL_GET_ORDER_LIST+`?id=${userInfo._id}`)
+            .then(res => {
+                console.log(res)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        }
+        if (status.isLogin) {
+            fetApi()
+            console.log('call api')
+        }
+    }, [status.isLogin])
 
     const handleClickActive = (e) => {
         setActive(e.target.name)

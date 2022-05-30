@@ -1,31 +1,33 @@
 import dbConnect from '../../../utils/mongodb.js';
+import mongoose from 'mongoose'
 import User from '../../../models/users.js';
 import { JWTAuthToken, AuthMiddleware } from '../../../helper/JWT.js';
+import Cart from '../../../models/cart.js';
 
 dbConnect();
-const Refresh = async (req, res, data) => {
+const GetCartUser = async (req, res, data) => {
     const { method } = req;
-
     // Refresh
     switch (method) {
         case 'POST':
+            const id = mongoose.Types.ObjectId(req?.body?.id);
             try {
-                console.log(data)
-                console.log(data['0']);
-                console.log(data.username)
-                const username = data.username;
-                if(username) {
-                    await User.findOne({ username }).then(result => {
-                        if (result) {
+                if (id) {
+                    Cart.findOne({ user: id })
+                        .then(result => {
+                            console.log(result)
                             res.status(200).send(JSON.stringify({
                                 success: true,
-                                status: 1,
-                                message: 'Refresh thành công',
-                                data: result,
-                                token: JWTAuthToken({ username: username })
+                                cart: result,
+                                message: 'Get cart success'
                             }))
-                        }
-                    })
+                        })
+                        .catch(err => {
+                            res.status(200).send(JSON.stringify({
+                                success: false,
+                                message: 'Get cart failed'
+                            }))
+                        })
                 } else {
                     res.status(200).send(JSON.stringify({
                         success: false,
@@ -33,7 +35,7 @@ const Refresh = async (req, res, data) => {
                         refresh: 'Token hết hạn sử dụng'
                     }))
                 }
-                
+
             }
             catch (error) {
                 console.log("error", error)
@@ -47,4 +49,4 @@ const Refresh = async (req, res, data) => {
 }
 
 
-export default AuthMiddleware(Refresh)
+export default AuthMiddleware(GetCartUser)

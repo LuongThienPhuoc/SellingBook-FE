@@ -11,6 +11,7 @@ export const RESET_CODE_MAIL = " RESET_CODE_MAIL"
 export const USER_LOGIN_SUCCESS = 'USER_LOGIN_SUCCESS'
 export const USER_LOGOUT_SUCCESS = 'USER_LOGOUT_SUCCESS'
 export const USER_UPDATE_INFO_USER = 'USER_UPDATE_INFO_USER'
+export const USER_LOGIN_FAIL = 'USER_LOGIN_FAIL'
 
 // Alert
 export const SHOW_ALERT_SUCCESS = "SHOW_ALERT_SUCCESS"
@@ -20,3 +21,7 @@ export const HIDE_ALERT = "HIDE_ALERT"
 
 // Search
 export const SET_SEARCH = 'SET_SEARCH'
+
+// Cart
+export const GET_CART_USER = 'GET_CART_USER'
+export const LOGOUT_CART = 'LOGOUT_CART'
