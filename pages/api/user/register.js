@@ -1,5 +1,6 @@
 import dbConnect from '../../../utils/mongodb.js';
-import User from '../../../models/user.js';
+import User from '../../../models/users.js';
+import Cart from '../../../models/cart.js'
 import { JWTAuthToken } from '../../../helper/JWT.js';
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
@@ -37,13 +38,22 @@ export default async (req, res) => {
                     })
                         .then(result => {
                             if (result) {
-                                res.status(200).send(JSON.stringify({
-                                    success: true,
-                                    message: 'Đăng ký tài khoản thành công',
-                                    status: 1,
-                                    data: result,
-                                    token: JWTAuthToken({ username })
-                                }))
+                                const cart = new Cart({
+                                    user: result._id
+                                })
+                                cart.save()
+                                    .then(dataCart => {
+                                        res.status(200).send(JSON.stringify({
+                                            success: true,
+                                            message: 'Đăng ký tài khoản thành công',
+                                            status: 1,
+                                            data: result,
+                                            token: JWTAuthToken({ username })
+                                        }))
+                                    })
+                                    .catch(err => {
+                                        res.status(400).json({ success: false });
+                                    })
                             }
                         })
                 }

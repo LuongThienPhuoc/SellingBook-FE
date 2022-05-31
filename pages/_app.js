@@ -14,37 +14,33 @@ import { getAccessToken, setAccessToken } from '../utils/cookies'
 import axios from 'axios'
 import { useState } from 'react'
 import * as URL from '../services/api/config'
-import LinearProgress from '@mui/material/LinearProgress';
-import { userLogin } from '../redux/actions/userAction'
+import { userLogin, userLoginFail } from '../redux/actions/userAction'
 
 const MyApp = ({ Component, pageProps }) => {
-  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch()
-  // useEffect(() => {
-  //   console.log(getAccessToken());
-  //   const fetApi = async () => {
-  //     const token = getAccessToken()
-  //     console.log(token)
-  //     if (token !== null || token !== undefined) {
-  //       await axios.post(URL.URL_REFRESH).then(res => {
-  //         if (res.data.status == 1) {
-  //           setAccessToken(res.data.token)
-  //           dispatch(userLogin(res.data))
-  //         }
-  //         setIsLoading(true)
-  //       }).catch(err => {
-  //         setIsLoading(true)
-  //       });
-  //     } else {
-  //       setIsLoading(true)
-  //     }
-  //   }
-  //   fetApi()
-  //   //setIsLoading(true)
-  // }, [])
+  useEffect(() => {
+    const fetApi = async () => {
+      const token = getAccessToken()
+      if (token !== null || token !== undefined) {
+        await axios.post(URL.URL_REFRESH).then(res => {
+          if (res.data.status == 1) {
+            setAccessToken(res.data.token)
+            dispatch(userLogin(res.data))
+          } else {
+            dispatch(userLoginFail())
+          }
+        }).catch(err => {
+          dispatch(userLoginFail())
+        });
+      } else {
+        dispatch(userLoginFail())
+      }
+    }
+    fetApi()
+  }, [])
 
 
-  if (!isLoading) return (<LinearProgress></LinearProgress>)
+
   return (
     <div className='root-app'>
       <Provider store={store}>

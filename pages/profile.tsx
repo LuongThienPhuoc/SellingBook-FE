@@ -7,6 +7,8 @@ import { BsReverseLayoutTextWindowReverse, BsBook, BsBookmarkStar } from 'react-
 import style from '../styles/Profile.module.css'
 import { useRouter } from 'next/router';
 import { useSelector, RootStateOrAny } from 'react-redux';
+import axios from 'axios';
+
 
 const Layout = dynamic(() => import('../component/Layout'),
     {
@@ -23,17 +25,17 @@ const ProfileDetail = dynamic(() => import('../component/Profile/ProfileDetail')
 function Profile(props) {
     const [option, setOption] = useState('Danh sách đơn hàng')
     const router = useRouter()
-    const isLogin = useSelector((state: RootStateOrAny) => state.userReducer.isLogin)
+    const status = useSelector((state: RootStateOrAny) => state.userReducer)
     
     useEffect(() => {
         setOption('Danh sách đơn hàng')
     }, [])
 
-    useEffect(() => {
-        if (!isLogin) router.push('/login')
-    }, [isLogin])
 
+    if (!status.isLoading) return (<LinearProgress></LinearProgress>)
     
+    if (!status.isLogin) router.push('/login')
+
     const handleClickOption = (e) => {
         e.preventDefault()
         setOption(e.target.innerText)
@@ -51,8 +53,6 @@ function Profile(props) {
                 return (<OrderList></OrderList>)
         }
     }
-
-
 
     return (
         <Layout>

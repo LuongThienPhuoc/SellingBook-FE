@@ -1,5 +1,6 @@
 import dbConnect from '../../../utils/mongodb.js';
-import User from '../../../models/user.js';
+import User from '../../../models/users.js';
+import Cart from '../../../models/cart.js'
 import { JWTAuthToken } from '../../../helper/JWT.js';
 const bcrypt = require("bcrypt");
 
@@ -7,7 +8,6 @@ const bcrypt = require("bcrypt");
 dbConnect();
 export default async (req, res) => {
     const { method } = req;
-
     // Đăng ký with google
     switch (method) {
         case 'POST':
@@ -33,13 +33,25 @@ export default async (req, res) => {
                     })
                         .then(result => {
                             if (result) {
-                                res.status(200).send(JSON.stringify({
-                                    success: true,
-                                    message: 'Đăng ký tài khoản thành công',
-                                    status: 1,
-                                    data: result,
-                                    token: JWTAuthToken({ username: 'googleId' + googleId })
-                                }))
+                                console.log(result)
+                                var newCart = new Cart({
+                                        user: result._id,
+                                    listProduct: []
+                                })
+                                newCart.save()
+                                    .then(dataCart => {
+                                        res.status(200).send(JSON.stringify({
+                                            success: true,
+                                            message: 'Đăng ký tài khoản thành công',
+                                            status: 1,
+                                            data: result,
+                                            token: JWTAuthToken({ username: 'googleId' + googleId })
+                                        }))
+                                    })
+                                    .catch(err => {
+                                        res.status(400).json({ success: false });
+
+                                    })
                             }
                         })
                 }
