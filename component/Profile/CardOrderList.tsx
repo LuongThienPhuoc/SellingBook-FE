@@ -100,7 +100,6 @@ function CardOrderList(props) {
         }
     }
 
-
     const renderButton = () => {
         switch (props.status) {
             case 'Chờ xác nhận':

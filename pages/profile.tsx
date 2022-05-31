@@ -54,8 +54,6 @@ function Profile(props) {
         }
     }
 
-
-
     return (
         <Layout>
             <Head>

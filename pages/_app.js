@@ -12,7 +12,6 @@ import { getAccessToken, setAccessToken } from '../utils/cookies'
 import axios from 'axios'
 import { useState } from 'react'
 import * as URL from '../services/api/config'
-import LinearProgress from '@mui/material/LinearProgress';
 import { userLogin, userLoginFail } from '../redux/actions/userAction'
 
 const MyApp = ({ Component, pageProps }) => {
