@@ -18,7 +18,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import { userLogin } from '../redux/actions/userAction'
 
 const MyApp = ({ Component, pageProps }) => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch()
   // useEffect(() => {
   //   console.log(getAccessToken());

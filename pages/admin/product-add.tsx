@@ -41,7 +41,7 @@ const product: React.FC = (props) => {
                     </Grid>adada
                     <Grid className='mt-16 font-primary font-[500] text-[#000]' sm={12} item md={9}>
                         <div className='title text-[#2BBCBA] text-[24px]'>
-                            Thêm sản phẩmầhfjahkjafâadadadaadadadadadd Fix được chưa
+                            Thêm sản phẩmầhfjahkjafâadadadaadâdadadadadadd Fix được chưa
                         </div> adadad
                         <div style={{ boxShadow: 'rgb(0 0 0 / 60%) 0px 3px 8px', padding: '25px' }} className='rounded-lg'>
                             <div className='title 

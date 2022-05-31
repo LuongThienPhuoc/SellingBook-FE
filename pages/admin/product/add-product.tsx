@@ -21,7 +21,7 @@ const BookPage: React.FC = () => {
                     </Grid>
                     <Grid className='mt-16 font-primary font-[500] text-[#000]' sm={12} item md={9}>
                         <div className='title text-[#2BBCBA] text-[24px]'>
-                            Thêm sản phẩm
+                            Thêm sản phẩm jkahfjkạkàhạkfhạkhàkađâ
                         </div>
                         <div style={{ boxShadow: 'rgb(0 0 0 / 60%) 0px 3px 8px', padding: '25px' }} className='rounded-lg'>
                             <div className='title 
