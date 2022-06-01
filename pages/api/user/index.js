@@ -11,8 +11,7 @@ export default async (req, res) => {
     switch (method) {
         case 'GET':
             try {
-                console.log('POST')
-                
+                console.log('GET')
                 const user = await User.find({});
                 res.status(200).json({ success: true, data: user });
             }

@@ -25,3 +25,6 @@ export const SET_SEARCH = 'SET_SEARCH'
 // Cart
 export const GET_CART_USER = 'GET_CART_USER'
 export const LOGOUT_CART = 'LOGOUT_CART'
+
+// Category
+export const SET_CATEGORY = 'GET_CATEGORY'

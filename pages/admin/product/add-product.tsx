@@ -6,6 +6,10 @@ import Head from 'next/head';
 import dynamic from 'next/dynamic';
 const NavigationMobile = dynamic(() => import('../../../component/Admin/NavigationMobile'))
 const Navigation = dynamic(() => import('../../../component/Admin/Navigation'))
+import {getCategory} from '../../../redux/actions/categoryAction'; 
+import { useDispatch, useSelector, RootStateOrAny } from 'react-redux'
+import * as URL from '../../../services/api/config'
+import axios from 'axios';
 
 interface ProductTypeItem {
     _id: string,
@@ -13,6 +17,23 @@ interface ProductTypeItem {
 }
 
 const BookPage: React.FC = () => {  
+    const dispatch = useDispatch();
+
+    // Lấy tất cả product type
+    useEffect(() => {
+        const getAllCategory = async() => {
+            console.log("dispatch category rồi");
+            await axios.get(URL.URL_CATEGORY)
+                .then((data)=>{
+                    console.log(data.data);
+                })
+                .catch((error)=>{
+                    console.log(error)
+                })
+            dispatch(getCategory({}));
+        }
+        getAllCategory();
+    }, [])
 
     const productType : ProductTypeItem[] = [
         {
@@ -31,6 +52,37 @@ const BookPage: React.FC = () => {
 
     const selectedTypeID : string[] = ["1","2"];
     const currentKeyWord : string[] = ["Nguyễn Nhật Ánh", "Rùa"]
+
+    const inputSection = () => {
+        return ([
+            <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
+                className='input-label relative'
+            >
+                <div className='title h-8 text-right leading-[22px] mr-4'>Tác giả</div>
+                <div className='divider
+                        h-[100px] w-[1px] 
+                        bg-[#C5C5C5]
+                        absolute top-[6px] right-[0px]
+                    '   
+                ></div>
+            </Grid>,
+            <Grid item xs={10} sm={10} md={10} lg={10} xl={10}
+                className=''
+            >
+                <input type='text' 
+                    className='product-name 
+                    w-[calc(100%)] h-[32px]
+                    rounded-[4px] border-[1px] border-[#999999]
+                    text-[#333] text-[18px]
+                    px-[8px]
+                    focus-visible:outline-none
+                    focus:outline-none
+                '>
+
+                </input>
+            </Grid> 
+        ])
+    }
 
     return (
         <Layout activeNav={"book"}>
@@ -146,6 +198,7 @@ const BookPage: React.FC = () => {
                                             productType.map((item, value, key)=>{
                                                 return (
                                                     <option 
+                                                        key={key}
                                                         value={item._id}
                                                         className="py-1"
                                                     >
@@ -274,32 +327,7 @@ const BookPage: React.FC = () => {
                                 Chi tiết sản phẩm
                             </div>
                             <Grid container spacing={1} className='mt-2'>
-                                <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
-                                    className='input-label relative'
-                                >
-                                    <div className='title h-8 text-right leading-[22px] mr-4'>Tác giả</div>
-                                    <div className='divider
-                                            h-[100px] w-[1px] 
-                                            bg-[#C5C5C5]
-                                            absolute top-[6px] right-[0px]
-                                        '   
-                                    ></div>
-                                </Grid>
-                                <Grid item xs={10} sm={10} md={10} lg={10} xl={10}
-                                    className=''
-                                >
-                                    <input type='text' 
-                                        className='product-name 
-                                        w-[calc(100%)] h-[32px]
-                                        rounded-[4px] border-[1px] border-[#999999]
-                                        text-[#333] text-[18px]
-                                        px-[8px]
-                                        focus-visible:outline-none
-                                        focus:outline-none
-                                    '>
-
-                                    </input>
-                                </Grid> 
+                                {inputSection()}
                                 <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
                                     className='input-label relative'
                                 >
@@ -454,6 +482,7 @@ const BookPage: React.FC = () => {
                                                 return (
                                                     <div
                                                         className="relative"
+                                                        key={key}
                                                     >
                                                         <div 
                                                             className={
@@ -484,6 +513,24 @@ const BookPage: React.FC = () => {
                                 </Grid>
                             </Grid>
                         </div>
+
+                        <div className="product-manage-contain">
+                            <div className='left'>
+                                <button>
+                                    Huỷ
+                                </button>
+                            </div>
+                            
+                            <div className='right'>
+                                <button>
+                                    Xem trước
+                                </button>
+                                <button>
+                                    Thêm hàng
+                                </button>
+                            </div>  
+                        </div>
+                        
                     </Grid>
                 </Grid>
             </Container>
