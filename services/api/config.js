@@ -25,5 +25,6 @@ export const URL_GET_ORDER_LIST = URL_SYSTEM_V1 + '/receipt/get-order-list'
 export const URL_DELETE_RECEIPT = URL_SYSTEM_V1 + '/receipt/delete-receipt'
 
 export const URL_CATEGORY = URL_SYSTEM_V1 + '/category';
+export const URL_PRODUCT = URL_SYSTEM_V1 + '/product';
 
 

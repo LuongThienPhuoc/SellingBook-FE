@@ -24,7 +24,7 @@ const AddBook: React.FC = () => {
     const dispatch = useDispatch();
     const router = useRouter(); 
 
-    enum inputType{
+    enum inputType {
         SINGLE_LINE,
         TEXT_AREA,
     }
@@ -161,19 +161,59 @@ const AddBook: React.FC = () => {
     const pageRef = {
         title: useRef(null),
         introduction: useRef(null),
-        author: useRef(null)
+        author: useRef(null), 
+        importPrice: useRef(null),
+        sellPrice: useRef(null),
+        importDate: useRef(null),
+        quantity: useRef(null),
+        totalValue: useRef(null),
+        publisher: useRef(null),
+        format: useRef(null),
+        publishYear: useRef(null),
+        detailInformation: useRef(null),
+        pageAmount: useRef(null),
+        size: useRef(null),
     }
 
-    const addProduct = () => {
+    const addProduct = async() => {
         console.log("pageRef", pageRef)
         var addData = {
             author: pageRef.author.current.value,
             title: pageRef.title.current.value,
             introduction: pageRef.introduction.current.value,
             imgList: imgList,
-            selectedTypeID: selectedTypeID,
+            categoryID: selectedTypeID,
+            // Phần thông tin nhập hàng
+            importPrice: pageRef.importPrice.current.value,
+            sellPrice: pageRef.sellPrice.current.value,
+            importDate: pageRef.importDate.current.value,
+            quantity: pageRef.quantity.current.value,
+            //
+            totalValue: pageRef.importPrice.current.value,
+            publisher: pageRef.publisher.current.value,
+            format: pageRef.format.current.value,
+            publishYear: pageRef.publishYear.current.value,
+            detailInformation: pageRef.detailInformation.current.value,
+            pageAmount: pageRef.pageAmount.current.value,
+            size: pageRef.size.current.value,
         }
         console.log("add Data", addData)
+        await axios.post( URL.URL_PRODUCT, addData)
+            .then((data) => {
+                console.log("add data post", data);
+            })
+            .catch((error) => {
+                alert(error);
+            })
+    }
+
+    const calculateAmount = () => {
+        if(pageRef.importPrice.current.value=="" || pageRef.quantity.current.value==""){
+            pageRef.totalValue.current.value="";
+        }
+        else {
+            pageRef.totalValue.current.value=pageRef.importPrice.current.value*pageRef.quantity.current.value;
+        }
     }
 
     return (
@@ -466,6 +506,10 @@ const AddBook: React.FC = () => {
                                                 type="number" 
                                                 className="border-[1px] border-[#999] focus-visible:outline-none
                                                 focus:outline-none py-1 px-1 rounded-2"
+                                                ref={pageRef.importPrice}
+                                                onChange={() => {
+                                                    calculateAmount();
+                                                }}
                                             >
 
                                             </input>
@@ -485,6 +529,7 @@ const AddBook: React.FC = () => {
                                                 type="number" 
                                                 className="border-[1px] border-[#999] focus-visible:outline-none
                                                 focus:outline-none py-1 px-1 rounded-2"
+                                                ref={pageRef.sellPrice}
                                             >
 
                                             </input>
@@ -504,9 +549,10 @@ const AddBook: React.FC = () => {
                                             <input 
                                                 type="date"
                                                 className="border-[1px] border-[#999] focus-visible:outline-none
-                                                focus:outline-none py-1 px-1 rounded-2
-                                                w-[100%]
+                                                    focus:outline-none py-1 px-1 rounded-2
+                                                    w-[100%]
                                                 "
+                                                ref={pageRef.importDate}
                                             >
 
                                             </input>
@@ -526,6 +572,10 @@ const AddBook: React.FC = () => {
                                                 type="number" 
                                                 className="border-[1px] border-[#999] focus-visible:outline-none
                                                 focus:outline-none py-1 px-1 rounded-2"
+                                                ref={pageRef.quantity}
+                                                onChange={() => {
+                                                    calculateAmount();
+                                                }}
                                             >
 
                                             </input>
@@ -552,6 +602,7 @@ const AddBook: React.FC = () => {
                                                     type="number" 
                                                     className="border-[1px] border-[#999] focus-visible:outline-none
                                                     focus:outline-none py-1 px-1 rounded-2"
+                                                    ref={pageRef.totalValue}
                                                 >
 
                                                 </input>
@@ -572,127 +623,12 @@ const AddBook: React.FC = () => {
                             </div>
                             <Grid container spacing={1} className='mt-2'>
                                 {inputSection("Tác giả", inputType.SINGLE_LINE, true, pageRef.author)}
-                                <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
-                                    className='input-label relative'
-                                >
-                                    <div className='title h-8 text-right leading-[22px] mr-4'>Nhà xuất bản</div>
-                                </Grid>
-                                <Grid item xs={10} sm={10} md={10} lg={10} xl={10}
-                                    className=''
-                                >
-                                    <input type='text' 
-                                        className='product-name 
-                                        w-[calc(100%)] h-[32px]
-                                        rounded-[4px] border-[1px] border-[#999999]
-                                        text-[#333] text-[18px]
-                                        px-[8px]
-                                        focus-visible:outline-none
-                                        focus:outline-none
-                                    '>
-
-                                    </input>
-                                </Grid> 
-                                <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
-                                    className='input-label relative'
-                                >
-                                    <div className='title h-8 text-right leading-[22px] mr-4'>Dạng bìa</div>
-                                </Grid>
-                                <Grid item xs={10} sm={10} md={10} lg={10} xl={10}
-                                    className=''
-                                >
-                                    <input type='text' 
-                                        className='product-name 
-                                        w-[calc(100%)] h-[32px]
-                                        rounded-[4px] border-[1px] border-[#999999]
-                                        text-[#333] text-[18px]
-                                        px-[8px]
-                                        focus-visible:outline-none
-                                        focus:outline-none
-                                    '>
-
-                                    </input>
-                                </Grid> 
-                                <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
-                                    className='input-label relative'
-                                >
-                                    <div className='title h-8 text-right leading-[22px] mr-4'>Năm phát hành</div>
-                                </Grid>
-                                <Grid item xs={10} sm={10} md={10} lg={10} xl={10}
-                                    className=''
-                                >
-                                    <input type='text' 
-                                        className='product-name 
-                                        w-[calc(100%)] h-[32px]
-                                        rounded-[4px] border-[1px] border-[#999999]
-                                        text-[#333] text-[18px]
-                                        px-[8px]
-                                        focus-visible:outline-none
-                                        focus:outline-none
-                                    '>
-
-                                    </input>
-                                </Grid> 
-                                <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
-                                    className='input-label relative'
-                                >
-                                    <div className='title h-8 text-right eading-[22px] mr-4'>Chi tiết mô tả</div>
-                                </Grid>
-                                <Grid item xs={10} sm={10} md={10} lg={10} xl={10}
-                                    className=''
-                                >
-                                    <textarea
-                                        className='product-detail
-                                        w-[calc(100%)] h-[100px]
-                                        rounded-[4px] border-[1px] border-[#999999]
-                                        text-[#333] text-[18px]
-                                        px-[8px]
-                                        focus-visible:outline-none
-                                        focus:outline-none
-                                        resize-none
-                                    '>
-
-                                    </textarea>
-                                </Grid> 
-                                <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
-                                    className='input-label relative'
-                                >
-                                    <div className='title h-8 text-right leading-[22px] mr-4'>Số trang</div>
-                                </Grid>
-                                <Grid item xs={10} sm={10} md={10} lg={10} xl={10}
-                                    className=''
-                                >
-                                    <input type='text' 
-                                        className='product-name 
-                                        w-[calc(100%)] h-[32px]
-                                        rounded-[4px] border-[1px] border-[#999999]
-                                        text-[#333] text-[18px]
-                                        px-[8px]
-                                        focus-visible:outline-none
-                                        focus:outline-none
-                                    '>
-
-                                    </input>
-                                </Grid> 
-                                <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
-                                    className='input-label relative'
-                                >
-                                    <div className='title h-8 text-right leading-[22px] mr-4'>Kích thước</div>
-                                </Grid>
-                                <Grid item xs={10} sm={10} md={10} lg={10} xl={10}
-                                    className=''
-                                >
-                                    <input type='text' 
-                                        className='product-name 
-                                        w-[calc(100%)] h-[32px]
-                                        rounded-[4px] border-[1px] border-[#999999]
-                                        text-[#333] text-[18px]
-                                        px-[8px]
-                                        focus-visible:outline-none
-                                        focus:outline-none
-                                    '>
-
-                                    </input>
-                                </Grid> 
+                                {inputSection("Nhà xuất bản", inputType.SINGLE_LINE, false, pageRef.publisher)}
+                                {inputSection("Dạng bìa", inputType.SINGLE_LINE, false, pageRef.format)}
+                                {inputSection("Năm phát hành", inputType.SINGLE_LINE, false, pageRef.publishYear)}
+                                {inputSection("Chi tiết mô tả", inputType.TEXT_AREA, false, pageRef.detailInformation)}
+                                {inputSection("Số trang", inputType.SINGLE_LINE, false, pageRef.pageAmount)}
+                                {inputSection("Kích thước", inputType.SINGLE_LINE, false, pageRef.size)} 
                                 <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
                                     className='input-label relative mt-[11px]'
                                 >
@@ -703,7 +639,8 @@ const AddBook: React.FC = () => {
                                 >
                                     <input name="product-type" id="product-type"
                                         className={
-                                            "border-[1px] !border-[#e5e5e5] py-[4px] focus:border-[#e5e5e5]  focus-visible:border-[#e5e5e5] "
+                                            "border-[1px] !border-[#e5e5e5] py-[4px] focus:border-[#e5e5e5]  focus-visible:border-[#e5e5e5] " +     
+                                            "focus-visible:outline-none focus:outline-none"
                                         }
                                     >
                                     </input>
@@ -757,21 +694,37 @@ const AddBook: React.FC = () => {
                             </Grid>
                         </div>
 
-                        <div className="product-manage-contain">
+                        <div className="product-manage-contain flex justify-between mt-[18px]">
                             <div className='left'>
-                                <button>
+                                <button
+                                    className={
+                                        "buy-button text-[16px] leading-[30px] bg-[#F24735] px-[20px] text-white rounded-[4px] " +
+                                        "hover:opacity-70 hover:cursor-pointer uppercase py-[6px]"
+                                    }
+                                    onClick={() => {
+                                        
+                                    }}
+                                >
                                     Huỷ
                                 </button>
                             </div>
                             
                             <div className='right'>
-                                <button>
+                                <button
+                                    className={
+                                        "buy-button text-[16px] leading-[30px] bg-[#999] px-[20px] text-white rounded-[4px] " +
+                                        "hover:opacity-70 hover:cursor-pointer ml-2 uppercase py-[6px]"
+                                    }
+                                    onClick={() => {
+                                        
+                                    }}
+                                >
                                     Xem trước
                                 </button>
                                 <button
                                     className={
                                         "buy-button text-[16px] leading-[30px] bg-[#2BBCBA] px-[20px] text-white rounded-[4px] " +
-                                        "hover:opacity-70 hover:cursor-pointer ml-2"
+                                        "hover:opacity-70 hover:cursor-pointer ml-2 uppercase py-[6px]"
                                     }
                                     onClick={() => {
                                         addProduct();
