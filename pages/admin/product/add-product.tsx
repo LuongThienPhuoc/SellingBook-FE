@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect }from 'react'
+import React, { useState, useEffect, useRef }from 'react'
 import Layout from '../../../component/Layout'
 import {Button, Container, Grid} from '@mui/material';
 import Head from 'next/head';
@@ -12,6 +12,7 @@ import * as URL from '../../../services/api/config'
 import axios from 'axios';
 import rootReducer from '../../../redux/reducers/rootReducer';
 import { FiDelete } from "react-icons/fi";
+import { useRouter } from 'next/router'
 
 interface ProductTypeItem {
     _id: string,
@@ -21,6 +22,8 @@ interface ProductTypeItem {
 
 const AddBook: React.FC = () => {  
     const dispatch = useDispatch();
+    const router = useRouter(); 
+
     enum inputType{
         SINGLE_LINE,
         TEXT_AREA,
@@ -35,6 +38,8 @@ const AddBook: React.FC = () => {
                     categoryList = data.data;
                 })
                 .catch((error)=>{
+                    // navigate to login
+                    router.push('/login')
                     console.log(error)
                 })
             dispatch(getCategory(categoryList.categories));
@@ -66,7 +71,7 @@ const AddBook: React.FC = () => {
 
     const currentKeyWord : string[] = ["Nguyễn Nhật Ánh", "Rùa"]
 
-    const inputSection = (name: string, typeValue: inputType, hasDivider: boolean) => {
+    const inputSection = (name: string, typeValue: inputType, hasDivider: boolean, ref: React.RefObject<HTMLElement>) => {
         return ([
             <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
                 className='input-label relative'
@@ -81,8 +86,6 @@ const AddBook: React.FC = () => {
                             '   
                         ></div>
                 }
-                
-                
             </Grid>,
             <Grid item xs={10} sm={10} md={10} lg={10} xl={10}
                 className=''
@@ -92,27 +95,31 @@ const AddBook: React.FC = () => {
                         ?
                             <input type='text' 
                                 className='product-name 
-                                w-[calc(100%)] h-[32px]
-                                rounded-[4px] border-[1px] border-[#999999]
-                                text-[#333] text-[18px]
-                                px-[8px]
-                                focus-visible:outline-none
-                                focus:outline-none
-                            '>
+                                    w-[calc(100%)] h-[32px]
+                                    rounded-[4px] border-[1px] border-[#999999]
+                                    text-[#333] text-[18px]
+                                    px-[8px]
+                                    focus-visible:outline-none
+                                    focus:outline-none
+                                '
+                                ref={ref}
+                            >
 
                             </input>
                         : 
                     typeValue == inputType.TEXT_AREA
                         ? <textarea
                             className='product-detail
-                            w-[calc(100%)] h-[100px]
-                            rounded-[4px] border-[1px] border-[#999999]
-                            text-[#333] text-[18px]
-                            px-[8px]
-                            focus-visible:outline-none
-                            focus:outline-none
-                            resize-none
-                        '>
+                                w-[calc(100%)] h-[100px]
+                                rounded-[4px] border-[1px] border-[#999999]
+                                text-[#333] text-[18px]
+                                px-[8px]
+                                focus-visible:outline-none
+                                focus:outline-none
+                                resize-none
+                            '
+                            ref={ref}
+                        >
 
                         </textarea>
                         : null
@@ -141,9 +148,7 @@ const AddBook: React.FC = () => {
         // dispatch(articleActions.uploadArticlePicture(formData));
     }
 
-    const [imgList, setImgList] = useState([
-        'https://i.pinimg.com/564x/cf/ba/75/cfba75aba34961bbcbfe4eb56af10770.jpg'
-    ]);
+    const [imgList, setImgList] = useState([]);
 
     const removeImgInput = (imgItem) => {
         var currentImgList = JSON.parse(JSON.stringify(imgList));
@@ -152,6 +157,24 @@ const AddBook: React.FC = () => {
         });
         setImgList(currentImgList);
     } 
+
+    const pageRef = {
+        title: useRef(null),
+        introduction: useRef(null),
+        author: useRef(null)
+    }
+
+    const addProduct = () => {
+        console.log("pageRef", pageRef)
+        var addData = {
+            author: pageRef.author.current.value,
+            title: pageRef.title.current.value,
+            introduction: pageRef.introduction.current.value,
+            imgList: imgList,
+            selectedTypeID: selectedTypeID,
+        }
+        console.log("add Data", addData)
+    }
 
     return (
         <Layout activeNav={"book"}>
@@ -175,8 +198,8 @@ const AddBook: React.FC = () => {
                                 Thông tin sản phẩm
                             </div>
                             <Grid container spacing={1} className='mt-2'>
-                                {inputSection("Tên sản phẩm", inputType.SINGLE_LINE, true)} 
-                                {inputSection("Mô tả", inputType.TEXT_AREA, false)} 
+                                {inputSection("Tên sản phẩm", inputType.SINGLE_LINE, true, pageRef.title)} 
+                                {inputSection("Mô tả", inputType.TEXT_AREA, false, pageRef.introduction)} 
                                 <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
                                     className='input-label relative'
                                 >
@@ -215,7 +238,7 @@ const AddBook: React.FC = () => {
                                                                     const sleep = ms => new Promise(res => setTimeout(res, ms));
                                                                     fr.onload = async() => {
                                                                         // document.querySelector('.product-current-upload-img').src = fr.result;
-                                                                        console.log("fr.result", fr.result);
+                                                                        // console.log("fr.result", fr.result);
                                                                         // addTempImage(fr.result);
                                                                         // await sleep(2000);
                                                                         // setTempImage([]);
@@ -292,7 +315,7 @@ const AddBook: React.FC = () => {
                                                                 const sleep = ms => new Promise(res => setTimeout(res, ms));
                                                                 fr.onload = async() => {
                                                                     // document.querySelector('.product-current-upload-img').src = fr.result;
-                                                                    console.log("fr.result", fr.result);
+                                                                    // console.log("fr.result", fr.result);
                                                                     // addTempImage(fr.result);
                                                                     // await sleep(2000);
                                                                     // setTempImage([]);
@@ -432,56 +455,112 @@ const AddBook: React.FC = () => {
                             </div>
                             <Grid container spacing={1} className='mt-2'>
                                 <Grid item sm={12} md={6} lg={6}>
-                                    <div className='flex'>
-                                        <div>
+                                    <div className='flex relative'>
+                                        <div
+                                            className='w-[120px] text-right pr-[12px] leading-[25px]'
+                                        >
                                             Giá nhập
                                         </div>
                                         <div>
-                                            <input type="number" className="border-[1px]"></input>
+                                            <input 
+                                                type="number" 
+                                                className="border-[1px] border-[#999] focus-visible:outline-none
+                                                focus:outline-none py-1 px-1 rounded-2"
+                                            >
+
+                                            </input>
                                         </div>
+                                        <div 
+                                            className="divider w-[1px] h-[80px] bg-[#e5e5e5] left-[112px] absolute"
+                                        ></div>
                                     </div>
-                                    <div className='flex'>
-                                        <div>
+                                    <div className='flex mt-[12px]'>
+                                        <div
+                                            className='w-[120px] text-right pr-[12px] leading-[25px]'
+                                        >
                                             Giá bán
                                         </div>
                                         <div>
-                                            <input type="number" className="border-[1px]"></input>
+                                            <input 
+                                                type="number" 
+                                                className="border-[1px] border-[#999] focus-visible:outline-none
+                                                focus:outline-none py-1 px-1 rounded-2"
+                                            >
+
+                                            </input>
+                                        </div>
+                                        
+                                    </div>
+                                    
+                                </Grid>
+                                <Grid item sm={12} md={6} lg={6}>
+                                    <div className='flex relative'>
+                                        <div
+                                            className='w-[120px] text-right pr-[12px] leading-[25px]'
+                                        >
+                                            Ngày nhập
+                                        </div>
+                                        <div>
+                                            <input 
+                                                type="date"
+                                                className="border-[1px] border-[#999] focus-visible:outline-none
+                                                focus:outline-none py-1 px-1 rounded-2
+                                                w-[100%]
+                                                "
+                                            >
+
+                                            </input>
+                                        </div>
+                                        <div 
+                                            className="divider w-[1px] h-[80px] bg-[#e5e5e5] left-[112px] absolute"
+                                        ></div>
+                                    </div>
+                                    <div className='flex mt-[12px]'>
+                                        <div
+                                            className='w-[120px] text-right pr-[12px] leading-[25px]'
+                                        >
+                                            Số lượng
+                                        </div>
+                                        <div>
+                                            <input 
+                                                type="number" 
+                                                className="border-[1px] border-[#999] focus-visible:outline-none
+                                                focus:outline-none py-1 px-1 rounded-2"
+                                            >
+
+                                            </input>
                                         </div>
                                         <div className="divider"></div>
                                     </div>
                                     
                                 </Grid>
-                                <Grid item sm={12} md={6} lg={6}>
-                                    <div className='flex'>
-                                        <div>
-                                            Ngày nhập
-                                        </div>
-                                        <div>
-                                            <input type="date" className="border-[1px]"></input>
-                                        </div>
+                                <Grid item sm={12} md={12} lg={12}
+                                    className="mt-[2px]"
+                                >
+                                    <div className='divider w-[100%] h-[1px] bg-[#e5e5e5] '>
+
                                     </div>
-                                    <div className='flex'>
-                                        <div>
-                                            Giá bán
+                                    <div className='flex mt-[12px]'>
+                                        <div
+                                            className='w-[120px] text-right pr-[12px] leading-[25px]'
+                                        >
+                                            Tổng tiền
                                         </div>
                                         <div>
-                                            <input className="border-[1px]"></input>
+                                            <div>
+                                                <input 
+                                                    type="number" 
+                                                    className="border-[1px] border-[#999] focus-visible:outline-none
+                                                    focus:outline-none py-1 px-1 rounded-2"
+                                                >
+
+                                                </input>
+                                            </div>
                                         </div>
                                         <div className="divider"></div>
                                     </div>
                                 </Grid>
-                                <div className='divider'>
-
-                                </div>
-                                <div className='flex'>
-                                    <div>
-                                        Tổng tiền
-                                    </div>
-                                    <div>
-                                        <input className="border-[1px]"></input>
-                                    </div>
-                                    <div className="divider"></div>
-                                </div>
+                                
                             </Grid>
                         </div>
 
@@ -492,7 +571,7 @@ const AddBook: React.FC = () => {
                                 Chi tiết sản phẩm
                             </div>
                             <Grid container spacing={1} className='mt-2'>
-                                {inputSection("Tác giả", inputType.SINGLE_LINE, true)}
+                                {inputSection("Tác giả", inputType.SINGLE_LINE, true, pageRef.author)}
                                 <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
                                     className='input-label relative'
                                 >
@@ -689,7 +768,15 @@ const AddBook: React.FC = () => {
                                 <button>
                                     Xem trước
                                 </button>
-                                <button>
+                                <button
+                                    className={
+                                        "buy-button text-[16px] leading-[30px] bg-[#2BBCBA] px-[20px] text-white rounded-[4px] " +
+                                        "hover:opacity-70 hover:cursor-pointer ml-2"
+                                    }
+                                    onClick={() => {
+                                        addProduct();
+                                    }}
+                                >
                                     Thêm hàng
                                 </button>
                             </div>  
