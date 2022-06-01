@@ -46,8 +46,15 @@ const AddBook: React.FC = () => {
     const [selectedTypeID, setSelectedTypeID] = useState([]);
     const addSelectedTypeID = (e) => {
         var currentList = JSON.parse(JSON.stringify(selectedTypeID));
-        console.log("currentList", currentList);
         currentList.push(e.target.value);
+        setSelectedTypeID(currentList);
+    }
+
+    const removeSelectedTypeID = (removeID) => {
+        var currentList = JSON.parse(JSON.stringify(selectedTypeID));
+        currentList = currentList.filter(function(value, index, arr){ 
+            return value != removeID;
+        });
         setSelectedTypeID(currentList);
     }
 
@@ -238,12 +245,12 @@ const AddBook: React.FC = () => {
                                                 if(selectedTypeID.includes(item._id))
                                                     return (
                                                         <div
-                                                            className="relative"
+                                                            className={"relative hover:opacity-80"}
                                                         >
                                                             <div 
                                                                 className={
                                                                     "py-[4px] px-[8px] ml-[16px] "+
-                                                                    "bg-[#7E97B9] text-[#fff] rounded-[4px] leading-[25px] "
+                                                                    "bg-[#7E97B9] text-[#fff] rounded-[4px] leading-[25px] cursor-pointer "
                                                                 }
                                                             >
                                                                 {item.type}
@@ -251,11 +258,18 @@ const AddBook: React.FC = () => {
                                                             <div
                                                                 className={
                                                                     "rounded-[100%] bg-[#F16F61] w-4 h-4 text-[#fff] " + 
-                                                                    "absolute top-[-4px] right-[-6px]"
+                                                                    "absolute top-[-4px] right-[-6px] "+ 
+                                                                    'hover:opacity-50 hover:cursor-pointer group-hover:opacity-70 ' +
+                                                                    item._id+"-hover:opacity-70"
                                                                 }
                                                             >
                                                                 <p
-                                                                    className='close-icon mt-[-4px] ml-[4px]'
+                                                                    className={
+                                                                        'close-icon mt-[-4px] ml-[4px] ' 
+                                                                    }
+                                                                    onClick={() => {
+                                                                        removeSelectedTypeID(item._id)
+                                                                    }}
                                                                 >
                                                                     x
                                                                 </p>
