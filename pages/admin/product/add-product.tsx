@@ -10,15 +10,21 @@ import {getCategory} from '../../../redux/actions/categoryAction';
 import { useDispatch, useSelector, RootStateOrAny } from 'react-redux'
 import * as URL from '../../../services/api/config'
 import axios from 'axios';
+import rootReducer from '../../../redux/reducers/rootReducer';
+import { FiDelete } from "react-icons/fi";
 
 interface ProductTypeItem {
     _id: string,
     type: string,
 }
 
+
 const AddBook: React.FC = () => {  
     const dispatch = useDispatch();
-
+    enum inputType{
+        SINGLE_LINE,
+        TEXT_AREA,
+    }
     // Lấy tất cả product type
     useEffect(() => {
         const getAllCategory = async() => {
@@ -31,7 +37,7 @@ const AddBook: React.FC = () => {
                 .catch((error)=>{
                     console.log(error)
                 })
-            dispatch(getCategory([...categoryList.categories]));
+            dispatch(getCategory(categoryList.categories));
         }
         getAllCategory();
     }, [])
@@ -41,7 +47,7 @@ const AddBook: React.FC = () => {
     })
 
 
-    const productType : ProductTypeItem[] = useSelector((state)=> {return state.categoryReducer.categories} ) || [];
+    const productType : ProductTypeItem[] = useSelector((state: typeof rootReducer)=> {return state.categoryReducer.categories} ) || [];
 
     const [selectedTypeID, setSelectedTypeID] = useState([]);
     const addSelectedTypeID = (e) => {
@@ -60,36 +66,92 @@ const AddBook: React.FC = () => {
 
     const currentKeyWord : string[] = ["Nguyễn Nhật Ánh", "Rùa"]
 
-    const inputSection = () => {
+    const inputSection = (name: string, typeValue: inputType, hasDivider: boolean) => {
         return ([
             <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
                 className='input-label relative'
             >
-                <div className='title h-8 text-right leading-[22px] mr-4'>Tác giả</div>
-                <div className='divider
-                        h-[100px] w-[1px] 
-                        bg-[#C5C5C5]
-                        absolute top-[6px] right-[0px]
-                    '   
-                ></div>
+                <div className='title h-8 text-right leading-[22px] mr-4'>{name}</div>
+                {
+                    !hasDivider ? (null) :
+                        <div className='divider
+                                h-[400px] w-[1px] 
+                                bg-[#C5C5C5]
+                                absolute top-[6px] right-[0px]
+                            '   
+                        ></div>
+                }
+                
+                
             </Grid>,
             <Grid item xs={10} sm={10} md={10} lg={10} xl={10}
                 className=''
             >
-                <input type='text' 
-                    className='product-name 
-                    w-[calc(100%)] h-[32px]
-                    rounded-[4px] border-[1px] border-[#999999]
-                    text-[#333] text-[18px]
-                    px-[8px]
-                    focus-visible:outline-none
-                    focus:outline-none
-                '>
+                {
+                    typeValue == inputType.SINGLE_LINE 
+                        ?
+                            <input type='text' 
+                                className='product-name 
+                                w-[calc(100%)] h-[32px]
+                                rounded-[4px] border-[1px] border-[#999999]
+                                text-[#333] text-[18px]
+                                px-[8px]
+                                focus-visible:outline-none
+                                focus:outline-none
+                            '>
 
-                </input>
+                            </input>
+                        : 
+                    typeValue == inputType.TEXT_AREA
+                        ? <textarea
+                            className='product-detail
+                            w-[calc(100%)] h-[100px]
+                            rounded-[4px] border-[1px] border-[#999999]
+                            text-[#333] text-[18px]
+                            px-[8px]
+                            focus-visible:outline-none
+                            focus:outline-none
+                            resize-none
+                        '>
+
+                        </textarea>
+                        : null
+                } 
             </Grid> 
         ])
     }
+
+    const uploadPicture = async(e) => {
+        const formData = new FormData();
+        formData.append("file", e.target.files[0])
+        formData.append("upload_preset", "phiroud");
+        // const sleep = ms => new Promise(res => setTimeout(res, ms));
+        // await sleep(1000);
+        await axios.post( "https://api.cloudinary.com/v1_1/phiroud321/image/upload", formData)
+            .then((data) => {
+                console.log(data.data.url);
+                var currentImgList = JSON.parse(JSON.stringify(imgList));
+                currentImgList.push(data.data.url);
+                setImgList(currentImgList);
+            })
+            .catch((error) => {
+                alert(error);
+            })
+        
+        // dispatch(articleActions.uploadArticlePicture(formData));
+    }
+
+    const [imgList, setImgList] = useState([
+        'https://i.pinimg.com/564x/cf/ba/75/cfba75aba34961bbcbfe4eb56af10770.jpg'
+    ]);
+
+    const removeImgInput = (imgItem) => {
+        var currentImgList = JSON.parse(JSON.stringify(imgList));
+        currentImgList = currentImgList.filter(function(value, index, arr){ 
+            return value != imgItem;
+        });
+        setImgList(currentImgList);
+    } 
 
     return (
         <Layout activeNav={"book"}>
@@ -113,79 +175,157 @@ const AddBook: React.FC = () => {
                                 Thông tin sản phẩm
                             </div>
                             <Grid container spacing={1} className='mt-2'>
-                                <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
-                                    className='input-label relative'
-                                >
-                                    <div className='title h-8 text-right leading-[22px] mr-4'>Tên sản phẩm</div>
-                                    <div className='divider
-                                            h-[400px] w-[1px] 
-                                            bg-[#C5C5C5]
-                                            absolute top-[6px] right-[0px]
-                                        '   
-                                    ></div>
-                                </Grid>
-                                <Grid item xs={10} sm={10} md={10} lg={10} xl={10}
-                                    className=''
-                                >
-                                    <input type='text' 
-                                        className='product-name 
-                                        w-[calc(100%)] h-[32px]
-                                        rounded-[4px] border-[1px] border-[#999999]
-                                        text-[#333] text-[18px]
-                                        px-[8px]
-                                        focus-visible:outline-none
-                                        focus:outline-none
-                                    '>
-
-                                    </input>
-                                </Grid> 
-                                <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
-                                    className='input-label relative'
-                                >
-                                    <div className='title h-8 text-right eading-[22px] mr-4'>Mô tả</div>
-                                </Grid>
-                                <Grid item xs={10} sm={10} md={10} lg={10} xl={10}
-                                    className=''
-                                >
-                                    <textarea
-                                        className='product-detail
-                                        w-[calc(100%)] h-[100px]
-                                        rounded-[4px] border-[1px] border-[#999999]
-                                        text-[#333] text-[18px]
-                                        px-[8px]
-                                        focus-visible:outline-none
-                                        focus:outline-none
-                                        resize-none
-                                    '>
-
-                                    </textarea>
-                                </Grid> 
+                                {inputSection("Tên sản phẩm", inputType.SINGLE_LINE, true)} 
+                                {inputSection("Mô tả", inputType.TEXT_AREA, false)} 
                                 <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
                                     className='input-label relative'
                                 >
                                     <div className='title h-8 text-right leading-[22px] mr-4'>Hình ảnh</div>
                                 </Grid>
+                                
                                 <Grid item xs={10} sm={10} md={10} lg={10} xl={10}
                                     className=''
                                 >
                                     <div
                                         className='product-image-border
                                         w-[calc(100%)] h-[200px]
-                                        rounded-[4px] border-[1px] border-[#999999]
+                                        rounded-[4px] border-[1px] border-[#999999] border-dashed
+
                                     '>
-                                        <div className="product-img-detail">
-                                            <div className='add-detail'>
-                                                <div className='add-from-link'>
-                                                    Thêm hình ảnh
+                                        {
+                                            imgList.length == 0 ?
+                                                <div 
+                                                    className={
+                                                        "product-img-detail flex flex-column items-center justify-center " +
+                                                        "w-[100%] h-[100%]"
+                                                    }
+                                                >
+                                                    <div className='add-detail flex justify-center'>
+                                                        <input
+                                                            className='post-image-add-hidden hidden'
+                                                            type='file'
+                                                            id='post-image-input'
+                                                            onChange={ async(e) => {
+                                                                var tgt = e.target || window.event.srcElement;
+                                                                var files = tgt.files;
+                                                                console.log("files", files);
+                                                                // FileReader support
+                                                                if (FileReader && files && files.length) {
+                                                                    var fr = new FileReader();
+                                                                    const sleep = ms => new Promise(res => setTimeout(res, ms));
+                                                                    fr.onload = async() => {
+                                                                        // document.querySelector('.product-current-upload-img').src = fr.result;
+                                                                        console.log("fr.result", fr.result);
+                                                                        // addTempImage(fr.result);
+                                                                        // await sleep(2000);
+                                                                        // setTempImage([]);
+                                                                    }
+                                                                    fr.readAsDataURL(files[0]);
+                                                                    uploadPicture(e);
+                                                                }
+                                                            }}
+                                                        />
+                                                        <label
+                                                            className={
+                                                                'add-from-link text-[16px] bg-[#E5EFFD] text-[#103262] ' +
+                                                                'font-[600] px-2 py-1 hover:opacity-70 hover:cursor-pointer'
+                                                            }
+                                                            htmlFor="post-image-input"
+                                                            onClick={() => {
+
+                                                            }}
+                                                        >
+                                                            Thêm hình ảnh
+                                                        </label>
+                                                        <div 
+                                                            className={
+                                                                'add-from-link text-[16px] text-[#103262] ' + 
+                                                                'font-[600] px-2 py-1 underline ml-2'
+                                                            }
+                                                        >
+                                                            Thêm từ link
+                                                        </div>
+                                                    </div>
+                                                    <div className='add-description text-[14px]'>
+                                                        Chấp nhận hình ảnh từ thiết bị hoặc link
+                                                    </div>
                                                 </div>
-                                                <div className='add-from-link'>
-                                                    Thêm từ link
+                                            :   
+                                            <div className='flex'>
+                                                {
+                                                    imgList.map((value) => {
+                                                        return (
+                                                            <div
+                                                                className='h-[180px] w-[180px] border-dashed border-[1px] border-[#999] mx-[10px] my-[10px] relative'    
+                                                            >
+                                                                <img 
+                                                                    className='h-[180px] w-[180px] object-contain'
+                                                                    src={value} 
+                                                                    alt="" 
+                                                                />
+                                                                <FiDelete
+                                                                    className="absolute top-0 right-1 text-[#999] hover:cursor-pointer hover:text-[#2BBCBA]"
+                                                                    size={24}
+                                                                    onClick = {(e)=> {
+                                                                        removeImgInput(value);
+                                                                    }}
+                                                                />
+                                                            </div>
+                                                        )
+                                                        
+                                                    }) 
+                                                }
+                                                <div className='add-detail w-[180px] h-[180px] 
+                                                    border-dashed border-[1px] border-[#999] my-[10px]  text-center'
+                                                >
+                                                    <input
+                                                        className='post-image-add-hidden hidden'
+                                                        type='file'
+                                                        id='post-image-input-1'
+                                                        onChange={ async(e) => {
+                                                            var tgt = e.target || window.event.srcElement;
+                                                            var files = tgt.files;
+                                                            console.log("files", files);
+                                                            // FileReader support
+                                                            if (FileReader && files && files.length) {
+                                                                var fr = new FileReader();
+                                                                const sleep = ms => new Promise(res => setTimeout(res, ms));
+                                                                fr.onload = async() => {
+                                                                    // document.querySelector('.product-current-upload-img').src = fr.result;
+                                                                    console.log("fr.result", fr.result);
+                                                                    // addTempImage(fr.result);
+                                                                    // await sleep(2000);
+                                                                    // setTempImage([]);
+                                                                }
+                                                                fr.readAsDataURL(files[0]);
+                                                                uploadPicture(e);
+                                                            }
+                                                        }}
+                                                    />
+                                                    <label
+                                                        className={
+                                                            'add-from-link text-[16px] bg-[#E5EFFD] text-[#103262] ' +
+                                                            'font-[600] px-2 py-1 hover:opacity-70 hover:cursor-pointer mt-[46px]'
+                                                        }
+                                                        htmlFor="post-image-input-1"
+                                                        onClick={() => {
+
+                                                        }}
+                                                    >
+                                                        Thêm hình ảnh
+                                                    </label>
+                                                    <div 
+                                                        className={
+                                                            'add-from-link text-[16px] text-[#103262] ' + 
+                                                            'font-[600] underline text-center mt-2'
+                                                        }
+                                                    >
+                                                        Thêm từ link
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div className='add-description'>
-                                                Chấp nhận hình ảnh từ thiết bị hoặc link
-                                            </div>
-                                        </div>
+
+                                        }
                                     </div>
                                 </Grid>
                                 <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
@@ -352,7 +492,7 @@ const AddBook: React.FC = () => {
                                 Chi tiết sản phẩm
                             </div>
                             <Grid container spacing={1} className='mt-2'>
-                                {inputSection()}
+                                {inputSection("Tác giả", inputType.SINGLE_LINE, true)}
                                 <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
                                     className='input-label relative'
                                 >
