@@ -7,7 +7,31 @@ import dynamic from 'next/dynamic';
 const NavigationMobile = dynamic(() => import('../../../component/Admin/NavigationMobile'))
 const Navigation = dynamic(() => import('../../../component/Admin/Navigation'))
 
+interface ProductTypeItem {
+    _id: string,
+    name: string,
+}
+
 const BookPage: React.FC = () => {  
+
+    const productType : ProductTypeItem[] = [
+        {
+            _id: "1",
+            name: "Tiểu thuyết"
+        },
+        {
+            _id: "2",
+            name: "Ngôn tình"
+        },
+        {
+            _id: "3",
+            name: "Sách giáo khoa"
+        },
+    ];
+
+    const selectedTypeID : string[] = ["1","2"];
+    const currentKeyWord : string[] = ["Nguyễn Nhật Ánh", "Rùa"]
+
     return (
         <Layout activeNav={"book"}>
             <Head>
@@ -21,7 +45,7 @@ const BookPage: React.FC = () => {
                     </Grid>
                     <Grid className='mt-16 font-primary font-[500] text-[#000]' sm={12} item md={9}>
                         <div className='title text-[#2BBCBA] text-[24px]'>
-                            Thêm sản phẩm jkahfjkạkàhạkfhạkhàkađâ
+                            Thêm sản phẩm
                         </div>
                         <div style={{ boxShadow: 'rgb(0 0 0 / 60%) 0px 3px 8px', padding: '25px' }} className='rounded-lg'>
                             <div className='title 
@@ -106,22 +130,357 @@ const BookPage: React.FC = () => {
                                     </div>
                                 </Grid>
                                 <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
-                                    className='input-label relative'
+                                    className='input-label relative mt-[11px]'
                                 >
                                     <div className='title h-8 text-right leading-[22px] mr-4'>Loại sản phẩm</div>
                                 </Grid>
                                 <Grid item xs={10} sm={10} md={10} lg={10} xl={10}
-                                    className=''
+                                    className='mt-2 flex'
                                 >
-                                    <select name="cars" id="cars">
-                                        <option value="volvo">Volvo</option>
-                                        <option value="saab">Saab</option>
-                                        <option value="mercedes">Mercedes</option>
-                                        <option value="audi">Audi</option>
+                                    <select name="product-type" id="product-type"
+                                        className={
+                                            "border-[1px] !border-[#e5e5e5] py-[4px] focus:border-[#e5e5e5]  focus-visible:border-[#e5e5e5] "
+                                        }
+                                    >
+                                        {
+                                            productType.map((item, value, key)=>{
+                                                return (
+                                                    <option 
+                                                        value={item._id}
+                                                        className="py-1"
+                                                    >
+                                                        {item.name}
+                                                    </option>
+                                                );
+                                            })
+                                        }
                                     </select>
-                                    <button>
+                                    <button
+                                        className={
+                                            "buy-button text-[16px] leading-[30px] bg-[#2BBCBA] px-[20px] text-white rounded-[4px] " +
+                                            "hover:opacity-70 hover:cursor-pointer ml-2"
+                                        }
+                                    >
                                         Thêm 
                                     </button>
+                                    <div 
+                                        className={
+                                            "display-type-selected " + 
+                                            "flex ml-[24px]"
+                                        }
+                                    >
+                                        {
+                                            productType.map((item, value, key)=>{
+                                                if(selectedTypeID.includes(item._id))
+                                                    return (
+                                                        <div
+                                                            className="relative"
+                                                        >
+                                                            <div 
+                                                                className={
+                                                                    "py-[4px] px-[8px] ml-[16px] "+
+                                                                    "bg-[#7E97B9] text-[#fff] rounded-[4px] leading-[25px] "
+                                                                }
+                                                            >
+                                                                {item.name}
+                                                            </div>
+                                                            <div
+                                                                className={
+                                                                    "rounded-[100%] bg-[#F16F61] w-4 h-4 text-[#fff] " + 
+                                                                    "absolute top-[-4px] right-[-6px]"
+                                                                }
+                                                            >
+                                                                <p
+                                                                    className='close-icon mt-[-4px] ml-[4px]'
+                                                                >
+                                                                    x
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    );
+                                            })
+                                        }
+                                    </div>
+                                </Grid>
+                            </Grid>
+                        </div>
+
+                        <div style={{ boxShadow: 'rgb(0 0 0 / 60%) 0px 3px 8px', padding: '25px' }} className='rounded-lg  mt-[40px]'>
+                            <div className='title 
+                                text-[22px] font-[600] text-[#000]
+                            '>
+                                Thông tin nhập sản phẩm
+                            </div>
+                            <Grid container spacing={1} className='mt-2'>
+                                <Grid item sm={12} md={6} lg={6}>
+                                    <div className='flex'>
+                                        <div>
+                                            Giá nhập
+                                        </div>
+                                        <div>
+                                            <input type="number" className="border-[1px]"></input>
+                                        </div>
+                                    </div>
+                                    <div className='flex'>
+                                        <div>
+                                            Giá bán
+                                        </div>
+                                        <div>
+                                            <input type="number" className="border-[1px]"></input>
+                                        </div>
+                                        <div className="divider"></div>
+                                    </div>
+                                    
+                                </Grid>
+                                <Grid item sm={12} md={6} lg={6}>
+                                    <div className='flex'>
+                                        <div>
+                                            Ngày nhập
+                                        </div>
+                                        <div>
+                                            <input type="date" className="border-[1px]"></input>
+                                        </div>
+                                    </div>
+                                    <div className='flex'>
+                                        <div>
+                                            Giá bán
+                                        </div>
+                                        <div>
+                                            <input className="border-[1px]"></input>
+                                        </div>
+                                        <div className="divider"></div>
+                                    </div>
+                                </Grid>
+                                <div className='divider'>
+
+                                </div>
+                                <div className='flex'>
+                                    <div>
+                                        Tổng tiền
+                                    </div>
+                                    <div>
+                                        <input className="border-[1px]"></input>
+                                    </div>
+                                    <div className="divider"></div>
+                                </div>
+                            </Grid>
+                        </div>
+
+                        <div style={{ boxShadow: 'rgb(0 0 0 / 60%) 0px 3px 8px', padding: '25px' }} className='rounded-lg  mt-[40px]'>
+                            <div className='title 
+                                text-[22px] font-[600] text-[#000]
+                            '>
+                                Chi tiết sản phẩm
+                            </div>
+                            <Grid container spacing={1} className='mt-2'>
+                                <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
+                                    className='input-label relative'
+                                >
+                                    <div className='title h-8 text-right leading-[22px] mr-4'>Tác giả</div>
+                                    <div className='divider
+                                            h-[100px] w-[1px] 
+                                            bg-[#C5C5C5]
+                                            absolute top-[6px] right-[0px]
+                                        '   
+                                    ></div>
+                                </Grid>
+                                <Grid item xs={10} sm={10} md={10} lg={10} xl={10}
+                                    className=''
+                                >
+                                    <input type='text' 
+                                        className='product-name 
+                                        w-[calc(100%)] h-[32px]
+                                        rounded-[4px] border-[1px] border-[#999999]
+                                        text-[#333] text-[18px]
+                                        px-[8px]
+                                        focus-visible:outline-none
+                                        focus:outline-none
+                                    '>
+
+                                    </input>
+                                </Grid> 
+                                <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
+                                    className='input-label relative'
+                                >
+                                    <div className='title h-8 text-right leading-[22px] mr-4'>Nhà xuất bản</div>
+                                </Grid>
+                                <Grid item xs={10} sm={10} md={10} lg={10} xl={10}
+                                    className=''
+                                >
+                                    <input type='text' 
+                                        className='product-name 
+                                        w-[calc(100%)] h-[32px]
+                                        rounded-[4px] border-[1px] border-[#999999]
+                                        text-[#333] text-[18px]
+                                        px-[8px]
+                                        focus-visible:outline-none
+                                        focus:outline-none
+                                    '>
+
+                                    </input>
+                                </Grid> 
+                                <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
+                                    className='input-label relative'
+                                >
+                                    <div className='title h-8 text-right leading-[22px] mr-4'>Dạng bìa</div>
+                                </Grid>
+                                <Grid item xs={10} sm={10} md={10} lg={10} xl={10}
+                                    className=''
+                                >
+                                    <input type='text' 
+                                        className='product-name 
+                                        w-[calc(100%)] h-[32px]
+                                        rounded-[4px] border-[1px] border-[#999999]
+                                        text-[#333] text-[18px]
+                                        px-[8px]
+                                        focus-visible:outline-none
+                                        focus:outline-none
+                                    '>
+
+                                    </input>
+                                </Grid> 
+                                <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
+                                    className='input-label relative'
+                                >
+                                    <div className='title h-8 text-right leading-[22px] mr-4'>Năm phát hành</div>
+                                </Grid>
+                                <Grid item xs={10} sm={10} md={10} lg={10} xl={10}
+                                    className=''
+                                >
+                                    <input type='text' 
+                                        className='product-name 
+                                        w-[calc(100%)] h-[32px]
+                                        rounded-[4px] border-[1px] border-[#999999]
+                                        text-[#333] text-[18px]
+                                        px-[8px]
+                                        focus-visible:outline-none
+                                        focus:outline-none
+                                    '>
+
+                                    </input>
+                                </Grid> 
+                                <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
+                                    className='input-label relative'
+                                >
+                                    <div className='title h-8 text-right eading-[22px] mr-4'>Chi tiết mô tả</div>
+                                </Grid>
+                                <Grid item xs={10} sm={10} md={10} lg={10} xl={10}
+                                    className=''
+                                >
+                                    <textarea
+                                        className='product-detail
+                                        w-[calc(100%)] h-[100px]
+                                        rounded-[4px] border-[1px] border-[#999999]
+                                        text-[#333] text-[18px]
+                                        px-[8px]
+                                        focus-visible:outline-none
+                                        focus:outline-none
+                                        resize-none
+                                    '>
+
+                                    </textarea>
+                                </Grid> 
+                                <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
+                                    className='input-label relative'
+                                >
+                                    <div className='title h-8 text-right leading-[22px] mr-4'>Số trang</div>
+                                </Grid>
+                                <Grid item xs={10} sm={10} md={10} lg={10} xl={10}
+                                    className=''
+                                >
+                                    <input type='text' 
+                                        className='product-name 
+                                        w-[calc(100%)] h-[32px]
+                                        rounded-[4px] border-[1px] border-[#999999]
+                                        text-[#333] text-[18px]
+                                        px-[8px]
+                                        focus-visible:outline-none
+                                        focus:outline-none
+                                    '>
+
+                                    </input>
+                                </Grid> 
+                                <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
+                                    className='input-label relative'
+                                >
+                                    <div className='title h-8 text-right leading-[22px] mr-4'>Kích thước</div>
+                                </Grid>
+                                <Grid item xs={10} sm={10} md={10} lg={10} xl={10}
+                                    className=''
+                                >
+                                    <input type='text' 
+                                        className='product-name 
+                                        w-[calc(100%)] h-[32px]
+                                        rounded-[4px] border-[1px] border-[#999999]
+                                        text-[#333] text-[18px]
+                                        px-[8px]
+                                        focus-visible:outline-none
+                                        focus:outline-none
+                                    '>
+
+                                    </input>
+                                </Grid> 
+                                <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
+                                    className='input-label relative mt-[11px]'
+                                >
+                                    <div className='title h-8 text-right leading-[22px] mr-4'>Từ khoá</div>
+                                </Grid>
+                                <Grid item xs={10} sm={10} md={10} lg={10} xl={10}
+                                    className='mt-2 flex'
+                                >
+                                    <input name="product-type" id="product-type"
+                                        className={
+                                            "border-[1px] !border-[#e5e5e5] py-[4px] focus:border-[#e5e5e5]  focus-visible:border-[#e5e5e5] "
+                                        }
+                                    >
+                                    </input>
+                                    <button
+                                        className={
+                                            "buy-button text-[16px] leading-[30px] bg-[#2BBCBA] px-[20px] text-white rounded-[4px] " +
+                                            "hover:opacity-70 hover:cursor-pointer ml-2"
+                                        }
+                                    >
+                                        Thêm 
+                                    </button>
+                                    <div 
+                                        className={
+                                            "display-type-selected " + 
+                                            "flex ml-[24px]"
+                                        }
+                                    >
+                                        {
+                                            currentKeyWord.map((item, value, key)=>{
+                                                return (
+                                                    <div
+                                                        className="relative"
+                                                    >
+                                                        <div 
+                                                            className={
+                                                                "py-[4px] px-[8px] ml-[16px] "+
+                                                                "bg-[#7E97B9] text-[#fff] rounded-[4px] leading-[25px] "
+                                                            }
+                                                        >
+                                                            {item   }
+                                                        </div>
+                                                        <div
+                                                            className={
+                                                                "rounded-[100%] bg-[#F16F61] w-4 h-4 text-[#fff] " + 
+                                                                "absolute top-[-4px] right-[-6px]"
+                                                            }
+                                                        >
+                                                            <p
+                                                                className='close-icon mt-[-4px] ml-[4px]'
+                                                            >
+                                                                x
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                );
+                                            })
+                                        }
+                                    </div>
                                 </Grid>
                             </Grid>
                         </div>

@@ -8,6 +8,7 @@ import style from '../../styles/Admin/Dashboard.module.css'
 import Link from 'next/link';
 
 function Navigation(props) {
+    
     return (
         <div style={{ boxShadow: 'rgb(0 0 0 / 60%) 0px 3px 8px', padding: '25px' }} className='min:rounded-none 900px:rounded-lg relative min:h-full 900px:h-auto z-50'>
             <div className='text-xl font-bold mb-2'>SellingBook</div>
