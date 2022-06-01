@@ -13,44 +13,44 @@ import axios from 'axios';
 
 interface ProductTypeItem {
     _id: string,
-    name: string,
+    type: string,
 }
 
-const BookPage: React.FC = () => {  
+const AddBook: React.FC = () => {  
     const dispatch = useDispatch();
 
     // Lấy tất cả product type
     useEffect(() => {
         const getAllCategory = async() => {
             console.log("dispatch category rồi");
+            var categoryList;
             await axios.get(URL.URL_CATEGORY)
                 .then((data)=>{
-                    console.log(data.data);
+                    categoryList = data.data;
                 })
                 .catch((error)=>{
                     console.log(error)
                 })
-            dispatch(getCategory({}));
+            dispatch(getCategory([...categoryList.categories]));
         }
         getAllCategory();
     }, [])
 
-    const productType : ProductTypeItem[] = [
-        {
-            _id: "1",
-            name: "Tiểu thuyết"
-        },
-        {
-            _id: "2",
-            name: "Ngôn tình"
-        },
-        {
-            _id: "3",
-            name: "Sách giáo khoa"
-        },
-    ];
+    useSelector((state:RootStateOrAny) => {
+        console.log("state", state.categoryReducer.categories);
+    })
 
-    const selectedTypeID : string[] = ["1","2"];
+
+    const productType : ProductTypeItem[] = useSelector((state)=> {return state.categoryReducer.categories} ) || [];
+
+    const [selectedTypeID, setSelectedTypeID] = useState([]);
+    const addSelectedTypeID = (e) => {
+        var currentList = JSON.parse(JSON.stringify(selectedTypeID));
+        console.log("currentList", currentList);
+        currentList.push(e.target.value);
+        setSelectedTypeID(currentList);
+    }
+
     const currentKeyWord : string[] = ["Nguyễn Nhật Ánh", "Rùa"]
 
     const inputSection = () => {
@@ -193,16 +193,25 @@ const BookPage: React.FC = () => {
                                         className={
                                             "border-[1px] !border-[#e5e5e5] py-[4px] focus:border-[#e5e5e5]  focus-visible:border-[#e5e5e5] "
                                         }
+                                        onChange={(e) => {
+                                            addSelectedTypeID(e)
+                                        }}
                                     >
+                                        <option
+                                            value={0}
+                                            className="py-1"
+                                        >
+                                            Chọn các loại
+                                        </option>
                                         {
                                             productType.map((item, value, key)=>{
+                                                if(!selectedTypeID.includes(item._id))
                                                 return (
-                                                    <option 
-                                                        key={key}
+                                                    <option
                                                         value={item._id}
                                                         className="py-1"
                                                     >
-                                                        {item.name}
+                                                        {item.type}
                                                     </option>
                                                 );
                                             })
@@ -222,8 +231,10 @@ const BookPage: React.FC = () => {
                                             "flex ml-[24px]"
                                         }
                                     >
+
                                         {
                                             productType.map((item, value, key)=>{
+                                                console.log("selectedTypeID",selectedTypeID)
                                                 if(selectedTypeID.includes(item._id))
                                                     return (
                                                         <div
@@ -235,7 +246,7 @@ const BookPage: React.FC = () => {
                                                                     "bg-[#7E97B9] text-[#fff] rounded-[4px] leading-[25px] "
                                                                 }
                                                             >
-                                                                {item.name}
+                                                                {item.type}
                                                             </div>
                                                             <div
                                                                 className={
@@ -482,7 +493,6 @@ const BookPage: React.FC = () => {
                                                 return (
                                                     <div
                                                         className="relative"
-                                                        key={key}
                                                     >
                                                         <div 
                                                             className={
@@ -539,4 +549,4 @@ const BookPage: React.FC = () => {
 }
 
 
-export default BookPage
+export default AddBook

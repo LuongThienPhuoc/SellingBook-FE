@@ -9,13 +9,25 @@ import Category from '../../../models/category.js';
 dbConnect();
 
 const getCategory = async(req, res) => {
-    console.log("req.body", req.body);
+    // console.log("req.body", req.body);
+    var categoryList = [];
+    await Category.find().exec()
+        .then((data)=> {
+            categoryList = data;
+        })
+        .catch((error) => {
+            return res.status(200).send({
+                success: false,
+                message: error
+            })
+        })
     res.status(200).send({
-        run: true,
-        ok: true,
-        get: "OK"
+        success: true,
+        categories: categoryList
     })
 }
+
+
 
 const categoryController = async (req, res, data) => {
     const { method } = req;
