@@ -6,7 +6,7 @@ import { useDispatch, useSelector, RootStateOrAny } from 'react-redux'
 import { useRouter } from 'next/router';
 import axios from 'axios'
 
-
+import LinearProgress from '@mui/material/LinearProgress';
 import * as URL from '../services/api/config'
 import styleLogin from '../styles/Login.module.css'
 import { showAlertSuccess, showAlertError } from '../redux/actions/alertAction'
@@ -26,12 +26,11 @@ function ForgetPassword(props) {
         helperText: ''
     })
 
-    useEffect(() => {
-        if (isLogin) {
-            router.push('/')
-        }
+    const status = useSelector((state: RootStateOrAny) => state.userReducer)
 
-    }, [])
+    if (!status.isLoading) return (<LinearProgress></LinearProgress>)
+    
+    if (status.isLogin) router.push('/')
 
     const HandleClickButton = async (e) => {
         e.preventDefault()

@@ -8,11 +8,12 @@ import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 const Navigation = dynamic(() => import('../../component/Admin/Navigation'))
 const NavigationMobile = dynamic(() => import('../../component/Admin/NavigationMobile'))
-const Layout = dynamic(() => import('../../component/Layout'),
-    {
-        loading: () => <LinearProgress></LinearProgress>
-    }
-)
+// const Layout = dynamic(() => import('../../component/Layout'),
+//     {
+//         loading: () => <LinearProgress></LinearProgress>
+//     }
+// )
+import Layout from '../../component/Layout'
 const GeneralStatistics = dynamic(() => import('../../component/Admin/Dashboard/GeneralStatistics'))
 const Traffic = dynamic(() => import('../../component/Admin/Dashboard/Traffic'),
     {

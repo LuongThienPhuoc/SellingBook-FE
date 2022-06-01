@@ -35,17 +35,17 @@
 }
 
 .formLogin{
-    animation: fadeInLeft ease-in-out 0.3s;
-    animation-timing-function: cubic-bezier(0.23, 1, 0.320, 1);
+    /* animation: fadeInLeft ease-in-out 0.3s;
+    animation-timing-function: cubic-bezier(0.23, 1, 0.320, 1); */
 }
 .formRegister{
-    animation: fadeInLeft ease-in-out 0.3s;
-    animation-timing-function: cubic-bezier(0.23, 1, 0.320, 1);
+    /* animation: fadeInLeft ease-in-out 0.3s;
+    animation-timing-function: cubic-bezier(0.23, 1, 0.320, 1); */
 }
 
 .formForgetPass {
-    animation: fadeIn ease-in-out 0.3s;
-    animation-timing-function: cubic-bezier(0.23, 1, 0.320, 1);
+    /* animation: fadeIn ease-in-out 0.3s;
+    animation-timing-function: cubic-bezier(0.23, 1, 0.320, 1); */
 }
 
 @keyframes fadeIn{

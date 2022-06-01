@@ -8,11 +8,12 @@ import { useRouter } from 'next/router';
 import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
 const NavigationMobile = dynamic(() => import('../../component/Admin/NavigationMobile'))
 const Navigation = dynamic(() => import('../../component/Admin/Navigation'))
-const Layout = dynamic(() => import('../../component/Layout'),
-    {
-        loading: () => <LinearProgress></LinearProgress>
-    }
-)
+import Layout from '../../component/Layout'
+// const Layout = dynamic(() => import('../../component/Layout'),
+//     {
+//         loading: () => <LinearProgress></LinearProgress>
+//     }
+// )
 
 function product(props) {
     const isLogin = useSelector((state: RootStateOrAny) => state.userReducer.isLogin)

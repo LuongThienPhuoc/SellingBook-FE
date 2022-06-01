@@ -6,7 +6,7 @@ import { useSelector, useDispatch, RootStateOrAny } from 'react-redux'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 
-
+import LinearProgress from '@mui/material/LinearProgress';
 import { getCodeAgain } from '../redux/actions/codeAction'
 import { makeCode } from '../helper/makeCode'
 import { sendCode } from '../services/sendMail'
@@ -26,13 +26,14 @@ function ConfirmCode(props) {
     const [isCheckCode, setIsCheckCode] = useState(false);
     const [codeClient, setCodeClient] = useState('');
     const router = useRouter();
+    const status = useSelector((state: RootStateOrAny) => state.userReducer)
 
-    useEffect(() => {
-        if (isLogin) {
-            router.push('/')
-        }
-        if (!isLoading) router.push('/forget-password')
-    }, [])
+
+    if (!status.isLoading) return (<LinearProgress></LinearProgress>)
+    
+    if (status.isLogin) router.push('/')
+
+    if (!isLoading) router.push('/forget-password')
 
     const [pass, setPass] = useState({
         value: '',

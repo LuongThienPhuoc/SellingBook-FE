@@ -2,12 +2,15 @@ import React, { useState, useEffect, useLayoutEffect } from 'react'
 import Head from 'next/head'
 import styleLogin from '../styles/Login.module.css'
 
+import LinearProgress from '@mui/material/LinearProgress';
 import dynamic from 'next/dynamic';
-const Login = dynamic(() => import('../component/Login')
-);
+import { useDispatch, useSelector, RootStateOrAny } from 'react-redux'
+import { useRouter } from 'next/router';
+const Login = dynamic(() => import('../component/Login'));
 
 
 const LoginPage = () => {
+  const router = useRouter()
   const [isMobile, setIsMobile] = useState(true);
   useLayoutEffect(() => {
     function updateSize() {
@@ -21,6 +24,13 @@ const LoginPage = () => {
     updateSize();
     return () => window.removeEventListener('resize', updateSize);
   }, [isMobile]);
+
+
+  const status = useSelector((state: RootStateOrAny) => state.userReducer)
+
+  if (!status.isLoading) return (<LinearProgress></LinearProgress>)
+  
+  if (status.isLogin) router.push('/')
 
   return (
     <div>

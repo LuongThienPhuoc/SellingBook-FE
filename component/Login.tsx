@@ -9,7 +9,6 @@ import GoogleLogin from 'react-google-login';
 import { useRouter } from 'next/router'
 import axios from 'axios'
 
-
 import * as URL from '../services/api/config'
 import { showAlertSuccess, showAlertError } from '../redux/actions/alertAction'
 import { limitText } from '../helper/limitText'
@@ -19,9 +18,6 @@ import { userLogin } from '../redux/actions/userAction';
 
 function Login(props) {
     const dispatch = useDispatch()
-    const isLogin = useSelector((state: RootStateOrAny) => state.userReducer.isLogin)
-    const router = useRouter()
-
     const [accountName, setAccountName] = useState({
         value: '',
         isError: false,
@@ -33,18 +29,6 @@ function Login(props) {
         isError: false,
         helperText: ''
     })
-
-    useEffect(() => {
-        if (isLogin) {
-            router.push('/')
-        }
-    }, [])
-
-    useEffect(() => {
-        if (isLogin) {
-            router.push('/')
-        }
-    }, [isLogin])
 
 
     const HandleClickLogin = async (e) => {

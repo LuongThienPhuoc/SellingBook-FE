@@ -7,34 +7,33 @@ import { ButtonGroup, Button } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
 import { Container, Grid, Divider } from '@mui/material';
-import { BsReverseLayoutTextWindowReverse, BsBook, BsBookmarkStar } from 'react-icons/bs'
-import { AiOutlineDashboard } from 'react-icons/ai'
 import Link from 'next/link';
 import Pagination from '@mui/material/Pagination';
 import SearchIcon from '@mui/icons-material/Search';
+// const Layout = dynamic(() => import('../../component/Layout'),
+//     {
+//         loading: () => <LinearProgress></LinearProgress>
+//     }
+// )
+import Layout from '../../component/Layout'
 const NavigationMobile = dynamic(() => import('../../component/Admin/NavigationMobile'))
 const Navigation = dynamic(() => import('../../component/Admin/Navigation'))
 const CardOrderList = dynamic(() => import('../../component/Admin/Receipt/CardOrderList'))
-const Layout = dynamic(() => import('../../component/Layout'),
-    {
-        loading: () => <LinearProgress></LinearProgress>
-    }
-)
 
 function receipt(props) {
-    const isLogin = useSelector((state: RootStateOrAny) => state.userReducer.isLogin)
     const infoUser = useSelector((state: RootStateOrAny) => state.userReducer.infoUser)
+    const status = useSelector((state: RootStateOrAny) => state.userReducer)
     const router = useRouter()
-    useEffect(() => {
-       
-        if (!isLogin || infoUser.role == 'user') {
-            router.push('/')
-        }
-    }, [isLogin, infoUser])
     const [active, setActive] = useState('');
     useEffect(() => {
         setActive('All')
     }, [])
+
+    if (!status.isLoading) return (<LinearProgress></LinearProgress>)
+
+    if (!status.isLogin) router.push('/login')
+
+    if (infoUser.role == 'user') router.push('/')
 
     const handleClickActive = (e) => {
         setActive(e.target.name)

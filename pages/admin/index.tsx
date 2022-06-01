@@ -5,17 +5,17 @@ import LinearProgress from '@mui/material/LinearProgress';
 import { useRouter } from 'next/router';
 import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
 
-const Layout = dynamic(() =>
-    import('../../component/Layout'),
-    {
-        loading: () => <LinearProgress></LinearProgress>
-    }
-)
+// const Layout = dynamic(() =>
+//     import('../../component/Layout'),
+//     {
+//         loading: () => <LinearProgress></LinearProgress>
+//     }
+// )
+import Layout from '../../component/Layout'
 
 function NotFound(props) {
     const router = useRouter()
     useEffect(() => {
-        console.log(router)
         setTimeout(() => {
             router.push('/admin/dashboard')
         }, 1000)
@@ -23,8 +23,6 @@ function NotFound(props) {
 
     return (
         <Layout>
-           
-            
         </Layout>
     );
 }

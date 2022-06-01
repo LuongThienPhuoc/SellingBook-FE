@@ -10,6 +10,7 @@ import { useDispatch, useSelector, RootStateOrAny } from 'react-redux'
 import { useRouter } from 'next/router';
 
 
+import LinearProgress from '@mui/material/LinearProgress';
 import styleLogin from '../styles/Login.module.css'
 import { userLogin } from '../redux/actions/userAction';
 import { showAlertSuccess, showAlertError } from '../redux/actions/alertAction'
@@ -45,11 +46,12 @@ function Register(props) {
         helperText: ''
     })
 
-    useEffect(() => {
-        if (isLogin) {
-            router.push('/')
-        }
-    }, [])
+    const status = useSelector((state: RootStateOrAny) => state.userReducer)
+
+
+    if (!status.isLoading) return (<LinearProgress></LinearProgress>)
+    
+    if (status.isLogin) router.push('/')
 
     const HandleClickRegister = async (e) => {
         e.preventDefault()
@@ -186,7 +188,6 @@ function Register(props) {
                 dispatch(showAlertSuccess(res.data.message))
             }
         })
-        console.log(response.profileObj);
         console.log('click')
     }
     return (
