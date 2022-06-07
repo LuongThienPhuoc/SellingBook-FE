@@ -24,4 +24,7 @@ export const URL_CREATE_RECEIPT = URL_SYSTEM_V1 + '/receipt/create-new-receipt'
 export const URL_GET_ORDER_LIST = URL_SYSTEM_V1 + '/receipt/get-order-list'
 export const URL_DELETE_RECEIPT = URL_SYSTEM_V1 + '/receipt/delete-receipt'
 
-
+// Admin
+export const URL_GET_ALL_USER = URL_SYSTEM_V1 + '/admin/get-all-user'
+export const URL_GET_ALL_RECEIPT = URL_SYSTEM_V1 + '/admin/get-all-receipt'
+export const URL_POST_CONFORM_RECEIPT = URL_SYSTEM_V1 + '/admin/conform-receipt'

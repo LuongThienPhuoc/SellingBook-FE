@@ -15,7 +15,7 @@ function ModalDetailOrder(props) {
         <div onClick={props.hideModal} className='profile-modal bg-[#00000040] fixed top-0 left-0 bottom-0 right-0 z-50 flex items-center justify-center'>
             <div
                 onClick={stopPropagation}
-                className='bg-white height-auto min-h-8/12 w-8/12 rounded-md shadow-md p-10 min-w-[500px] w-[700px] relative'
+                className='bg-white height-auto min-h-8/12 rounded-md shadow-md p-10 min-w-[500px] w-[700px] relative'
             >
                 <div onClick={props.hideModal} className='absolute right-0 top-0 m-3 hover:text-[#2BBCBA] cursor-pointer ease-in-out duration-100 transition hover:scale-110 '>
                     <BiExit className='text-2xl'></BiExit>

@@ -18,17 +18,13 @@ function product(props) {
     const isLogin = useSelector((state: RootStateOrAny) => state.userReducer.isLogin)
     const infoUser = useSelector((state: RootStateOrAny) => state.userReducer.infoUser)
     const router = useRouter()
-    useEffect(() => {
-       
-        if (!isLogin || infoUser.role == 'user') {
-            router.push('/')
-        }
-    }, [isLogin, infoUser])
-    const [option, setOption] = useState('Danh sách đơn hàng')
-    const handleClickOption = (e) => {
-        e.preventDefault()
-        setOption(e.target.innerText)
-    }
+    const status = useSelector((state: RootStateOrAny) => state.userReducer)
+
+    if (!status.isLoading) return (<LinearProgress></LinearProgress>)
+
+    if (!status.isLogin) router.push('/login')
+
+    if (infoUser.role == 'user') router.push('/')
 
     return (
         <Layout active="admin">

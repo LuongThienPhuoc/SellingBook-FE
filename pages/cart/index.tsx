@@ -39,7 +39,10 @@ const Cart = () => {
         a.phone = User.phone
       }
 
-      if (a.district == '' || a.province == '' || a.commune == '' || a.address == '' || a.note == '' || a.paymentMethod == '' || a.paymentMethod) {
+      console.log(a)
+
+
+      if (a.district == '' || a.province == '' || a.commune == '' || a.address == '' || a.note == '' || a.paymentMethod == '' ) {
         dispatch(showAlertError("Nhập đầy đủ thông tin!"))
       } else {
         await axios.post(URL.URL_CREATE_RECEIPT, { ...a })

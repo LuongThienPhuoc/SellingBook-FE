@@ -43,7 +43,6 @@ const OrderList = (props) => {
             a = receipts.filter(value => value.deliveryStatus == active)
             setCurrentReceipts(a)
         }
-       
     }
 
     useEffect(() => {
