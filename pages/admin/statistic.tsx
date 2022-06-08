@@ -20,15 +20,15 @@ import Layout from '../../component/Layout'
 
 
 function product(props) {
-    const isLogin = useSelector((state: RootStateOrAny) => state.userReducer.isLogin)
     const infoUser = useSelector((state: RootStateOrAny) => state.userReducer.infoUser)
     const router = useRouter()
-    useEffect(() => {
+    const status = useSelector((state: RootStateOrAny) => state.userReducer)
 
-        if (!isLogin || infoUser.role == 'user') {
-            router.push('/')
-        }
-    }, [isLogin, infoUser])
+    if (!status.isLoading) return (<LinearProgress></LinearProgress>)
+
+    if (!status.isLogin) router.push('/login')
+
+    if (infoUser.role == 'user') router.push('/')
 
     return (
         <Layout active="admin">

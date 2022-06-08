@@ -216,6 +216,8 @@ function InfoUserToPay(props) {
                             select
                             value={provinceSelect}
                             onChange={handleChangeProvince}
+                            ref={districtRef}
+                            onClick={handleChangeProvince}
                             defaultValue={"0"}
                             SelectProps={{ native: true }}
                         >
@@ -265,6 +267,7 @@ function InfoUserToPay(props) {
                             value={communeSelect}
                             onChange={handleChangeCommune}
                             ref={communeRef}
+                            onLoadedData={() => {console.log('commune')}}
                             SelectProps={{ native: true }}
                         >
                             <option value="0">
