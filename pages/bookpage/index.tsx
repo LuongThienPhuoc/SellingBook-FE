@@ -599,7 +599,7 @@ const BookPage: React.FC = () => {
                         </Grid>
                     </Grid>
                 </div>
-                <div className='relative-book-section mt-16 
+                <div className='relative-book-section 
                     shadow-[0px_4px_4px_4px_rgba(0,0,0,0.25)]
                     rounded-[12px] w-[100%] mt-[62px] pb-[18px] pl-[18px] mb-[62px]'>
                         <div 
