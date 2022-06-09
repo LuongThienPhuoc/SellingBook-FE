@@ -26,11 +26,11 @@ const Navigation = dynamic(() => import('../../component/Admin/Navigation'))
 
 //     if (infoUser.role == 'user') router.push('/')
 // =======
-// import { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 // >>>>>>> phi/product-interaction
 
 const BookPage: React.FC = () => { 
-    // const router = useRouter(); 
+    const router = useRouter(); 
     return (
         <Layout activeNav={"book"}>
             <Head>

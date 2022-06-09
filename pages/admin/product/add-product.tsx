@@ -52,7 +52,7 @@ const AddBook: React.FC = () => {
     })
 
 
-    const productType : ProductTypeItem[] = useSelector((state: typeof rootReducer)=> {return state.categoryReducer.categories} ) || [];
+    const productType = useSelector((state: RootStateOrAny)=> {return state.categoryReducer.categories} ) || [];
 
     const [selectedTypeID, setSelectedTypeID] = useState([]);
     const addSelectedTypeID = (e) => {
@@ -71,7 +71,8 @@ const AddBook: React.FC = () => {
 
     const currentKeyWord : string[] = ["Nguyễn Nhật Ánh", "Rùa"]
 
-    const inputSection = (name: string, typeValue: inputType, hasDivider: boolean, ref: React.RefObject<HTMLElement>) => {
+    const inputSection = (name: string, typeValue: inputType, hasDivider: boolean, 
+        ref: React.RefObject<HTMLInputElement>, refTextArea: React.RefObject<HTMLTextAreaElement>) => {
         return ([
             <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
                 className='input-label relative'
@@ -118,7 +119,7 @@ const AddBook: React.FC = () => {
                                 focus:outline-none
                                 resize-none
                             '
-                            ref={ref}
+                            ref={refTextArea}
                         >
 
                         </textarea>
@@ -201,6 +202,9 @@ const AddBook: React.FC = () => {
         await axios.post( URL.URL_PRODUCT, addData)
             .then((data) => {
                 console.log("add data post", data);
+                alert("Thêm sản phẩm thành công");
+                console.log(router);
+                router.push('/admin/product/');
             })
             .catch((error) => {
                 alert(error);
@@ -238,8 +242,8 @@ const AddBook: React.FC = () => {
                                 Thông tin sản phẩm
                             </div>
                             <Grid container spacing={1} className='mt-2'>
-                                {inputSection("Tên sản phẩm", inputType.SINGLE_LINE, true, pageRef.title)} 
-                                {inputSection("Mô tả", inputType.TEXT_AREA, false, pageRef.introduction)} 
+                                {inputSection("Tên sản phẩm", inputType.SINGLE_LINE, true, pageRef.title, null)} 
+                                {inputSection("Mô tả", inputType.TEXT_AREA, false, null ,pageRef.introduction)} 
                                 <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
                                     className='input-label relative'
                                 >
@@ -269,8 +273,8 @@ const AddBook: React.FC = () => {
                                                             type='file'
                                                             id='post-image-input'
                                                             onChange={ async(e) => {
-                                                                var tgt = e.target || window.event.srcElement;
-                                                                var files = tgt.files;
+                                                                let tgt = e.target || window.event.srcElement;
+                                                                let files = (e.target as HTMLInputElement).files;
                                                                 console.log("files", files);
                                                                 // FileReader support
                                                                 if (FileReader && files && files.length) {
@@ -346,8 +350,8 @@ const AddBook: React.FC = () => {
                                                         type='file'
                                                         id='post-image-input-1'
                                                         onChange={ async(e) => {
-                                                            var tgt = e.target || window.event.srcElement;
-                                                            var files = tgt.files;
+                                                            let tgt = e.target || window.event.srcElement;
+                                                            let files = (e.target as HTMLInputElement).files;
                                                             console.log("files", files);
                                                             // FileReader support
                                                             if (FileReader && files && files.length) {
@@ -622,13 +626,13 @@ const AddBook: React.FC = () => {
                                 Chi tiết sản phẩm
                             </div>
                             <Grid container spacing={1} className='mt-2'>
-                                {inputSection("Tác giả", inputType.SINGLE_LINE, true, pageRef.author)}
-                                {inputSection("Nhà xuất bản", inputType.SINGLE_LINE, false, pageRef.publisher)}
-                                {inputSection("Dạng bìa", inputType.SINGLE_LINE, false, pageRef.format)}
-                                {inputSection("Năm phát hành", inputType.SINGLE_LINE, false, pageRef.publishYear)}
-                                {inputSection("Chi tiết mô tả", inputType.TEXT_AREA, false, pageRef.detailInformation)}
-                                {inputSection("Số trang", inputType.SINGLE_LINE, false, pageRef.pageAmount)}
-                                {inputSection("Kích thước", inputType.SINGLE_LINE, false, pageRef.size)} 
+                                {inputSection("Tác giả", inputType.SINGLE_LINE, true, pageRef.author, null)}
+                                {inputSection("Nhà xuất bản", inputType.SINGLE_LINE, false, pageRef.publisher, null)}
+                                {inputSection("Dạng bìa", inputType.SINGLE_LINE, false, pageRef.format, null)}
+                                {inputSection("Năm phát hành", inputType.SINGLE_LINE, false, pageRef.publishYear, null)}
+                                {inputSection("Chi tiết mô tả", inputType.TEXT_AREA, false, null, pageRef.detailInformation)}
+                                {inputSection("Số trang", inputType.SINGLE_LINE, false, pageRef.pageAmount, null)}
+                                {inputSection("Kích thước", inputType.SINGLE_LINE, false, pageRef.size, null)} 
                                 <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
                                     className='input-label relative mt-[11px]'
                                 >
