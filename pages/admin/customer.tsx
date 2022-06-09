@@ -4,11 +4,11 @@ import LinearProgress from '@mui/material/LinearProgress';
 import Head from 'next/head';
 import { Container, Grid } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useSelector, RootStateOrAny } from 'react-redux';
+import { useSelector, RootStateOrAny, useDispatch } from 'react-redux';
 const NavigationMobile = dynamic(() => import('../../component/Admin/NavigationMobile'))
 const Navigation = dynamic(() => import('../../component/Admin/Navigation'))
 import Layout from '../../component/Layout'
-
+import { showAlertSuccess, showAlertError } from '../../redux/actions/alertAction';
 import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios'
 import * as URL from '../../services/api/config'
@@ -54,13 +54,16 @@ const columns = [
 ];
 
 function customer(props) {
+    const dispatch = useDispatch()
     const infoUser = useSelector((state: RootStateOrAny) => state.userReducer.infoUser)
     const router = useRouter()
     const status = useSelector((state: RootStateOrAny) => state.userReducer)
     const [users, setUsers] = useState([])
     const [isDelete, setIsDelete] = useState({
         isDelete: false,
-        row: {}
+        row: {
+            _id: '',
+        }
     })
 
     useEffect(() => {
@@ -94,7 +97,6 @@ function customer(props) {
 
     if (infoUser.role == 'user') router.push('/')
 
-
     const handleClickCell = (e) => {
         console.log(e)
         setIsDelete({
@@ -103,8 +105,69 @@ function customer(props) {
         })
     }
 
-    const handleDelete = () => {
-        console.log(isDelete)
+    const handleDelete = async () => {
+        await axios.post(URL.URL_DELETE_USER, { usersDelete: isDelete.row })
+            .then(res => {
+                if (res.data.status == 1) {
+                    dispatch(showAlertSuccess(res.data.message))
+                    setUsers(state => state.filter(value => value._id !== res.data.data._id))
+                } else {
+                    dispatch(showAlertError(res.data.message))
+                }
+                setIsDelete({
+                    isDelete: false,
+                    row: {
+                        _id: null
+                    }
+                })
+            })
+            .catch(err => {
+                setIsDelete({
+                    isDelete: false,
+                    row: {
+                        _id: null
+                    }
+                })
+                dispatch(showAlertError("Lỗi hệ thống"))
+            })
+    }
+
+    const handleChangeRole = async () => {
+        await axios.post(URL.URL_CHANGE_ROLE_USER, { usersDelete: isDelete.row })
+            .then(res => {
+                if (res.data.status == 1) {
+                    let newState = users.map(value => {
+                        if (value._id == res.data.data._id) {
+                            console.log(value.role)
+                            if (value.role == 'admin') {
+                                value.role = 'user'
+                            } else {
+                                value.role = 'admin'
+                            }
+                        }
+                        return value
+                    })
+                    setUsers(newState)
+                    dispatch(showAlertSuccess(res.data.message))
+                } else {
+                    dispatch(showAlertError(res.data.message))
+                }
+                setIsDelete({
+                    isDelete: false,
+                    row: {
+                        _id: null
+                    }
+                })
+            })
+            .catch(err => {
+                setIsDelete({
+                    isDelete: false,
+                    row: {
+                        _id: null
+                    }
+                })
+                dispatch(showAlertError("Lỗi hệ thống"))
+            })
     }
 
     return (
@@ -132,7 +195,10 @@ function customer(props) {
                             </div>
                             {
                                 isDelete.isDelete ? (
-                                    <div onClick={handleDelete} className='inline px-3 py-1 rounded-lg text-[#d33232] border-solid border-2 cursor-pointer border-[#d33232] font-medium'>Xóa</div>
+                                    <div className='flex'>
+                                        <div onClick={handleDelete} className='inline px-3 py-1 rounded-lg text-[#d33232] border-solid border-2 cursor-pointer border-[#d33232] font-medium'>Xóa</div>
+                                        <div onClick={handleChangeRole} className='ml-2 inline px-3 py-1 rounded-lg text-[#2bbcba] border-solid border-2 cursor-pointer border-[#2bbcba] font-medium'>Thay đổi quyền</div>
+                                    </div>
                                 ) : null
                             }
                         </div>

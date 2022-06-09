@@ -9,17 +9,21 @@ import { MdCancel } from 'react-icons/md'
 import ModalDetailOrder from '../../Profile/ModalDetailOrder'
 import axios from 'axios';
 import * as URL from '../../../services/api/config'
-
+import {useDispatch} from 'react-redux'
+import {showAlertSuccess, showAlertError} from '../../../redux/actions/alertAction'
 function CardOrderList(props) {
+    const dispatch = useDispatch()
+    
     const handleConform = async (type) => {
         await axios.post(URL.URL_POST_CONFORM_RECEIPT, {deliveryStatus: type, receipt: props.receipt})
         .then(res => {
+            dispatch(showAlertSuccess(`Chuyển trạng thái sang ${type} thành công`))
             props.handleChangeStatus(props.receipt._id, type)
         })
         .catch(err => {
+            dispatch(showAlertError(`Lỗi hệ thống`))
             console.log(err)
         })
-        console.log(type)
     }
     const [isShowModalDetail, setIsShowModalDetail] = useState(false)
 
