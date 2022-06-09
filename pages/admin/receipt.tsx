@@ -23,6 +23,8 @@ function receipt(props) {
     const [receipts, setReceipts] = useState([])
     const [currentReceipts, setCurrentReceipts] = useState([])
     const [active, setActive] = useState('');
+    const [currentSelect, setCurrentSelect] = useState(1)
+
     useEffect(() => {
         setActive('All')
     }, [])
@@ -79,6 +81,16 @@ function receipt(props) {
             a = receipts.filter(value => value.deliveryStatus == active)
             setCurrentReceipts(a)
         }
+        setCurrentSelect(1)
+    }
+
+    const renderCount = () => {
+        let index = currentReceipts.length
+        if (index % 6 == 0) {
+            return Number(index / 6)
+        } else {
+            return Number(Math.floor(index / 6) + 1)
+        }
     }
 
     return (
@@ -113,13 +125,17 @@ function receipt(props) {
                             </div>
                             <Grid spacing={2}>
                                 {
-                                    currentReceipts ? currentReceipts.map((value, index) => (
-                                        <CardOrderList handleChangeStatus={handleChangeStatus} key={index} receipt={value} status={value.deliveryStatus}></CardOrderList>
-                                    )) : null
+                                    currentReceipts ? currentReceipts.map((value, index) => {
+                                        if (index < currentSelect * 6 && index >= (currentSelect - 1) * 6) {
+                                            return (
+                                                <CardOrderList handleChangeStatus={handleChangeStatus} key={index} receipt={value} status={value.deliveryStatus}></CardOrderList>
+                                            )
+                                        }
+                                    }) : (<h3 style={{ textAlign: 'center', padding: '30px' }}>Đơn hàng trống</h3>)
                                 }
                             </Grid>
                             <div className='mt-10 flex justify-center profile-pagination'>
-                                <Pagination count={10} color="primary" variant="outlined" />
+                                <Pagination onChange={(e, num) => { setCurrentSelect(num) }} count={renderCount()} color="primary" variant="outlined" />
                             </div>
                         </div>
                     </Grid>

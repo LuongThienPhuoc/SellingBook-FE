@@ -23,6 +23,10 @@ const Cart = () => {
   const cart = useSelector((state: RootStateOrAny) => state.cart)
   const User = useSelector((state: RootStateOrAny) => state.userReducer.infoUser)
   const isLogin = useSelector((state: RootStateOrAny) => state.userReducer.isLogin)
+  const status = useSelector((state: RootStateOrAny) => state.userReducer)
+
+  if (!status.isLoading) return (<LinearProgress></LinearProgress>)
+  
   const handleClickPayment = async (infoUser) => {
     if (isLogin) {
       let a = {
@@ -59,11 +63,8 @@ const Cart = () => {
     } else {
       router.push('/login')
     }
-
   }
-  const [price, setPrice] = useState({
-
-  })
+ 
   return (
     <Layout>
       <Head>
