@@ -31,5 +31,6 @@ export const URL_POST_CONFORM_RECEIPT = URL_SYSTEM_V1 + '/admin/conform-receipt'
 export const URL_CATEGORY = URL_SYSTEM_V1 + '/category';
 export const URL_PRODUCT = URL_SYSTEM_V1 + '/product';
 export const URL_DELETE_USER = URL_SYSTEM_V1 + '/admin/delete-user'
-export const URL_CHANGE_ROLE_USER = URL_SYSTEM_V1+'/admin/change-role-user'
+export const URL_CHANGE_ROLE_USER = URL_SYSTEM_V1 + '/admin/change-role-user'
+export const URL_GET_DASHBOARD = URL_SYSTEM_V1 + '/admin/dashboard'
 

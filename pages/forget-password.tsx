@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic';
 import LinearProgress from '@mui/material/LinearProgress';
 const ForgetPassword = dynamic(() => import('../component/ForgetPassword'),
     {
+        ssr: true,
         loading: () => <LinearProgress></LinearProgress>
     }
 );

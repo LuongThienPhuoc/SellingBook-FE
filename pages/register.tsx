@@ -8,7 +8,8 @@ import dynamic from 'next/dynamic';
 
 const Register = dynamic(() => import('../component/Register'),
     {
-        loading: () => <LinearProgress></LinearProgress>
+        ssr: true,
+        loading: () => <LinearProgress></LinearProgress>,
     }
 );
 
