@@ -161,7 +161,7 @@ const NavBar = (props) => {
                 <Box sx={{ flexGrow: 0 }}>
                     <Tooltip title="Open cart">
                         <IconButton onClick={handleOpenCartMenu} size="large" aria-label="show 4 new mails" color="inherit">
-                            <Badge badgeContent={cart.cart.length} color="error">
+                            <Badge badgeContent={cart.cart.reduce((total, item) => (total += item.amount), 0)} color="error">
                                 <ShoppingCartIcon />
                             </Badge>
                         </IconButton>
@@ -194,7 +194,7 @@ const NavBar = (props) => {
                     >
                         <div style={{ width: '300px', borderRadius: '30px' }} onClick={handleCloseCartMenu}>
                             <div className={style.headerCart} >
-                                <span style={{ fontSize: '14px', lineHeight: '1.5', fontWeight: '500' }}>{cart.length} sản phẩm</span>
+                                <span style={{ fontSize: '14px', lineHeight: '1.5', fontWeight: '500' }}>{cart.cart.reduce((total, item) => (total += item.amount), 0)} sản phẩm</span>
                                 <Link href={'/cart'} passHref>
                                     <a style={{ textDecoration: 'none', fontSize: '14px', fontWeight: '500', color: '#2f5acf', lineHeight: '1.5' }}>Xem tất cả</a>
                                 </Link>
@@ -203,7 +203,7 @@ const NavBar = (props) => {
                                 {
                                     cart.cart.length !== 0 ? cart.cart.map(value => (
                                         <li>
-                                            <CartItemInNavBar></CartItemInNavBar>
+                                            <CartItemInNavBar detailCart={value}></CartItemInNavBar>
                                         </li>
                                     )) : (
                                         <h2 style={{ textAlign: 'center' }}>Giỏ hàng trống</h2>

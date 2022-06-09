@@ -11,9 +11,9 @@ export const URL_REGISTER_WITH_GOOGLE = URL_SYSTEM_V1 + '/user/register-with-goo
 
 //Cart
 export const URL_GET_CART = URL_SYSTEM_V1 + '/cart/get-cart-user'
-
 export const URL_UPDATE_AVATAR = URL_SYSTEM_V1 + '/user/update-avatar'
 export const URL_UPDATE_INFO_USER = URL_SYSTEM_V1 + '/user/update-info-user'
+export const URL_QUANTITY_CHANGE = URL_SYSTEM_V1 + '/cart/quantity-change'
 
 
 //Receipt

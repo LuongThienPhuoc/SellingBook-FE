@@ -9,7 +9,7 @@ import Link from 'next/link';
 function InfoUserToPay(props) {
     const infoUser = useSelector((state: RootStateOrAny) => state.userReducer.infoUser)
     const isLogin = useSelector((state: RootStateOrAny) => state.userReducer.isLogin)
-
+    const cart = useSelector((state: RootStateOrAny) => state.cart)
     const dispatch = useDispatch()
     const [selectedValue, setSelectedValue] = React.useState('momo');
     const [infoReceipt, setInfoReceipt] = useState({
@@ -419,7 +419,7 @@ function InfoUserToPay(props) {
                     </Link>
                 </div>
                 <div onClick={handleClickPayment} className={'transition duration-300 ease-out cursor-pointer py-4 flex justify-center w-ful bg-black text-white rounded-lg' + ' ' + style.btnPay}>
-                    Thanh toán 1895k (Momo)
+                    Thanh toán {(25000 + cart.cart.reduce((total, value) => { return total += value.product.price * value.amount }, 0)).toLocaleString()}k (Momo)
                 </div>
             </div>
         </div>

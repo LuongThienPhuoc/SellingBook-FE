@@ -13,3 +13,24 @@ export const loagoutCart = () => dispathch => {
     })
 }
 
+export const minusItem = (id) => dispatch => {
+    dispatch({
+        type: type.MINUS_ITEM,
+        id
+    })
+}
+
+export const plusItem = (id) => dispatch => {
+    dispatch({
+        type: type.PLUS_ITEM,
+        id
+    })
+}
+
+export const deleteItem = (id) => dispatch => {
+    dispatch({
+        type: type.DELETE_ITEM,
+        id
+    })
+}
+
