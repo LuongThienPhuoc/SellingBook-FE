@@ -17,8 +17,11 @@ import * as URL from '../../services/api/config';
 import axios from 'axios';
 import { useRouter } from 'next/router'
 import { useDispatch, useSelector, RootStateOrAny } from 'react-redux' 
-import { loadingCurrentBook } from '../../redux/actions/bookAction';
+import { loadingCurrentBook, loadingBook } from '../../redux/actions/bookAction';
 import { loadingCart } from '../../redux/actions/cartAction';
+import { showAlertSuccess, showAlertError } from '../../redux/actions/alertAction';
+import Head from 'next/head';
+
 const ArrowLeft = (props) => (
     <button
         {...props}
@@ -63,7 +66,43 @@ const BookPage: React.FC = () => {
         slidesToShow: width / 350,
         slidesToScroll: 1,
         nextArrow: <ArrowRight/>,
-        prevArrow: <ArrowLeft/>
+        prevArrow: <ArrowLeft/>,
+        initialSlide: 0,
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 4,
+                    slidesToScroll: 3,
+                    infinite: true,
+                    dots: true,
+                }
+            },
+            {
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 2,
+                    infinite: true,
+                    dots: true,
+                }
+            },
+            {
+                breakpoint: 620,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 1,
+                    initialSlide: 1
+                }
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+            }
+        ]
     };
 
     const data = [ 10,10,199,89,1443];
@@ -463,17 +502,28 @@ const BookPage: React.FC = () => {
         return state.bookReducer.currentBook
     });
 
-    const { asPath } = useRouter();
-    const path = asPath.split("/").filter((x) => x);
-    console.log("path", path[1]);
+    const listBook = useSelector((state: RootStateOrAny) => {
+        return state.bookReducer.books
+    })
+
+    
+    // const path = asPath.split("/").filter((x) => x);
+    // console.log("path", path[1]);
 
     const userInfo = useSelector((state: RootStateOrAny) => {
         return state.userReducer.infoUser;
     })
 
+    // const path = asPath.split("/").filter((x) => x);
+    //     console.log("path", path[1]);
+    const { id } = router.query;
     useEffect(() => {
+        
+        // console.log("id", id)
+        // console.log("router", router.asPath);
         const getConcreteProduct = async() => {
-            await axios.get(URL.URL_PRODUCT + '/sach-moi-cuc-hay-62a35034cc1fc2ad378422b8')
+            // if(id)
+            await axios.get(URL.URL_PRODUCT + '/' + id)
                 .then((data)=>{
                     // console.log("data get", data.data.product[0])
                     dispatch(loadingCurrentBook(data.data.product[0]))
@@ -485,9 +535,28 @@ const BookPage: React.FC = () => {
                 })
         }
         getConcreteProduct();
-    }, [])
 
-    console.log("currentBook", currentBook)
+        const fetchBook= async () => {
+            axios.get( URL.URL_PRODUCT, {})
+            .then((data) => {
+                console.log("get data", data);
+                // // alert("Thêm sản phẩm thành công");
+                dispatch(showAlertSuccess("Lấy dữ liệu sách thành công"));
+                // // console.log(router);
+                // router.push('/admin/product/');
+                // return true;
+                dispatch(loadingBook(data.data.product))
+            })
+            .catch((error) => {
+                dispatch(showAlertSuccess("Lấy dữ liệu sách thất bại"));
+                // alert(error);
+            })
+        }
+        fetchBook()
+    },[id])
+
+    console.log("currentBook", currentBook);
+    console.log("listBook", listBook);
 
     const addToCart = () => {
         var dataToAdd = {
@@ -517,6 +586,9 @@ const BookPage: React.FC = () => {
 
     return (
         <Layout activeNav={"book"}>
+            <Head>
+                <title> {!currentBook ? "":currentBook.title}</title>
+            </Head>
             <div className='page-wrapper px-[86px]'>
 
                 <div className='book-heading-container mt-16 
@@ -532,7 +604,7 @@ const BookPage: React.FC = () => {
                                 /> */}
                                 <Carousel className='carousel-slider picture-slider w-[calc(100%-24px)]' showThumbs={false} axis='horizontal'>
                                     {
-                                        currentBook.imgList ? currentBook.imgList.map((imgUrl) =>{
+                                        currentBook ? currentBook.imgList ? currentBook.imgList.map((imgUrl) =>{
                                             return (
                                                 <div className='question-picture-container pl-[18px]'>
                                                     <img className=' w-[calc(100%-24px)] question-picture object-contain'
@@ -541,7 +613,7 @@ const BookPage: React.FC = () => {
                                                     </img>
                                                 </div>
                                             )
-                                        }): null
+                                        }): null : null
                                     } 
                                 </Carousel>
                             </div>
@@ -549,7 +621,7 @@ const BookPage: React.FC = () => {
                         <Grid item xs={12} lg={6} md={7} sm={12} className='mt-[32px] pl-[22px]'>
                             <div className='detail-container pl-[22px]'>
                                 <p className='font-bold text-3xl font-primary mb-[10px]'>
-                                    {currentBook.title}
+                                    {!currentBook ? "":currentBook.title}
                                 </p>
                                 <div className='w-16 bg-[#2BBCBA] h-1 rounded-sm mb-[14px]'>
 
@@ -557,18 +629,20 @@ const BookPage: React.FC = () => {
                                 <div className="descrip-container">
                                     <div className='price-container flex mb-3'>
                                         <p className='price font-primary text-2xl font-[700]'>
-                                            {currentBook.price}
+                                            {!currentBook ? "":currentBook.price}
                                         </p>
                                         <p className='currentcy font-primary text-lg font-[600] ml-[3px]'>
                                             VNĐ
                                         </p>
                                     </div>
                                     <div className='description text-[14px] mb-[15px] font-primary font-[600]'>
-                                        {currentBook.introduction}
+                                        {!currentBook ? "":currentBook.introduction}
                                     </div>
                                     <div className='amount-display flex mb-2 font-primary'>
                                         <p>Còn</p>
-                                        <p className='amount-number mr-[4px] ml-[4px] text-[#2BBCBA] font-[600]'>{currentBook.quantity}</p>
+                                        <p className='amount-number mr-[4px] ml-[4px] text-[#2BBCBA] font-[600]'>
+                                            {!currentBook ? "":currentBook.quantity}
+                                        </p>
                                         <p>cuốn</p>
                                     </div>
                                     <div className='buy-section flex mb-[60px]'>
@@ -616,27 +690,34 @@ const BookPage: React.FC = () => {
                             '>
                                 <div className='description-item flex'>
                                     <p className="text-[#808080]">Tác giả:</p>
-                                    <p className='ml-[4px] text-[#555555]'> Nguyễn Nhật Ánh</p>  
+                                    <p className='ml-[4px] text-[#555555]'>
+                                        {!currentBook ? "": currentBook.author}
+                                    </p>  
                                 </div>
                                 <div className='divider w-[calc(100%-10px)] h-[1px] bg-[#c5c5c5] mb-[8px] mt-[-6px]'></div>
                                 <div className='description-item flex'>
                                     <p className="text-[#808080]">Nhà xuất bản:</p>
-                                    <p className='ml-[4px] text-[#555555]'> Nhà xuất bản trẻ</p>  
+                                    <p className='ml-[4px] text-[#555555]'>{!currentBook ? "":currentBook.publisher}</p>  
                                 </div>
                                 <div className='divider w-[calc(100%-10px)] h-[1px] bg-[#c5c5c5] mb-[8px] mt-[-6px]'></div>
                                 <div className='description-item flex'>
                                     <p className="text-[#808080]">Dạng bìa:</p>
-                                    <p className='ml-[4px] text-[#555555]'> Bìa mềm</p>  
+                                    <p className='ml-[4px] text-[#555555]'>{!currentBook ? "":currentBook.format}</p>  
                                 </div>
                                 <div className='divider w-[calc(100%-10px)] h-[1px] bg-[#c5c5c5] mb-[8px] mt-[-6px]'></div>
                                 <div className='description-item flex'>
                                     <p className="text-[#808080]">Tình trạng:</p>
-                                    <p className='ml-[4px] text-[#555555]'> Còn hàng</p>  
+                                    <p className='ml-[4px] text-[#555555]'>
+                                        {
+                                            currentBook && currentBook.quantity > 0 ?
+                                                <>Còn hàng</> : <>Hết hàng</>
+                                        }
+                                    </p>  
                                 </div>
                                 <div className='divider w-[calc(100%-10px)] h-[1px] bg-[#c5c5c5] mb-[8px] mt-[-6px]'></div>
                                 <div className='description-item flex'>
                                     <p className="text-[#808080]">Năm phát hành:</p>
-                                    <p className='ml-[4px] text-[#555555]'>2013</p>  
+                                    <p className='ml-[4px] text-[#555555]'>{!currentBook ? "":currentBook.publishYear}</p>  
                                 </div>  
                             </div>
                         </Grid>
@@ -659,12 +740,7 @@ const BookPage: React.FC = () => {
                         <Grid item xs={12} sm={12}  md={12} lg={11} className='flex'>
                             <div className='divider w-[1px] h-[calc(100%-40px)] bg-[#C5C5C5] mt-[20px]'></div>
                             <div className='description-content text-[14px] ml-[18px] py-[18px] mr-[18px]'>
-                                Nước mắt đâu phải chỉ dành cho nỗi buồn khi người ta có thể khóc vì niềm vui và hạnh phúc. Với Nguyễn Nhật Ánh nước mắt còn là một cái gì đó thiêng liêng, đẹp đẽ và đầy mơ mộng khi ông kể về câu chuyện tình yêu trong sáng và ngây thơ giữa cô bé Rùa và anh chàng Đông trong truyện ngắn “Ngồi khóc trên cây”.
-                                Tình yêu trong sáng như đóa hoa vừa chớm nở.
-                                Rùa là cô bé của thiên nhiên, hồn nhiên, trong sáng nhưng lại đầy khí chất mạnh mẽ. Hoàn cảnh cơ cực từ nhỏ đã cho em một sự cứng rắn, với mái tóc cháy nắng trên khuôn mặt khả ái. Còn Đông là cậu sinh viên thành phố về thăm quê, là đứa duy nhất chơi với con Rùa, nói chuyện, lắng nghe, và đồng tình với nó.
-                                Tâm hồn chúng đồng điệu vào nhau như những đóa hoa dại mới chớm nở đã vội hòa quyện hương thơm phảng phất đầu mùa. Nụ hôn đầu vụng dại trong khu vườn  đã diễn ra một cách nhẹ nhàng, bỡ ngỡ mà cũng thật đáng yêu. Cái ngượng đến chín mặt của Đông khi cả hai môi kề môi được tác giả miêu tả một cách tỉ mỉ đã báo hiệu cho một tình yêu trong sáng, hồn nhiên đang nảy nở.
-                                Xem tiếp review sách: Ngồi khóc trên cây-nước mắt có chỉ dành riêng cho niềm đau?
-                                Giá sản phẩm trên Goodbook đã bao gồm thuế theo luật hiện hành. Bên cạnh đó, tuỳ vào loại sản phẩm, hình thức và địa chỉ giao hàng mà có thể phát sinh thêm chi phí khác như phí vận chuyển, phụ phí hàng cồng kềnh, thuế nhập khẩu (đối với đơn hàng giao từ nước ngoài có giá trị trên 1 triệu đồng).....
+                                {!currentBook ? "":currentBook.detailInfomation}
                             </div>
                         </Grid>
                     </Grid>
@@ -686,22 +762,28 @@ const BookPage: React.FC = () => {
                             <div className='detail-content w-[calc(100%-40px)] text-[14px] ml-[18px] py-[18px] mr-[18px]'>
                                 <div className='description-item flex'>
                                     <p className="text-[#808080]">Số trang:</p>
-                                    <p className='ml-[4px] text-[#555555]'>694</p>  
+                                    <p className='ml-[4px] text-[#555555]'>
+                                        {!currentBook ? "":currentBook.pageAmount}
+                                    </p>  
                                 </div>
                                 <div className='divider w-[calc(100%-10px)] h-[1px] bg-[#c5c5c5] mb-[8px] mt-[-6px]'></div>
                                 <div className='description-item flex'>
                                     <p className="text-[#808080]">Kích thước:</p>
-                                    <p className='ml-[4px] text-[#555555]'>16 x 24 cm</p>  
+                                    <p className='ml-[4px] text-[#555555]'>
+                                        {!currentBook ? "":currentBook.size}
+                                    </p>  
                                 </div>
                                 <div className='divider w-[calc(100%-10px)] h-[1px] bg-[#c5c5c5] mb-[8px] mt-[-6px]'></div>
                                 <div className='description-item flex'>
                                     <p className="text-[#808080]">Nhà xuất bản:</p>
-                                    <p className='ml-[4px] text-[#555555]'> Nhà xuất bản trẻ</p>  
+                                    <p className='ml-[4px] text-[#555555]'>
+                                        {!currentBook ? "":currentBook.publisher}
+                                    </p>  
                                 </div>
                                 <div className='divider w-[calc(100%-10px)] h-[1px] bg-[#c5c5c5] mb-[8px] mt-[-6px]'></div>
                                 <div className='description-item flex'>
                                     <p className="text-[#808080]">Từ khoá:</p>
-                                    <p className='ml-[4px] text-[#555555]'> Nguyễn Nhật Ánh, Rùa, Đông, Ngồi khóc trên cây</p>  
+                                    <p className='ml-[4px] text-[#555555]'>{!currentBook ? "":currentBook.keyword}</p>  
                                 </div>
                             </div>
                         </Grid>
@@ -718,32 +800,14 @@ const BookPage: React.FC = () => {
                         </div>
                         <div className="bookitem-container">
                             <Slider {...settings} className='relative'>
-                                <div>
-                                    <BookItem remain={false}/>
-                                </div>
-                                <div>
-                                    <BookItem remain={true}/>
-                                </div>
-                                <div>
-                                    <BookItem remain={true}/>
-                                </div>
-                                <div>
-                                    <BookItem remain={true}/>
-                                </div>
-                                <div>
-                                    <BookItem remain={true}/>
-                                </div>
-                                <div>
-                                    <BookItem remain={true}/>
-                                </div>
-                                <div>
-                                    <BookItem remain={true}/>
-                                </div>
-                                <div>
-                                    <BookItem remain={true}/>
-                                </div>
+                                {
+                                    listBook.map((value) => {
+                                        return (
+                                            <BookItem bookInfo={value}/>
+                                        )
+                                    })
+                                }
                             </Slider>
-
                         </div>
                         
                 </div>

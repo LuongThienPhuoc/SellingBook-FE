@@ -22,7 +22,7 @@ function CartItem(props) {
   }
 
   const handleMinus = async () => {
-    if (props.detailCart.amount == 1) {
+    if (props.detailCart.amount <= 1) {
       await axios.post(URL.URL_QUANTITY_CHANGE, { id: infoUser?._id, type: 'DELETE', idProduct: props.detailCart.product._id })
         .then(res => {
           dispatch(deleteItem(props.detailCart.product._id))

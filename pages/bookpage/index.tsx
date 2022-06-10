@@ -11,8 +11,8 @@ import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import ProgressBar from "@ramonak/react-progress-bar";
 import Pagination from '@mui/material/Pagination';
 import { makeStyles } from "@material-ui/core/styles";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { Carousel } from 'react-responsive-carousel';
+// import "react-responsive-carousel/lib/styles/carousel.min.css";
+// import { Carousel } from 'react-responsive-carousel';
 import * as URL from '../../services/api/config';
 import axios from 'axios';
 import { useRouter } from 'next/router'
@@ -488,7 +488,7 @@ const BookPage: React.FC = () => {
                                     alt="Sách ngồi khóc trên cây" 
                                     className='w-[calc(100%-24px)] pl-[18px]'
                                 /> */}
-                                <Carousel className='carousel-slider picture-slider w-[calc(100%-24px)]' showThumbs={false} axis='horizontal'>
+                                {/* <Carousel className='carousel-slider picture-slider w-[calc(100%-24px)]' showThumbs={false} axis='horizontal'>
                                     {
                                         imgUrl ? imgUrl.map((imgUrl) =>{
                                             return (
@@ -501,7 +501,7 @@ const BookPage: React.FC = () => {
                                             )
                                         }): null
                                     } 
-                                </Carousel>
+                                </Carousel> */}
                             </div>
                         </Grid>
                         <Grid item xs={12} lg={6} md={7} sm={12} className='mt-[32px] pl-[22px]'>
