@@ -13,6 +13,7 @@ import axios from 'axios';
 import rootReducer from '../../../redux/reducers/rootReducer';
 import { FiDelete } from "react-icons/fi";
 import { useRouter } from 'next/router'
+const ConfirmModal = dynamic(() => import('../../../component/BookPage/ConfirmModal'));
 
 interface ProductTypeItem {
     _id: string,
@@ -220,12 +221,40 @@ const AddBook: React.FC = () => {
         }
     }
 
+    const [isShowModal, setIsShowModal] = useState(false);
+
+    const cancelClick =  () => {
+        setIsShowModal(false);
+        console.log("Ok rồi");
+        return;
+    }
+
+    const confirmClick = () => {
+        setIsShowModal(false);
+        addProduct();
+        return;
+    }
+
+    
+
     return (
-        <Layout activeNav={"book"}>
+        <Layout activeNav={"book"} className='relative'>
             <Head>
                 <title>Quản lý sản phẩm</title>
             </Head>
+            <div
+                className={isShowModal ? 'block' : 'hidden'}    
+            >
+                <ConfirmModal        
+                    title="Xác nhận" 
+                    clickConfirm={() => confirmClick()}
+                    clickCancel={() => cancelClick()}
+                    content="Bạn có xác nhận việc thêm sản phẩm không ?"
+                />
+            </div>
+            
             <Container className='relative' maxWidth='lg'>
+                
                 <NavigationMobile option='product'></NavigationMobile>
                 <Grid className='mb-16' container spacing={3}>
                     <Grid className='mt-16 min:hidden 900px:block' item md={3}>
@@ -706,7 +735,8 @@ const AddBook: React.FC = () => {
                                         "hover:opacity-70 hover:cursor-pointer uppercase py-[6px]"
                                     }
                                     onClick={() => {
-                                        
+                                        console.log("acc")
+                                        setIsShowModal(true);
                                     }}
                                 >
                                     Huỷ
