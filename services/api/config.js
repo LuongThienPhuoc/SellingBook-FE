@@ -31,4 +31,6 @@ export const URL_POST_CONFORM_RECEIPT = URL_SYSTEM_V1 + '/admin/conform-receipt'
 export const URL_CATEGORY = URL_SYSTEM_V1 + '/category';
 export const URL_PRODUCT = URL_SYSTEM_V1 + '/product';
 
+export const URL_ADD_CART = URL_SYSTEM_V1 + '/product/add-to-cart';
+
 

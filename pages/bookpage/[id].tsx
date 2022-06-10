@@ -18,6 +18,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router'
 import { useDispatch, useSelector, RootStateOrAny } from 'react-redux' 
 import { loadingCurrentBook } from '../../redux/actions/bookAction';
+import { loadingCart } from '../../redux/actions/cartAction';
 const ArrowLeft = (props) => (
     <button
         {...props}
@@ -465,9 +466,14 @@ const BookPage: React.FC = () => {
     const { asPath } = useRouter();
     const path = asPath.split("/").filter((x) => x);
     console.log("path", path[1]);
+
+    const userInfo = useSelector((state: RootStateOrAny) => {
+        return state.userReducer.infoUser;
+    })
+
     useEffect(() => {
         const getConcreteProduct = async() => {
-            await axios.get(URL.URL_PRODUCT + '/sach-hay-62a3218dcc1fc2ad3784222f')
+            await axios.get(URL.URL_PRODUCT + '/sach-moi-cuc-hay-62a35034cc1fc2ad378422b8')
                 .then((data)=>{
                     // console.log("data get", data.data.product[0])
                     dispatch(loadingCurrentBook(data.data.product[0]))
@@ -482,6 +488,32 @@ const BookPage: React.FC = () => {
     }, [])
 
     console.log("currentBook", currentBook)
+
+    const addToCart = () => {
+        var dataToAdd = {
+            userID: userInfo._id,
+            amount: quantityChoosed,
+            productID: currentBook._id
+        }        
+        console.log("dataToAdd", dataToAdd);
+        axios.post(URL.URL_ADD_CART, dataToAdd)
+            .then((data) => {
+                console.log("data", data);
+            })
+            .catch(() => {
+
+            })
+        axios.post(URL.URL_GET_CART, { id: userInfo._id })
+        .then(res => {
+            dispatch(loadingCart(res.data.cart.listProduct))
+        })
+        .catch(err => {
+            console.log('Lỗi')
+        })
+
+    }
+
+    const [ quantityChoosed, setQuantityChosed ] = useState(1);
 
     return (
         <Layout activeNav={"book"}>
@@ -500,12 +532,12 @@ const BookPage: React.FC = () => {
                                 /> */}
                                 <Carousel className='carousel-slider picture-slider w-[calc(100%-24px)]' showThumbs={false} axis='horizontal'>
                                     {
-                                        imgUrl ? imgUrl.map((imgUrl) =>{
+                                        currentBook.imgList ? currentBook.imgList.map((imgUrl) =>{
                                             return (
                                                 <div className='question-picture-container pl-[18px]'>
-                                                    <img className='question-picture object-contain'
+                                                    <img className=' w-[calc(100%-24px)] question-picture object-contain'
                                                         src={imgUrl}
-                                                    >
+                                                    >   
                                                     </img>
                                                 </div>
                                             )
@@ -517,7 +549,7 @@ const BookPage: React.FC = () => {
                         <Grid item xs={12} lg={6} md={7} sm={12} className='mt-[32px] pl-[22px]'>
                             <div className='detail-container pl-[22px]'>
                                 <p className='font-bold text-3xl font-primary mb-[10px]'>
-                                    Ngồi khóc trên cây
+                                    {currentBook.title}
                                 </p>
                                 <div className='w-16 bg-[#2BBCBA] h-1 rounded-sm mb-[14px]'>
 
@@ -525,30 +557,51 @@ const BookPage: React.FC = () => {
                                 <div className="descrip-container">
                                     <div className='price-container flex mb-3'>
                                         <p className='price font-primary text-2xl font-[700]'>
-                                            143.000
+                                            {currentBook.price}
                                         </p>
                                         <p className='currentcy font-primary text-lg font-[600] ml-[3px]'>
                                             VNĐ
                                         </p>
                                     </div>
                                     <div className='description text-[14px] mb-[15px] font-primary font-[600]'>
-                                        Tên sách có làm bạn tò mò? “Ngồi khóc trên cây” có vẻ là một truyện hành động của nhà văn Nguyễn Nhật Ánh?
-                                        Bạn sẽ gặp, sau những câu thơ lãng mạn của chính tác giả làm đề từ, là cuộc sống trong một ngôi làng thơ mộng ven sông, kỳ nghỉ hè với nhân vật là những đứa trẻ mới lớn có vô vàn trò chơi đơn sơ hấp dẫn ghi dấu mãi trong lòng.
-                                        Câu chuyện của cô bé Rùa và chàng sinh viên vốn ở quê chuyển ra thành phố có giống như bạn từng có thời đi học?
-                                        Và cái cách họ thinh thích, rồi thương nhau giấu giếm, sợ làm nhau buồn, mong mỏi gặp nhau đến mất ngủ… có phải là mối tình đầu giống như của bạn?
+                                        {currentBook.introduction}
                                     </div>
                                     <div className='amount-display flex mb-2 font-primary'>
                                         <p>Còn</p>
-                                        <p className='amount-number mr-[4px] ml-[4px] text-[#2BBCBA] font-[600]'>23</p>
+                                        <p className='amount-number mr-[4px] ml-[4px] text-[#2BBCBA] font-[600]'>{currentBook.quantity}</p>
                                         <p>cuốn</p>
                                     </div>
                                     <div className='buy-section flex mb-[60px]'>
                                         <div className='quantity-choosing flex mr-[27px]'>
-                                            <div className='decreasing-button h-[40px] w-[24px] leading-[40px] text-center border-[1px] '>-</div>
-                                            <input type='number' className='border-[1px] w-[40px] h-[40px] text-center' defaultValue={1}/>
-                                            <div className='increasing-button h-[40px] w-[24px] leading-[40px] text-center border-[1px]'>+</div>
+                                            <div 
+                                                className='decreasing-button h-[40px] w-[24px] leading-[40px] text-center border-[1px] 
+                                                hover:bg-[#e5e5e5] hover:cursor-pointer select-none'
+                                                onClick={() => {
+                                                    if(quantityChoosed>1)
+                                                    setQuantityChosed(quantityChoosed-1);
+                                                }}
+                                            >-</div>
+                                            <input type='number' 
+                                                className='border-[1px] w-[40px] h-[40px] text-center' 
+                                                value={quantityChoosed}
+                                            />
+                                            <div
+                                                onClick={() => {
+                                                    if(quantityChoosed<currentBook.quantity)
+                                                    setQuantityChosed(quantityChoosed+1);
+                                                }} 
+                                                className='increasing-button h-[40px] w-[24px] leading-[40px] text-center border-[1px] 
+                                                    hover:bg-[#e5e5e5] hover:cursor-pointer select-none'
+                                            >+</div>
                                         </div>
-                                        <div className='buy-button text-[16px] leading-[40px] bg-[#2BBCBA] px-[20px] text-white rounded-[4px]'>
+                                        <div 
+                                            onClick={() => {
+                                                addToCart();
+                                            }}
+                                            className='buy-button text-[16px] leading-[40px] bg-[#2BBCBA] px-[20px] text-white rounded-[4px]
+                                                hover:opacity-80 hover:cursor-pointer
+                                            '
+                                        >
                                             MUA HÀNG
                                         </div>
                                     </div>
