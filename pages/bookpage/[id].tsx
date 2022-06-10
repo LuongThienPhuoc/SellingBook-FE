@@ -66,43 +66,7 @@ const BookPage: React.FC = () => {
         slidesToShow: width / 350,
         slidesToScroll: 1,
         nextArrow: <ArrowRight/>,
-        prevArrow: <ArrowLeft/>,
-        initialSlide: 0,
-        responsive: [
-            {
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 4,
-                    slidesToScroll: 3,
-                    infinite: true,
-                    dots: true,
-                }
-            },
-            {
-                breakpoint: 768,
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 2,
-                    infinite: true,
-                    dots: true,
-                }
-            },
-            {
-                breakpoint: 620,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 1,
-                    initialSlide: 1
-                }
-            },
-            {
-                breakpoint: 480,
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1
-                }
-            }
-        ]
+        prevArrow: <ArrowLeft/>
     };
 
     const data = [ 10,10,199,89,1443];
@@ -503,7 +467,11 @@ const BookPage: React.FC = () => {
     });
 
     const listBook = useSelector((state: RootStateOrAny) => {
-        return state.bookReducer.books
+        return [
+            ...state.bookReducer.books,
+            ...state.bookReducer.books,
+            ...state.bookReducer.books,
+        ]
     })
 
     
@@ -602,12 +570,12 @@ const BookPage: React.FC = () => {
                                     alt="Sách ngồi khóc trên cây" 
                                     className='w-[calc(100%-24px)] pl-[18px]'
                                 /> */}
-                                <Carousel className='carousel-slider picture-slider w-[calc(100%-24px)]' showThumbs={false} axis='horizontal'>
+                                <Carousel className='carousel-slider picture-slider w-[calc(100%-24px)] h-[100%]' showThumbs={false} axis='horizontal'>
                                     {
                                         currentBook ? currentBook.imgList ? currentBook.imgList.map((imgUrl) =>{
                                             return (
-                                                <div className='question-picture-container pl-[18px]'>
-                                                    <img className=' w-[calc(100%-24px)] question-picture object-contain'
+                                                <div className='question-picture-container w-[100%] pl-[18px] flex h-[100%]'>
+                                                    <img className=' w-[100%] question-picture h-[calc(100%-12px)] object-cover'
                                                         src={imgUrl}
                                                     >   
                                                     </img>

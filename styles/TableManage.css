@@ -128,9 +128,9 @@
     height: 2rem;
     border-radius: 100%;
     top: 50%;
+
     margin-top: 70% !important;
     background-color: #2bbcba!important;
-    opacity: 0.5!important;
 }
 
 .control-next:before{
@@ -147,12 +147,13 @@
     background-color: #fff !important; 
     opacity: 1 !important;
     position: absolute !important;
+    left: 17px!important;
 }
 
 .control-arrow:before{
     position: absolute !important;
     top: 10px !important;
-    left: 8px !important;
+    left: 6px !important;
     width: 8px;
     height: 8px;
 }
@@ -162,4 +163,6 @@
     opacity: 1 !important;
     position: absolute !important;
     top: 100px;
+    /* left: 0px; */
+    right: 0px;
 }
