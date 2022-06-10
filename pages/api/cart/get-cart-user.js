@@ -13,7 +13,10 @@ const GetCartUser = async (req, res, data) => {
             const id = mongoose.Types.ObjectId(req?.body?.id);
             try {
                 if (id) {
-                    Cart.findOne({ user: id })
+                    Cart.findOne({ user: id }).populate({
+                        path: 'listProduct',
+                        populate: { path: 'product' }
+                    })
                         .then(result => {
                             console.log(result)
                             res.status(200).send(JSON.stringify({

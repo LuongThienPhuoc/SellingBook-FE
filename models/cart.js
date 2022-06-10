@@ -1,4 +1,5 @@
 
+const { Numbers } = require('@mui/icons-material');
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
@@ -9,8 +10,18 @@ const cartSchema = new Schema(
             ref: 'users',
             required: true,
         },
-        listProduct : {
-            type: Array,
+        listProduct: {
+            type: [
+                {
+                    product: {
+                        type: Schema.Types.ObjectId,
+                        ref: 'products'
+                    },
+                    amount: {
+                        type: Number
+                    }
+                }
+            ],
             default: []
         },
     },

@@ -9,8 +9,7 @@ import Link from 'next/link';
 function InfoUserToPay(props) {
     const infoUser = useSelector((state: RootStateOrAny) => state.userReducer.infoUser)
     const isLogin = useSelector((state: RootStateOrAny) => state.userReducer.isLogin)
-    const districtRef = useRef()
-    const communeRef = useRef()
+    const cart = useSelector((state: RootStateOrAny) => state.cart)
     const dispatch = useDispatch()
     const [selectedValue, setSelectedValue] = React.useState('momo');
     const [infoReceipt, setInfoReceipt] = useState({
@@ -21,7 +20,7 @@ function InfoUserToPay(props) {
         note: '',
         paymentMethod: '',
         phone: '',
-        name: infoUser.name,
+        name: '',
     })
     const [provinces, setProvinces] = useState([])
     const [provinceSelect, setProvinceSelect] = useState<String | null>(infoUser.province ? infoUser.province : '0')
@@ -35,19 +34,59 @@ function InfoUserToPay(props) {
     
 
     useEffect(() => {
-        console.log(infoUser)
+        setInfoReceipt(state => (
+            {
+                ...state,
+                name: infoUser.name,
+                phone: infoUser.phone,
+            }
+        ))
         const fetAPIProvince = async () => {
             axios.get(`https://api.mysupership.vn/v1/partner/areas/province`).then(res => {
+                console.log(provinceSelect)
                 setProvinces(res.data.results)
+                res.data.results.forEach(value => {
+                    if (value.code == provinceSelect) {
+                        setInfoReceipt(state => (
+                            {
+                                ...state,
+                                province: value.name    
+                            }
+                        ))
+                    }
+                })
             })
             if (provinceSelect !== '0') {
                 await axios.get(`https://api.mysupership.vn/v1/partner/areas/district?province=${provinceSelect}`).then(res => {
                     setDistricts(res.data.results)
+                    res.data.results.forEach(value => {
+                        if (value.code == districtSelect) {
+                            setInfoReceipt(state => (
+                                {
+                                    ...state,
+                                    district: value.name    
+                                }
+                            ))
+                        }
+                    })
                 })
             }
             if (districtSelect !== '0') {
                 await axios.get(`https://api.mysupership.vn/v1/partner/areas/commune?district=${districtSelect}`).then(res => {
                     setCommunes(res.data.results)
+                    if(communeSelect !== '0') {
+                        res.data.results.forEach(value => {
+                            if (value.code == communeSelect) {
+                                setInfoReceipt(state => (
+                                    {
+                                        ...state,
+                                        commune: value.name    
+                                    }
+                                ))
+                            }
+                        })
+                    }
+                    
                 })
             }
         }
@@ -216,7 +255,6 @@ function InfoUserToPay(props) {
                             select
                             value={provinceSelect}
                             onChange={handleChangeProvince}
-                            ref={districtRef}
                             onClick={handleChangeProvince}
                             defaultValue={"0"}
                             SelectProps={{ native: true }}
@@ -241,7 +279,6 @@ function InfoUserToPay(props) {
                             variant="outlined"
                             select
                             value={districtSelect}
-                            ref={districtRef}
                             onChange={handleChangeDistrict}
                             SelectProps={{ native: true }}
                         >
@@ -266,7 +303,6 @@ function InfoUserToPay(props) {
                             select
                             value={communeSelect}
                             onChange={handleChangeCommune}
-                            ref={communeRef}
                             onLoadedData={() => {console.log('commune')}}
                             SelectProps={{ native: true }}
                         >
@@ -383,7 +419,7 @@ function InfoUserToPay(props) {
                     </Link>
                 </div>
                 <div onClick={handleClickPayment} className={'transition duration-300 ease-out cursor-pointer py-4 flex justify-center w-ful bg-black text-white rounded-lg' + ' ' + style.btnPay}>
-                    Thanh toán 1895k (Momo)
+                    Thanh toán {(25000 + cart.cart.reduce((total, value) => { return total += value.product.price * value.amount }, 0)).toLocaleString()}k (Momo)
                 </div>
             </div>
         </div>

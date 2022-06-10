@@ -8,29 +8,45 @@ import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 const Navigation = dynamic(() => import('../../component/Admin/Navigation'))
 const NavigationMobile = dynamic(() => import('../../component/Admin/NavigationMobile'))
-// const Layout = dynamic(() => import('../../component/Layout'),
-//     {
-//         loading: () => <LinearProgress></LinearProgress>
-//     }
-// )
 import Layout from '../../component/Layout'
+import axios from 'axios';
+import * as URL from '../../services/api/config'
 const GeneralStatistics = dynamic(() => import('../../component/Admin/Dashboard/GeneralStatistics'))
 const Traffic = dynamic(() => import('../../component/Admin/Dashboard/Traffic'),
     {
-        ssr: false
+        ssr: false,
+        loading: () => (<LinearProgress></LinearProgress>)
     }
 )
 const UserChart = dynamic(() => import('../../component/Admin/Dashboard/UserChart'),
     {
-        ssr: false
+        ssr: false,
+        loading: () => (<LinearProgress></LinearProgress>)
     }
 )
 
 function dashboard(props) {
+    const [dataDashboard, setDataDashboard] = useState({
+        users: []
+    })
     const infoUser = useSelector((state: RootStateOrAny) => state.userReducer.infoUser)
     const router = useRouter()
     const status = useSelector((state: RootStateOrAny) => state.userReducer)
-
+    useEffect(() => {
+        const fetApi = async () => {
+            await axios.get(URL.URL_GET_DASHBOARD)
+                .then(res => {
+                    console.log(res)
+                    setDataDashboard(res.data)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        }
+        if (status.isLogin) {
+            fetApi()
+        }
+    }, [status.isLogin])
     if (!status.isLoading) return (<LinearProgress></LinearProgress>)
 
     if (!status.isLogin) router.push('/login')
@@ -50,9 +66,9 @@ function dashboard(props) {
                     </Grid>
                     <Grid className='mt-16 ' item sm={12} md={9}>
                         <div style={{ boxShadow: 'rgb(0 0 0 / 60%) 0px 3px 8px' }} className='rounded-lg pb-3'>
-                            <GeneralStatistics></GeneralStatistics>
+                            <GeneralStatistics dataDashboard={dataDashboard}></GeneralStatistics>
                             <Traffic></Traffic>
-                            <UserChart></UserChart>
+                            <UserChart users={dataDashboard.users} ></UserChart>
                             <Traffic></Traffic>
                             <Traffic></Traffic>
                             <div className='flex justify-end mr-5 mt-3'>

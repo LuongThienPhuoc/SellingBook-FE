@@ -5,52 +5,43 @@ import { Card, CardHeader, Box, Container, Grid } from '@mui/material';
 // import './UserChart.scss'
 // ----------------------------------------------------------------------
 import { useSelector, useDispatch } from 'react-redux';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-export default function UserChat() {
+export default function UserChat({ users }) {
+    console.log(users)
+    const [genders, setGenders] = useState([0, 0, 0])
+    const [old, setOld] = useState([0, 0, 0])
 
 
-    // const chartOptions = {
-    //     series: [44, 55, 32],
-    //     options: {
-    //         chart: {
-    //             width: 380,
-    //             type: 'donut',
-    //         },
-    //         labels: ['Dưới 18', '18-25', 'Trên 25'],
-    //         plotOptions: {
-    //             pie: {
-    //                 startAngle: -90,
-    //                 endAngle: 270
-    //             }
-    //         },
-    //         dataLabels: {
-    //             enabled: false
-    //         },
-    //         fill: {
-    //             type: 'gradient',
-    //         },
-    //         legend: {
-    //             formatter: function (val, opts) {
-    //                 return val + " - " + opts.w.globals.series[opts.seriesIndex]
-    //             }
-    //         },
-    //         responsive: [{
-    //             breakpoint: 480,
-    //             options: {
-    //                 chart: {
-    //                     width: 200
-    //                 },
-    //                 legend: {
-    //                     position: 'bottom'
-    //                 }
-    //             }
-    //         }]
-    //     }
+    useEffect(() => {
+        let genderRender = [0,0,0]
+        let oldRender = [0,0,0]
+        let currentYear = new Date()
+        users.forEach(value => {
+            if(value.gender == 'male') {
+                oldRender[0] += 1
+            } else if (value.gender == 'female') {
+                oldRender[1] += 1
+            } else {
+                oldRender[2] += 1
+            }
 
-    // }
+            let currentBirthday = new Date(value.birthday)
+            if (currentYear.getFullYear() - currentBirthday.getFullYear() < 18) {
+                genderRender[0] += 1
+            } else if (currentYear.getFullYear() - currentBirthday.getFullYear() >= 18 && currentYear.getFullYear() - currentBirthday.getFullYear() <= 25) {
+                genderRender[1] += 1
+            } else {
+                genderRender[2] += 1
+            }
+        })
+        console.log("Chạu lại usereffec")
+        setGenders(genderRender)
+        setOld(oldRender)
+    }, [users])
+
     const chartOptions = {
-        series: [44, 55, 32],
+        series: old,
         options: {
             chart: {
                 width: 380,
@@ -89,15 +80,14 @@ export default function UserChat() {
 
     }
 
-
     const chartOptionsGender = {
-        series: [45, 55],
+        series: genders,
         options: {
             chart: {
                 width: 380,
                 type: 'donut',
             },
-            labels: ['Nam (%)', 'Nữ (%)'],
+            labels: ['Nam', 'Nữ', 'Khác'],
             plotOptions: {
                 pie: {
                     startAngle: -90,

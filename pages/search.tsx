@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic';
 import LinearProgress from '@mui/material/LinearProgress';
 import Head from 'next/head';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Container, Grid, Divider } from '@mui/material';
 import Pagination from '@mui/material/Pagination';
 import { useSelector, RootStateOrAny } from 'react-redux';
@@ -15,9 +15,15 @@ const Layout = dynamic(() => import('../component/Layout'),
 )
 
 function search(props) {
-    const search = useSelector((state:RootStateOrAny) => state.searchReducer.search)
+    const search = useSelector((state: RootStateOrAny) => state.searchReducer.search)
+    
+    useEffect(() => {
+        let a = setTimeout(() => {
+            console.log('call API')
+        }, 1000)
 
-
+        return () => clearTimeout(a)
+    }, [search])
 
     return (
         <Layout>
@@ -34,7 +40,7 @@ function search(props) {
                             <NavigationBar></NavigationBar>
                         </div>
                     </Grid>
-                    <Grid className='mt-16'  item md={8} sm={12}>
+                    <Grid className='mt-16' item md={8} sm={12}>
                         <div style={{ boxShadow: 'rgb(0 0 0 / 60%) 0px 3px 8px', padding: '25px' }} className='rounded-lg '>
                             <div className='text-xl font-bold mb-2'>Kết quả tìm kiếm cho "<span className='text-[#2BBCBA]'>{search}</span>"</div>
                             <div className='mb-4'>Tổng cộng <span className='text-[#2BBCBA]'>340</span> sách được tìm thấy</div>

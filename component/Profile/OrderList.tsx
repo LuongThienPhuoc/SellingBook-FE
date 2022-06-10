@@ -14,7 +14,9 @@ const OrderList = (props) => {
     const status = useSelector((state: RootStateOrAny) => state.userReducer)
     const [receipts, setReceipts] = useState([])
     const [currentReceipts, setCurrentReceipts] = useState([])
-    const [active, setActive] = useState('');
+    const [active, setActive] = useState('')
+    const [currentSelect, setCurrentSelect] = useState(1)
+
     useEffect(() => {
         setActive('All')
     }, [])
@@ -39,11 +41,14 @@ const OrderList = (props) => {
         setReceipts(a)
         if (active === 'All') {
             setCurrentReceipts(a)
+            
         } else {
             a = receipts.filter(value => value.deliveryStatus == active)
             setCurrentReceipts(a)
         }
+        setCurrentSelect(1)
     }
+
 
     useEffect(() => {
         const fetApi = async () => {
@@ -67,6 +72,15 @@ const OrderList = (props) => {
         setActive(e.target.name)
     }
 
+    const renderCount = () => {
+        let index = currentReceipts.length
+        if (index % 6 == 0) {
+            return Number(index / 6)
+        } else {
+            return Number(Math.floor(index / 6) + 1)
+        }
+    }
+
     return (
         <div>
             <div className='text-xl text-[#2BBCBA]'>Danh sách đơn hàng</div>
@@ -88,15 +102,19 @@ const OrderList = (props) => {
             </div>
             <div>
                 {
-                    currentReceipts.length !== 0 ? currentReceipts.map((value, index) => (
-                        <CardOrderList handleChangeStatus={handleChangeStatus} key={index} receipt={value} status={value.deliveryStatus}></CardOrderList>
-                    )) : (
+                    currentReceipts.length !== 0 ? currentReceipts.map((value, index) => {
+                        if (index < currentSelect * 6 && index >= (currentSelect - 1) * 6)  {
+                            return  (
+                                <CardOrderList handleChangeStatus={handleChangeStatus} key={index} receipt={value} status={value.deliveryStatus}></CardOrderList>
+                            )
+                        }
+                    }) : (
                         <h3 style={{ textAlign: 'center', padding: '30px' }}>Đơn hàng trống</h3>
                     )
                 }
             </div>
             <div className='mt-10 flex justify-center profile-pagination'>
-                <Pagination count={10} color="primary" variant="outlined" />
+                <Pagination onChange={(e, num) => { setCurrentSelect(num) }} count={renderCount()} color="primary" variant="outlined" />
             </div>
         </div>
     )

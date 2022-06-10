@@ -6,9 +6,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import dynamic from 'next/dynamic';
 import { useDispatch, useSelector, RootStateOrAny } from 'react-redux'
 import { useRouter } from 'next/router';
-const Login = dynamic(() => import('../component/Login'));
-
-
+const Login = dynamic(() => import('../component/Login'), {ssr: true});
 const LoginPage = () => {
   const router = useRouter()
   const [isMobile, setIsMobile] = useState(true);

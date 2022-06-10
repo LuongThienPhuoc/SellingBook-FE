@@ -8,6 +8,7 @@ import dynamic from 'next/dynamic';
 
 const ConfirmCode = dynamic(() => import('../component/ConfirmCode'),
     {
+        ssr: true,
         loading: () => <LinearProgress></LinearProgress>
     }
 );

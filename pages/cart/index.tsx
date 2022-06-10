@@ -23,13 +23,17 @@ const Cart = () => {
   const cart = useSelector((state: RootStateOrAny) => state.cart)
   const User = useSelector((state: RootStateOrAny) => state.userReducer.infoUser)
   const isLogin = useSelector((state: RootStateOrAny) => state.userReducer.isLogin)
+  const status = useSelector((state: RootStateOrAny) => state.userReducer)
+
+  if (!status.isLoading) return (<LinearProgress></LinearProgress>)
+
   const handleClickPayment = async (infoUser) => {
     if (isLogin) {
       let a = {
         ...infoUser,
-        total: 2000000,
-        totalFinal: 1500000,
-        deliveryMoney: 30000,
+        total: cart.cart.reduce((total, value) => { return total += value.product.price * value.amount }, 0),
+        totalFinal: cart.cart.reduce((total, value) => { return total += value.product.price * value.amount }, 0) > cart.cart.reduce((total, value) => { return total += value.product.price * value.amount }, 0) ? 0 : cart.cart.reduce((total, value) => { return total += value.product.price * value.amount }, 0) + 25000,
+        deliveryMoney: cart.cart.reduce((total, value) => { return total += value.product.price * value.amount }, 0) > 1000000 ? 0 : 25000,
         user: User._id
       }
       if (a.name == '') {
@@ -42,7 +46,7 @@ const Cart = () => {
       console.log(a)
 
 
-      if (a.district == '' || a.province == '' || a.commune == '' || a.address == '' || a.note == '' || a.paymentMethod == '' ) {
+      if (a.district == '' || a.province == '' || a.commune == '' || a.address == '' || a.note == '' || a.paymentMethod == '') {
         dispatch(showAlertError("Nhập đầy đủ thông tin!"))
       } else {
         await axios.post(URL.URL_CREATE_RECEIPT, { ...a })
@@ -59,11 +63,8 @@ const Cart = () => {
     } else {
       router.push('/login')
     }
-
   }
-  const [price, setPrice] = useState({
 
-  })
   return (
     <Layout>
       <Head>
@@ -84,7 +85,7 @@ const Cart = () => {
                     {
                       cart.cart.length !== 0 ? cart.cart.map(cart => {
                         return (
-                          <CartItem></CartItem>
+                          <CartItem detailCart={cart}></CartItem>
                         )
                       }) : (
                         <h4 style={{ textAlign: 'center', marginBottom: '30px' }}>Giỏ hàng trống</h4>
@@ -98,20 +99,20 @@ const Cart = () => {
                   <div style={{ borderTop: '1px solid #00000021', borderBottom: '1px solid #00000021', marginTop: '20px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', margin: '15px 0', fontSize: '14px', fontWeight: '500' }}>
                       <div>Tạm tính</div>
-                      <div>149000đ</div>
+                      <div>{cart.cart.reduce((total, value) => { return total += value.product.price * value.amount }, 0).toLocaleString()}đ</div>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', margin: '15px 0', fontSize: '14px', fontWeight: '500' }}>
                       <div>Giảm giá</div>
-                      <div>149000đ</div>
+                      <div>0đ</div>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', margin: '15px 0', fontSize: '14px', fontWeight: '500' }}>
                       <div>Phí giao hàng</div>
-                      <div>+25000đ</div>
+                      <div>+{cart.cart.reduce((total, value) => { return total += value.product.price * value.amount }, 0) > 1000000 ? 0 : (25000).toLocaleString()}đ</div>
                     </div>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', margin: '15px 0', fontSize: '18px', fontWeight: '600' }}>
                     <div>TỔNG</div>
-                    <div>149000đ</div>
+                    <div>{cart.cart.reduce((total, value) => { return total += value.product.price * value.amount }, 0) > 1000000 ? cart.cart.reduce((total, value) => { return total += value.product.price * value.amount }, 0).toLocaleString() : (25000 + cart.cart.reduce((total, value) => { return total += value.product.price * value.amount }, 0)).toLocaleString()}đ</div>
                   </div>
                 </div>
               </div>
