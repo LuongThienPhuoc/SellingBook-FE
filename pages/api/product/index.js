@@ -30,6 +30,7 @@ const getProduct = async(req, res) => {
 const addProduct = async(req, res) => {
     console.log("req.body", req.body);
     const product = new Product({
+        author: req.body.author,
         title: req.body.title,
         introduction: req.body.introduction,
         price: req.body.sellPrice,

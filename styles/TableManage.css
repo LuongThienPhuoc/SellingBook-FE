@@ -1,0 +1,99 @@
+.MuiDataGrid-columnHeaderTitle {
+    font-weight: 600;
+    font-family: 'Nunito';
+}
+.MuiTablePagination-selectLabel {
+    font-size: 1.4rem;
+    font-family: 'Nunito';
+    font-weight: 500;
+}
+.MuiTablePagination-select{
+    margin-top: 3px;
+    font-family: 'Nunito';
+}
+.MuiTablePagination-menuItem{
+    font-weight: 500;
+    font-size: 14px;
+    font-family: 'Nunito';
+}
+.MuiTablePagination-displayedRows{
+    font-weight: 500;
+    font-size: 14px;
+    font-family: 'Nunito';
+}
+.MuiDataGrid-selectedRowCount{
+    font-weight: 500;
+    font-size: 14px;
+    font-family: 'Nunito';
+}
+.MuiSvgIcon-root {
+    width: 24px;
+    height: 24px;
+}
+.MuiDataGrid-cellContent{
+    font-weight: 500;
+    font-size: 14px;
+    font-family: 'Nunito';
+}
+.MuiDataGrid-virtualScroller{
+    overflow-y: auto;
+}
+.MuiMenuItem-gutters {
+    font-weight: 500;
+    font-size: 14px;
+    font-family: 'Nunito';
+}
+
+.MuiDataGrid-filterFormColumnInput{
+    font-weight: 500;
+    font-size: 14px;
+    font-family: 'Nunito';
+}
+
+.MuiInputLabel-formControl{
+    font-weight: 500;
+    font-size: 18px;
+    font-family: 'Nunito';
+}
+
+.MuiNativeSelect-select {
+    font-weight: 500;
+    font-size: 14px;
+    font-family: 'Nunito';
+}
+
+.MuiInputBase-input {
+    font-weight: 500;
+    font-size: 14px;
+    font-family: 'Nunito';
+}
+
+.MuiDataGrid-overlay{
+    font-weight: 500;
+    font-size: 20px;
+    font-family: 'Nunito';
+}
+
+.edit-document-button {
+    background-color:#ebca14;
+    color: #fff;
+    margin-left: 1.6rem;
+    font-family: 'Nunito';
+    padding: 4px 12px;
+}
+
+.delete-document-button{
+    background-color:#CC3D3D;
+    color: #fff;
+    margin-left: 1.6rem;
+    font-family: 'Nunito';
+    padding: 4px 12px;
+}
+
+.div-custom-manage{
+    display: flex;
+}
+
+.MuiTablePagination-displayedRows{
+    margin-top: 14px;
+}

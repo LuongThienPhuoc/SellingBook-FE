@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect }from 'react'
 import {Button, Container, Grid} from '@mui/material';
-import { useDispatch, useSelector, RootStateOrAny } from 'react-redux'
+import { useDispatch, useSelector, RootStateOrAny} from 'react-redux'
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
 const NavigationMobile = dynamic(() => import('../../component/Admin/NavigationMobile'))
@@ -13,29 +13,85 @@ const Layout = dynamic(() => import('../../component/Layout'),
 )
 import { useRouter } from 'next/router'
 import TableManageMent from '../../component/BookPage/TableManageMent';
+import * as URL from '../../services/api/config';
+import axios from 'axios';
+import { showAlertSuccess, showAlertError } from '../../redux/actions/alertAction';
+import { loadingBook } from '../../redux/actions/bookAction';
 
 const columnDocs = [
     // {field: , headerName: , width: }
-    {field: 'stt', headerName: "STT"},
-    {field: 'name', headerName: "Tên tài liệu", width: 200},
+    {field: 'stt', headerName: "STT", width: 40},
+    {field: 'title', headerName: "Tên sách", width: 130},
+    // {field: 'view', headerName: "Số lượt xem"},
     {field: 'author', headerName: "Tên tác giả", width: 120},
-    {field: 'type', headerName: "Phân loại", width: 200},
-    {field: 'view', headerName: "Số lượt xem"},
-    {field: 'time', headerName: "Thời gian", width: 120},
-    {field: 'link', headerName: "Link", width: 240},
-    {field: 'hide', headerName: "Chế độ xem", width: 240},
+    {field: 'date', headerName: "Ngày nhập", width: 100},
+    {field: 'sellPrice', headerName: "Phân loại", width: 100},
+    {field: 'quantity', headerName: "Số lượng còn lại", width: 100},
+    {field: 'type', headerName: "Loại", width: 100},
 ]
 
+const rowDocs = [
+    {
+        id: '1', stt: '1', title: 'Ngồi khóc trên cây', author: 'Nguyễn Nhật Ánh', date: "12/12/2001", 
+        sellPrice: '12.000', quantity:"10", type:"Loại" 
+    }
+]
+
+const convertData = (books) => {
+    var res = [];
+    for(var i = 0; i < books.length; i++){
+        res.push({
+            id: books[i]._id,
+            stt: i+1,
+            title: books[i].title,
+            author: books[i].author,
+            date: books[i].updatedAt.substring(0,10),
+            sellPrice: books[i].price,
+            quantity: books[i].quantity,
+            type: "",
+        })
+    }
+    return res;
+}
+
 const BookPage: React.FC = () => { 
-    const router = useRouter(); 
+    const router = useRouter();
+    const dispatch = useDispatch(); 
     const infoUser = useSelector((state: RootStateOrAny) => state.userReducer.infoUser)
     const status = useSelector((state: RootStateOrAny) => state.userReducer)
+    const books = useSelector((state: RootStateOrAny) => state.bookReducer.books);
+    useEffect(() => {
+        const fetchBook= async () => {
+            axios.get( URL.URL_PRODUCT, {})
+            .then((data) => {
+                console.log("get data", data);
+                // // alert("Thêm sản phẩm thành công");
+                dispatch(showAlertSuccess("Lấy dữ liệu sách thành công"));
+                // // console.log(router);
+                // router.push('/admin/product/');
+                // return true;
+                dispatch(loadingBook(data.data.product))
+            })
+            .catch((error) => {
+                dispatch(showAlertSuccess("Lấy dữ liệu sách thất bại"));
+                // alert(error);
+            })
+        }
+
+        if (status.isLogin) {
+            fetchBook()
+        }
+    }, [status.isLogin])
 
     if (!status.isLoading) return (<div></div>)
 
     if (!status.isLogin) router.push('/login')
 
     if (infoUser.role == 'user') router.push('/')
+
+    // Get data
+    
+    console.log("books", books)
 
     return (
         <Layout activeNav={"book"}>
@@ -60,25 +116,27 @@ const BookPage: React.FC = () => {
                                 Thông tin sản phẩm
                             </div>
                             <Grid container spacing={1} className='mt-2'>
-                                <Grid item md={12} lg={12}>
+                                <Grid item md={12} lg={12} sm={12}>
                                     <TableManageMent
                                         columnDocs={columnDocs} 
-                                        rowDocs={[]} 
+                                        rowDocs={convertData(books)} 
                                         filter={''}
                                     />
                                 </Grid>
-
-                                <button
-                                    className={
-                                        "buy-button text-[16px] leading-[40px] bg-[#2BBCBA] px-[20px] text-white rounded-[4px] " +
-                                        "hover:opacity-70 hover:cursor-pointer"
-                                    }
-                                    onClick={() => {
-                                        router.push('/admin/product/add-product');
-                                    }}
-                                >
-                                    Thêm sản phẩm
-                                </button>
+                                <Grid item md={12} lg={12} sm={12}>
+                                    <button
+                                        className={
+                                            "buy-button text-[16px] leading-[40px] bg-[#2BBCBA] px-[20px] text-white rounded-[4px] " +
+                                            "hover:opacity-70 hover:cursor-pointer"
+                                        }
+                                        onClick={() => {
+                                            router.push('/admin/product/add-product');
+                                        }}
+                                    >
+                                        Thêm sản phẩm
+                                    </button>
+                                </Grid>
+                                
                                 
                             </Grid>
                         </div>

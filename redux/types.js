@@ -28,3 +28,6 @@ export const LOGOUT_CART = 'LOGOUT_CART'
 
 // Category
 export const SET_CATEGORY = 'GET_CATEGORY'
+
+// Book
+export const GET_ALL_BOOKS = "GET_ALL_BOOKS"

@@ -14,7 +14,6 @@ import { FiDelete } from "react-icons/fi";
 import { useRouter } from 'next/router'
 const ConfirmModal = dynamic(() => import('../../../component/BookPage/ConfirmModal'));
 import { showAlertSuccess, showAlertError } from '../../../redux/actions/alertAction'
-import { trTR } from '@mui/material/locale';
 
 interface ProductTypeItem {
     _id: string,

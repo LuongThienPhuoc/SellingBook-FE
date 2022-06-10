@@ -3,7 +3,7 @@ import '../styles/bookpage.css'
 
 import '../styles/layout.css'
 import '../styles/profile.css'
-
+import '../styles/TableManage.css';
 import Head from 'next/head'
 import { createWrapper } from 'next-redux-wrapper'
 import { useEffect } from 'react'

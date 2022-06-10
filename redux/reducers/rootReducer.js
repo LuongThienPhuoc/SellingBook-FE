@@ -6,6 +6,7 @@ import alertReducer from "./alertReducer";
 import searchReducer from "./searchReducer";
 import cart from './cartReducer'
 import categoryReducer from "./categoryReducer";
+import bookReducer from "./bookReducer";
 const rootReducer = combineReducers({
     postReducer: postReducer,
     codeReducer,
@@ -13,7 +14,8 @@ const rootReducer = combineReducers({
     alertReducer,
     searchReducer,
     cart,
-    categoryReducer
+    categoryReducer,
+    bookReducer
 })
 
 export default rootReducer

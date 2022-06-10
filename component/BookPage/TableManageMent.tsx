@@ -27,7 +27,8 @@ const datagridSx = {
         fontSize: 14
     },
     "& MuiTablePagination-displayedRows": {
-        fontSize: 14
+        fontSize: 14,
+        marginTop: 12
     }
 };
 

@@ -17,6 +17,7 @@ const productSchema  = new Schema({
     detailInfomation: String,
     pageAmount: Number,
     size: String,
+    author: String,
 },
     { timestamps: true }
 );
