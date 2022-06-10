@@ -34,7 +34,6 @@ const ConfirmModal = (props) => {
                         }
                         onClick={() => {
                             props.clickCancel();
-                            console.log("Click xoá")
                         }}
                     >
                         Huỷ
@@ -46,7 +45,6 @@ const ConfirmModal = (props) => {
                         }
                         onClick={() => {
                             props.clickConfirm();
-                            console.log("Click thêm")
                         }}
                     >
                         Xác nhận

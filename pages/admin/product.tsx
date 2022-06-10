@@ -1,36 +1,42 @@
 
 import React, { useState, useEffect }from 'react'
-import Layout from '../../component/Layout'
 import {Button, Container, Grid} from '@mui/material';
+import { useDispatch, useSelector, RootStateOrAny } from 'react-redux'
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
 const NavigationMobile = dynamic(() => import('../../component/Admin/NavigationMobile'))
 const Navigation = dynamic(() => import('../../component/Admin/Navigation'))
-// <<<<<<< HEAD
-// // const Layout = dynamic(() => import('../../component/Layout'),
-// //     {
-// //         loading: () => <LinearProgress></LinearProgress>
-// //     }
-// // )
-// import Layout from '../../component/Layout'
-
-
-// function product(props) {
-//     const infoUser = useSelector((state: RootStateOrAny) => state.userReducer.infoUser)
-//     const router = useRouter()
-//     const status = useSelector((state: RootStateOrAny) => state.userReducer)
-
-//     if (!status.isLoading) return (<LinearProgress></LinearProgress>)
-
-//     if (!status.isLogin) router.push('/login')
-
-//     if (infoUser.role == 'user') router.push('/')
-// =======
+const Layout = dynamic(() => import('../../component/Layout'),
+    {
+        loading: () => <div></div>
+    }
+)
 import { useRouter } from 'next/router'
-// >>>>>>> phi/product-interaction
+import TableManageMent from '../../component/BookPage/TableManageMent';
+
+const columnDocs = [
+    // {field: , headerName: , width: }
+    {field: 'stt', headerName: "STT"},
+    {field: 'name', headerName: "Tên tài liệu", width: 200},
+    {field: 'author', headerName: "Tên tác giả", width: 120},
+    {field: 'type', headerName: "Phân loại", width: 200},
+    {field: 'view', headerName: "Số lượt xem"},
+    {field: 'time', headerName: "Thời gian", width: 120},
+    {field: 'link', headerName: "Link", width: 240},
+    {field: 'hide', headerName: "Chế độ xem", width: 240},
+]
 
 const BookPage: React.FC = () => { 
     const router = useRouter(); 
+    const infoUser = useSelector((state: RootStateOrAny) => state.userReducer.infoUser)
+    const status = useSelector((state: RootStateOrAny) => state.userReducer)
+
+    if (!status.isLoading) return (<div></div>)
+
+    if (!status.isLogin) router.push('/login')
+
+    if (infoUser.role == 'user') router.push('/')
+
     return (
         <Layout activeNav={"book"}>
             <Head>
@@ -46,6 +52,7 @@ const BookPage: React.FC = () => {
                         <div className='title text-[#2BBCBA] text-[24px]'>
                             Quản lý sản phẩm
                         </div>
+                        
                         <div style={{ boxShadow: 'rgb(0 0 0 / 60%) 0px 3px 8px', padding: '25px' }} className='rounded-lg'>
                             <div className='title 
                                 text-[22px] font-[600] text-[#000]
@@ -53,6 +60,14 @@ const BookPage: React.FC = () => {
                                 Thông tin sản phẩm
                             </div>
                             <Grid container spacing={1} className='mt-2'>
+                                <Grid item md={12} lg={12}>
+                                    <TableManageMent
+                                        columnDocs={columnDocs} 
+                                        rowDocs={[]} 
+                                        filter={''}
+                                    />
+                                </Grid>
+
                                 <button
                                     className={
                                         "buy-button text-[16px] leading-[40px] bg-[#2BBCBA] px-[20px] text-white rounded-[4px] " +
@@ -64,6 +79,7 @@ const BookPage: React.FC = () => {
                                 >
                                     Thêm sản phẩm
                                 </button>
+                                
                             </Grid>
                         </div>
                     </Grid>

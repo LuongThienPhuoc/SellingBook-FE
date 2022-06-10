@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useRef }from 'react'
 import Layout from '../../../component/Layout'
-import {Button, Container, Grid} from '@mui/material';
+import {Container, Grid} from '@mui/material';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
 const NavigationMobile = dynamic(() => import('../../../component/Admin/NavigationMobile'))
@@ -10,10 +10,11 @@ import {getCategory} from '../../../redux/actions/categoryAction';
 import { useDispatch, useSelector, RootStateOrAny } from 'react-redux'
 import * as URL from '../../../services/api/config'
 import axios from 'axios';
-import rootReducer from '../../../redux/reducers/rootReducer';
 import { FiDelete } from "react-icons/fi";
 import { useRouter } from 'next/router'
 const ConfirmModal = dynamic(() => import('../../../component/BookPage/ConfirmModal'));
+import { showAlertSuccess, showAlertError } from '../../../redux/actions/alertAction'
+import { trTR } from '@mui/material/locale';
 
 interface ProductTypeItem {
     _id: string,
@@ -144,7 +145,8 @@ const AddBook: React.FC = () => {
                 setImgList(currentImgList);
             })
             .catch((error) => {
-                alert(error);
+                // alert(error);
+                dispatch(showAlertError('Không thể upload file'));
             })
         
         // dispatch(articleActions.uploadArticlePicture(formData));
@@ -199,13 +201,72 @@ const AddBook: React.FC = () => {
             pageAmount: pageRef.pageAmount.current.value,
             size: pageRef.size.current.value,
         }
+        // Check điều kiện thêm sản phẩm
+        if(addData.author.length==0){
+            dispatch(showAlertError('Tên tác giả không được để trống'));
+            return false;
+        }
+        else if(addData.title.length==0) {
+            dispatch(showAlertError('Tên sách không được để trống'));
+            return false;
+        }
+        else if(addData.introduction.length==0) {
+            dispatch(showAlertError('Miêu tả sách không được để trống'));
+            return false;
+        }
+        else if(addData.imgList.length==0) {
+            dispatch(showAlertError('Hình ảnh sách không được để trống'));
+            return false;
+        }
+        else if(addData.importPrice.length==0) {
+            dispatch(showAlertError('Giá nhập sách không được để trống'));
+            return false;
+        }
+        else if(addData.sellPrice.length==0) {
+            dispatch(showAlertError('Giá bán sách không được để trống'));
+            return false;
+        }
+        else if(addData.importDate.length==0) {
+            dispatch(showAlertError('Ngày nhập sách không được để trống'));
+            return false;
+        }
+        else if(addData.quantity.length==0) {
+            dispatch(showAlertError('Số lượng sách không được để trống'));
+            return false;
+        }
+        else if(addData.publisher.length==0) {
+            dispatch(showAlertError('Nhà xuất bản sách không được để trống'));
+            return false;
+        }
+        else if(addData.format.length==0) {
+            dispatch(showAlertError('Loại bìa sách không được để trống'));
+            return false;
+        }
+        else if(addData.publishYear.length==0) {
+            dispatch(showAlertError('Năm xuất bản sách không được để trống'));
+            return false;
+        }
+        else if(addData.detailInformation.length==0) {
+            dispatch(showAlertError('Chi tiết mô tả sách không được để trống'));
+            return false;
+        }
+        else if(addData.pageAmount.length==0) {
+            dispatch(showAlertError('Số trang sách không được để trống'));
+            return false;
+        }
+        else if(addData.size.length==0) {
+            dispatch(showAlertError('Kích thước sách không được để trống'));
+            return false;
+        }
         console.log("add Data", addData)
         await axios.post( URL.URL_PRODUCT, addData)
             .then((data) => {
                 console.log("add data post", data);
-                alert("Thêm sản phẩm thành công");
-                console.log(router);
+                // alert("Thêm sản phẩm thành công");
+                dispatch(showAlertSuccess("Thêm sách thành công"));
+                // console.log(router);
                 router.push('/admin/product/');
+                return true;
             })
             .catch((error) => {
                 alert(error);
@@ -225,33 +286,53 @@ const AddBook: React.FC = () => {
 
     const cancelClick =  () => {
         setIsShowModal(false);
-        console.log("Ok rồi");
         return;
     }
 
-    const confirmClick = () => {
+    const backClick = () => {
+        router.push('/admin/product');
         setIsShowModal(false);
-        addProduct();
         return;
     }
 
+    const addProductClick = async() => {
+        setIsShowModal(false);
+        let result = await addProduct();
+        if(result == true){
+            router.push('/admin/product');
+        }
+        return;
+    }
+
+    let [currentClickButton, setCurrentClickButton] = useState("");
+
+    let confirmFunction = () => {
+        if(currentClickButton == "cancel"){
+            backClick();
+        }
+        // else if(currentClickButton == 'add'){
+        //     addProductClick();
+        // }
+        else addProduct();
+    }
     
+    let [content, setContent] = useState("");
 
     return (
         <Layout activeNav={"book"} className='relative'>
             <Head>
                 <title>Quản lý sản phẩm</title>
             </Head>
-            <div
-                className={isShowModal ? 'block' : 'hidden'}    
-            >
+            {
+                isShowModal ?
                 <ConfirmModal        
                     title="Xác nhận" 
-                    clickConfirm={() => confirmClick()}
+                    clickConfirm={() => confirmFunction()}
                     clickCancel={() => cancelClick()}
-                    content="Bạn có xác nhận việc thêm sản phẩm không ?"
+                    content={content}
                 />
-            </div>
+                : null
+            }
             
             <Container className='relative' maxWidth='lg'>
                 
@@ -735,7 +816,8 @@ const AddBook: React.FC = () => {
                                         "hover:opacity-70 hover:cursor-pointer uppercase py-[6px]"
                                     }
                                     onClick={() => {
-                                        console.log("acc")
+                                        setCurrentClickButton('cancel');
+                                        setContent("Bạn có muốn huỷ bỏ việc nhập liệu thêm sản phẩm?");
                                         setIsShowModal(true);
                                     }}
                                 >
@@ -761,6 +843,9 @@ const AddBook: React.FC = () => {
                                         "hover:opacity-70 hover:cursor-pointer ml-2 uppercase py-[6px]"
                                     }
                                     onClick={() => {
+                                        // setCurrentClickButton('add');
+                                        // setContent("Bạn có chắc chắc muốn thêm sản phẩm?");
+                                        // setIsShowModal(true);
                                         addProduct();
                                     }}
                                 >
