@@ -97,3 +97,69 @@
 .MuiTablePagination-displayedRows{
     margin-top: 14px;
 }
+
+.picture-slider{
+    position: relative;
+}
+
+/* .control-dots{
+    position: absolute;
+    bottom: -3.6rem;    
+} */
+
+/* .control-dots .selected{
+    background-color:#7B68EE;
+}
+
+.control-dots .dot{
+    background-color: #C4C4C4;
+    opacity: 1;
+    box-shadow: none;
+} */
+.carousel-status{
+    display: none;
+}
+
+.picture-slider .control-arrow{
+    color: #7B68EE;
+    background-color: blue;
+    position: absolute!important;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 100%;
+    top: 50%;
+    margin-top: 70% !important;
+    background-color: #2bbcba!important;
+    opacity: 0.5!important;
+}
+
+.control-next:before{
+    position: absolute !important;
+    top: 10px !important;
+    left: 8px !important;
+}
+
+.question-picture-container{
+    position: relative;
+}
+
+.control-prev{
+    background-color: #fff !important; 
+    opacity: 1 !important;
+    position: absolute !important;
+}
+
+.control-arrow:before{
+    position: absolute !important;
+    top: 10px !important;
+    left: 8px !important;
+    width: 8px;
+    height: 8px;
+}
+
+.control-next{
+    background-color: #fff !important; 
+    opacity: 1 !important;
+    position: absolute !important;
+    top: 100px;
+}

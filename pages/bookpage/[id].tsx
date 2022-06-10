@@ -16,7 +16,8 @@ import { Carousel } from 'react-responsive-carousel';
 import * as URL from '../../services/api/config';
 import axios from 'axios';
 import { useRouter } from 'next/router'
-
+import { useDispatch, useSelector, RootStateOrAny } from 'react-redux' 
+import { loadingCurrentBook } from '../../redux/actions/bookAction';
 const ArrowLeft = (props) => (
     <button
         {...props}
@@ -45,6 +46,7 @@ const imgUrl = [
 const BookPage: React.FC = () => {  
     const [width, setDimensions] = React.useState(1200);
     const router = useRouter();
+    const dispatch = useDispatch();
     React.useEffect(() => {
         function handleResize() {
             setDimensions(typeof window !== undefined ? window.innerWidth: 800)
@@ -453,25 +455,33 @@ const BookPage: React.FC = () => {
         )
     }
 
-    const url = window.location.pathname;
-    const path = url.split("/").filter((x) => x);
+    // const url = window.location.pathname;
+    //ƠP
+    const currentBook = useSelector((state: RootStateOrAny) => {
+        console.log(state);
+        return state.bookReducer.currentBook
+    });
 
-    console.log("path", path);
+    const { asPath } = useRouter();
+    const path = asPath.split("/").filter((x) => x);
+    console.log("path", path[1]);
     useEffect(() => {
         const getConcreteProduct = async() => {
-            var categoryList;
-            await axios.get(URL.URL_PRODUCT)
+            await axios.get(URL.URL_PRODUCT + '/sach-hay-62a3218dcc1fc2ad3784222f')
                 .then((data)=>{
-                    categoryList = data.data;
+                    // console.log("data get", data.data.product[0])
+                    dispatch(loadingCurrentBook(data.data.product[0]))
                 })
                 .catch((error)=>{
                     // navigate to login
-                    router.push('/login')
+                    router.push('/')
                     console.log(error)
                 })
         }
         getConcreteProduct();
     }, [])
+
+    console.log("currentBook", currentBook)
 
     return (
         <Layout activeNav={"book"}>

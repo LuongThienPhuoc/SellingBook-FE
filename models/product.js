@@ -18,6 +18,7 @@ const productSchema  = new Schema({
     pageAmount: Number,
     size: String,
     author: String,
+    slug: String,
 },
     { timestamps: true }
 );

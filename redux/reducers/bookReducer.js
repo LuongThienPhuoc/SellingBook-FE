@@ -2,6 +2,7 @@ import * as type from '../types'
 
 const initalState = {
     books: [],
+    currentBook: {}
 }
 
 const bookReducer = (state = initalState, action) => {
@@ -10,6 +11,11 @@ const bookReducer = (state = initalState, action) => {
             return {
                 ...state,
                 books: action.books
+            }
+        case type.GET_BOOK_BY_SLUG:
+            return {
+                ...state,
+                currentBook: action.book
             }
         default:
             return state

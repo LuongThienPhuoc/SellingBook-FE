@@ -32,7 +32,7 @@ const AddBook: React.FC = () => {
     // Lấy tất cả product type
     useEffect(() => {
         const getAllCategory = async() => {
-            console.log("dispatch category rồi");
+            // console.log("dispatch category rồi");
             var categoryList;
             await axios.get(URL.URL_CATEGORY)
                 .then((data)=>{

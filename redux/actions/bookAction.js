@@ -6,3 +6,10 @@ export const loadingBook = (books) => dispatch => {
         books: books,
     })
 }
+
+export const loadingCurrentBook = (book) => dispatch => {
+    dispatch({
+        type: type.GET_BOOK_BY_SLUG,
+        book: book,
+    })
+}
