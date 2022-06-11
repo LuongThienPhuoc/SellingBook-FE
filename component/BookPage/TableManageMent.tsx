@@ -32,7 +32,7 @@ const datagridSx = {
     }
 };
 
-const TableManageMent = ({rowDocs,columnDocs, filter}) => {
+const TableManageMent = ({rowDocs,columnDocs, filter, heightProps}) => {
     // const navigate = use();
     const dispatch = useDispatch();
     const addManageDocument = () => {
@@ -188,7 +188,7 @@ const TableManageMent = ({rowDocs,columnDocs, filter}) => {
     
     return (
         <div 
-            style={{ height: 500, width: '100%' }}
+            style={{ height: heightProps, width: '100%' }}
             className = "datagrid-container"
         >
             <DataGrid

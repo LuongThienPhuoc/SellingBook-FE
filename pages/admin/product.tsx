@@ -17,6 +17,7 @@ import * as URL from '../../services/api/config';
 import axios from 'axios';
 import { showAlertSuccess, showAlertError } from '../../redux/actions/alertAction';
 import { loadingBook } from '../../redux/actions/bookAction';
+import { getCategory } from '../../redux/actions/categoryAction'; 
 
 const columnDocs = [
     // {field: , headerName: , width: }
@@ -54,12 +55,38 @@ const convertData = (books) => {
     return res;
 }
 
+const columnType = [
+    {field: 'stt', headerName: "STT", width: 40},
+    {field: 'name', headerName: "Tên loại", width: 130},
+    {field: 'number', headerName: "Số sách", width: 130},
+]
+
+const convertTypeData = (dataType, books) => {
+    var res = [];
+    for(var i = 0; i < dataType.length; i++){
+        let countType = 0;
+        books.forEach((value) => {
+            if(value.categoryID.includes(dataType[i]._id)){
+                countType++;
+            }
+        })
+        res.push({
+            id: dataType[i]._id,
+            stt: i+1,
+            name: dataType[i].type,
+            number: countType,
+        })
+    }
+    return res;
+}
+
 const BookPage: React.FC = () => { 
     const router = useRouter();
     const dispatch = useDispatch(); 
     const infoUser = useSelector((state: RootStateOrAny) => state.userReducer.infoUser)
     const status = useSelector((state: RootStateOrAny) => state.userReducer)
     const books = useSelector((state: RootStateOrAny) => state.bookReducer.books);
+    const productTypes = useSelector((state: RootStateOrAny)=> {return state.categoryReducer.categories} ) || [];
     useEffect(() => {
         const fetchBook= async () => {
             axios.get( URL.URL_PRODUCT, {})
@@ -78,8 +105,24 @@ const BookPage: React.FC = () => {
             })
         }
 
+        const getAllCategory = async() => {
+            // console.log("dispatch category rồi");
+            var categoryList;
+            await axios.get(URL.URL_CATEGORY)
+                .then((data)=>{
+                    categoryList = data.data;
+                })
+                .catch((error)=>{
+                    // navigate to login
+                    router.push('/')
+                    console.log(error)
+                })
+            dispatch(getCategory(categoryList.categories));
+        }
+
         if (status.isLogin) {
-            fetchBook()
+            fetchBook();
+            getAllCategory();
         }
     }, [status.isLogin])
 
@@ -92,6 +135,8 @@ const BookPage: React.FC = () => {
     // Get data
     
     console.log("books", books)
+
+    const [filter, setFilter] = useState('');
 
     return (
         <Layout activeNav={"book"}>
@@ -116,13 +161,29 @@ const BookPage: React.FC = () => {
                                 Thông tin sản phẩm
                             </div>
                             <Grid container spacing={1} className='mt-2'>
+                                
+                                <Grid item md={12} lg={12} sm={12} className='flex'>
+                                    <div>Nhập từ bất kỳ để tìm kiếm</div>
+                                    <input
+                                        className="outline-1 outline-[#999] border-[1px]
+                                            focus:outline-none focus-visible:outline-none
+                                            ml-[12px] border-[#999] pl-1
+                                        "
+                                        onChange={(e) =>{
+                                            setFilter(e.target.value);
+                                        }}
+                                    >
+                                    </input>
+                                </Grid>
                                 <Grid item md={12} lg={12} sm={12}>
                                     <TableManageMent
                                         columnDocs={columnDocs} 
                                         rowDocs={convertData(books)} 
-                                        filter={''}
+                                        filter={filter}
+                                        heightProps={500}
                                     />
                                 </Grid>
+                                
                                 <Grid item md={12} lg={12} sm={12}>
                                     <button
                                         className={
@@ -136,7 +197,14 @@ const BookPage: React.FC = () => {
                                         Thêm sản phẩm
                                     </button>
                                 </Grid>
-                                
+                                <Grid item md={6} lg={6} sm={6} className="mb-6">
+                                    <TableManageMent
+                                        columnDocs={columnType} 
+                                        rowDocs={convertTypeData(productTypes, books)} 
+                                        filter={''}
+                                        heightProps={300}
+                                    />
+                                </Grid>
                                 
                             </Grid>
                         </div>
