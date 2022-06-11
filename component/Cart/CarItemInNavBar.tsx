@@ -33,7 +33,7 @@ const CartItemInNavBar = (props) => {
                             Thể loại: <span className='font-medium'>Pháp luật</span>
                         </div>
                         <div className='font-normal'>
-                            Số lượng: <span className='font-medium'>{props.detailCart.amount}</span>
+                            Số lượng: <span className='font-medium'>{props.detailCart.quantity}</span>
                         </div>
                     </div>
                     <div className='w-1/4 flex flex-column justify-between items-end'>

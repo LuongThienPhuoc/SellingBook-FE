@@ -9,21 +9,21 @@ import { MdCancel } from 'react-icons/md'
 import ModalDetailOrder from '../../Profile/ModalDetailOrder'
 import axios from 'axios';
 import * as URL from '../../../services/api/config'
-import {useDispatch} from 'react-redux'
-import {showAlertSuccess, showAlertError} from '../../../redux/actions/alertAction'
+import { useDispatch } from 'react-redux'
+import { showAlertSuccess, showAlertError } from '../../../redux/actions/alertAction'
 function CardOrderList(props) {
     const dispatch = useDispatch()
-    
+
     const handleConform = async (type) => {
-        await axios.post(URL.URL_POST_CONFORM_RECEIPT, {deliveryStatus: type, receipt: props.receipt})
-        .then(res => {
-            dispatch(showAlertSuccess(`Chuyển trạng thái sang ${type} thành công`))
-            props.handleChangeStatus(props.receipt._id, type)
-        })
-        .catch(err => {
-            dispatch(showAlertError(`Lỗi hệ thống`))
-            console.log(err)
-        })
+        await axios.post(URL.URL_POST_CONFORM_RECEIPT, { deliveryStatus: type, receipt: props.receipt })
+            .then(res => {
+                dispatch(showAlertSuccess(`Chuyển trạng thái sang ${type} thành công`))
+                props.handleChangeStatus(props.receipt._id, type)
+            })
+            .catch(err => {
+                dispatch(showAlertError(`Lỗi hệ thống`))
+                console.log(err)
+            })
     }
     const [isShowModalDetail, setIsShowModalDetail] = useState(false)
 
@@ -119,30 +119,35 @@ function CardOrderList(props) {
             <div style={{ display: isShowModalDetail ? 'block' : 'none' }}>
                 <ModalDetailOrder receipt={props.receipt} hideModal={() => { setIsShowModalDetail(false) }}></ModalDetailOrder>
             </div>
-            <Card onClick={() => { setIsShowModalDetail(true) }}  className='px-9 py-6  border-solid border-1 border-black cursor-pointer' sx={{ display: 'flex' }}>
-                <img className='rounded-lg border-[#2BBCBA] border-1 border-solid mr-3' height={127} width={88} src='https://upload.wikimedia.org/wikipedia/vi/6/61/Ng%E1%BB%93i_kh%C3%B3c_tr%C3%AAn_c%C3%A2y_cover.jpg'></img>
+            <Card onClick={() => { setIsShowModalDetail(true) }} className='px-9 py-6  border-solid border-1 border-black cursor-pointer' sx={{ display: 'flex' }}>
                 <div className='w-full'>
-                    <div className='flex justify-between h-auto'>
-                        <div className='flex flex-col'>
-                            <div className='font-medium text-lg'>Ngồi khóc trên cây</div>
-                            <div className='text-base text-[#555555]'>Nhà xuất bản trẻ</div>
-                            <div className='text-base font-medium'>x 1</div>
-                        </div>
-                        <div className='flex  flex-col'>
-                            <div className='flex justify-end items-center'>
-                                {renderStatus()}
-                            </div>
-                            <div className='flex items-end mt-3'>
-                                <div className='text-base text-[#2BBCBA]'>300.000đ</div>
-                                <div className='ml-5 text-2xl font-medium'>200.000đ</div>
-                            </div>
-                        </div>
-                    </div>
-                    <Divider className='h-px border-solid border-1 border-[#C5C5C5] my-1' ></Divider>
-                    <div className='flex justify-between mt-2'>
-                        <div className='flex items-center'>
-                            {renderButton()}
-                        </div>
+                    {
+                        props.receipt.listProduct.map((value, key) => (
+                            <>
+                                <div className='flex  h-auto mb-3' >
+                                    <img className='rounded-lg border-[#2BBCBA] border-1 border-solid mr-3 h-[80px] w-[60px]' height={40} width={88} src={value.product.imgList[0]}></img>
+                                    <div className='flex justify-between w-[100%]'>
+                                        <div className='flex flex-col'>
+                                            <div>
+                                                <div className='font-medium text-lg'>{value.product.title}</div>
+                                                <div className='text-base text-[#555555]'>{value.product.author}</div>
+                                                <div className='text-base font-medium'>x {value.quantity}</div>
+                                            </div>
+                                        </div>
+                                        <div className='flex  flex-col justify-end'>
+                                            <div className='flex items-end mt-3'>
+                                                <div className='text-base text-[#2BBCBA]'>{(value.product.price).toLocaleString()}đ</div>
+                                                <div className='ml-5  text-2xl font-medium'>{(value.quantity * value.product.price).toLocaleString()}đ</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <Divider className='h-px border-solid border-1 border-[#C5C5C5] my-1 mt-2' ></Divider>
+                            </>
+                        ))
+                    }
+                    <div className='flex justify-end mt-2'>
+                        
                         <div className='flex items-center'>
                             <ImSigma className='text-xl'></ImSigma>
                             <div className='ml-5 text-2xl font-medium'>220.000đ</div>

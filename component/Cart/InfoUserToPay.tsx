@@ -163,7 +163,7 @@ function InfoUserToPay(props) {
         if (listCart.length == 0) {
           return 0
         }
-        return listCart.reduce((total, value) => { return total += value.product?.price * value.amount }, 0)
+        return listCart.reduce((total, value) => { return total += value.product?.price * value.quantity }, 0)
       }
 
     return (

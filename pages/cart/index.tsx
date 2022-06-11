@@ -6,6 +6,7 @@ import Head from 'next/head';
 import { useSelector, RootStateOrAny, useDispatch } from 'react-redux';
 import { showAlertSuccess, showAlertError } from '../../redux/actions/alertAction';
 import { useRouter } from 'next/router';
+import { resetCart } from '../../redux/actions/cartAction';
 const Layout = dynamic(() =>
   import('../../component/Layout'),
   {
@@ -31,10 +32,11 @@ const Cart = () => {
     if (isLogin) {
       let a = {
         ...infoUser,
-        total: cart.cart.reduce((total, value) => { return total += value.product.price * value.amount }, 0),
-        totalFinal: cart.cart.reduce((total, value) => { return total += value.product.price * value.amount }, 0) > cart.cart.reduce((total, value) => { return total += value.product.price * value.amount }, 0) ? 0 : cart.cart.reduce((total, value) => { return total += value.product.price * value.amount }, 0) + 25000,
-        deliveryMoney: cart.cart.reduce((total, value) => { return total += value.product.price * value.amount }, 0) > 1000000 ? 0 : 25000,
-        user: User._id
+        total: cart.cart.reduce((total, value) => { return total += value.product.price * value.quantity }, 0),
+        totalFinal: cart.cart.reduce((total, value) => { return total += value.product.price * value.quantity }, 0) > cart.cart.reduce((total, value) => { return total += value.product.price * value.quantity }, 0) ? 0 : cart.cart.reduce((total, value) => { return total += value.product.price * value.quantity }, 0) + 25000,
+        deliveryMoney: cart.cart.reduce((total, value) => { return total += value.product.price * value.quantity }, 0) > 1000000 ? 0 : 25000,
+        user: User._id,
+        listProduct: cart.cart
       }
       if (a.name == '') {
         a.name = User.name
@@ -43,17 +45,18 @@ const Cart = () => {
         a.phone = User.phone
       }
 
-      console.log(a)
-
 
       if (a.district == '' || a.province == '' || a.commune == '' || a.address == '' || a.note == '' || a.paymentMethod == '') {
         dispatch(showAlertError("Nhập đầy đủ thông tin!"))
+      } else if (cart.cart.length == 0) {
+        dispatch(showAlertError("Giỏ hàng trống!"))
       } else {
         await axios.post(URL.URL_CREATE_RECEIPT, { ...a })
           .then(res => {
             console.log(res)
             if (res.data.success) {
               dispatch(showAlertSuccess('Đặt hàng thành công'))
+              dispatch(resetCart())
             }
           })
           .catch(err => {
@@ -69,7 +72,7 @@ const Cart = () => {
     if (listCart.length == 0) {
       return 0
     }
-    return listCart.reduce((total, value) => { return total += value.product?.price * value.amount }, 0)
+    return listCart.reduce((total, value) => { return total += value.product?.price * value.quantity }, 0)
   }
 
   return (

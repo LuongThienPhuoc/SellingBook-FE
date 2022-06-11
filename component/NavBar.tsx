@@ -161,7 +161,7 @@ const NavBar = (props) => {
                 <Box sx={{ flexGrow: 0 }}>
                     <Tooltip title="Open cart">
                         <IconButton onClick={handleOpenCartMenu} size="large" aria-label="show 4 new mails" color="inherit">
-                            <Badge badgeContent={cart.cart.reduce((total, item) => (total += item.amount), 0)} color="error">
+                            <Badge badgeContent={cart.cart.reduce((total, item) => (total += item.quantity), 0)} color="error">
                                 <ShoppingCartIcon />
                             </Badge>
                         </IconButton>
@@ -194,7 +194,7 @@ const NavBar = (props) => {
                     >
                         <div style={{ width: '300px', borderRadius: '30px' }} onClick={handleCloseCartMenu}>
                             <div className={style.headerCart} >
-                                <span style={{ fontSize: '14px', lineHeight: '1.5', fontWeight: '500' }}>{cart.cart.reduce((total, item) => (total += item.amount), 0)} sản phẩm</span>
+                                <span style={{ fontSize: '14px', lineHeight: '1.5', fontWeight: '500' }}>{cart.cart.reduce((total, item) => (total += item.quantity), 0)} sản phẩm</span>
                                 <Link href={'/cart'} passHref>
                                     <a style={{ textDecoration: 'none', fontSize: '14px', fontWeight: '500', color: '#2f5acf', lineHeight: '1.5' }}>Xem tất cả</a>
                                 </Link>
@@ -376,12 +376,12 @@ const NavBar = (props) => {
                             </SearchIconWrapper>
                             <StyledInputBase
                                 placeholder="Nhập tên sách cần tìm"
-                                onChange={(e) => { console.log(e.target.value); dispatch(setSearch(e.target.value)) }}
+                                onChange={(e) => {  dispatch(setSearch(e.target.value)) }}
                                 defaultValue={search}
                                 onKeyDown={handleKeyPressSearch}
                                 inputProps={{ 'aria-label': 'search' }}
                             />
-                            <Link href={'/search'} passHref>
+                            <Link href={`/search?search=${search}`} passHref>
                                 <div ref={searchRef} className='bg-transparent w-7 h-6 absolute top-2 left-2 z-50 cursor-pointer' onClick={() => { console.log('click') }}></div>
                             </Link>
                         </Search>
@@ -416,7 +416,7 @@ const NavBar = (props) => {
                                 onKeyDown={handleKeyPressSearch}
                                 inputProps={{ 'aria-label': 'search' }}
                             />
-                            <Link href={'/search'} passHref>
+                            <Link href={`/search?search=${search}`} passHref>
                                 <div ref={searchRef} className='bg-transparent w-7 h-6 absolute top-2 left-2 z-50 cursor-pointer' onClick={() => { console.log('click') }}></div>
                             </Link>
                         </Search>

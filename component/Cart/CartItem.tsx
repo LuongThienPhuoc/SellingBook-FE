@@ -22,7 +22,7 @@ function CartItem(props) {
   }
 
   const handleMinus = async () => {
-    if (props.detailCart.amount <= 1) {
+    if (props.detailCart.quantity <= 1) {
       await axios.post(URL.URL_QUANTITY_CHANGE, { id: infoUser?._id, type: 'DELETE', idProduct: props.detailCart.product?._id })
         .then(res => {
           dispatch(deleteItem(props.detailCart.product?._id))
@@ -56,7 +56,7 @@ function CartItem(props) {
     <Container className='mb-16'>
       <Grid className={style.cartItem + ' rounded-2xl'} container spacing={2}>
         <Grid className='pt-1 pb-1' sm={3}>
-          <Badge badgeContent={props.detailCart.amount} color={'warning'}>
+          <Badge badgeContent={props.detailCart.quantity} color={'warning'}>
             <img height='150px' className=' rounded-2xl' src={props.detailCart.product?.imgList[0]} alt={props.detailCart.product?.title} />
           </Badge>
         </Grid>
@@ -71,7 +71,7 @@ function CartItem(props) {
             <span onClick={handleMinus} className='text-2xl cursor-pointer'>
               <AiFillMinusCircle></AiFillMinusCircle>
             </span>
-            <span className='mx-2' style={{ border: '1px solid black', borderRadius: '8px', padding: '4px 10px' }}>{props.detailCart.amount}</span>
+            <span className='mx-2' style={{ border: '1px solid black', borderRadius: '8px', padding: '4px 10px' }}>{props.detailCart.quantity}</span>
             <span onClick={handlePlus} className='text-2xl cursor-pointer'>
               <AiFillPlusCircle></AiFillPlusCircle>
             </span>
@@ -87,7 +87,7 @@ function CartItem(props) {
                 {props.detailCart.product?.price.toLocaleString()}đ
               </div>
               <div className='line-through text-[#ccc] font-medium'>
-                {(200000).toLocaleString()}đ
+                {(props.detailCart.product?.price + 20000).toLocaleString()}đ
               </div>
             </div>
           </div>

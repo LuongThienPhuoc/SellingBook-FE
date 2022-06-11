@@ -34,3 +34,10 @@ export const deleteItem = (id) => dispatch => {
     })
 }
 
+export const resetCart = () => dispatch => {
+    dispatch({
+        type: type.RESET_CART
+    })
+}
+
+

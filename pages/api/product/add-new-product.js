@@ -14,8 +14,8 @@ const AddNewProduct = async (req, res) => {
             const product = await Product.find()
             
             cart.listProduct.push({
-                product: product[1],
-                amount: 1,
+                product: product[0],
+                quantity: 1,
             })
             cart.save()
             res.status(200).send(JSON.stringify({

@@ -11,17 +11,29 @@ const CreateNewReceipt = async (req, res, data) => {
     // Refresh
     switch (method) {
         case 'POST':
-            const user = mongoose.Types.ObjectId(req?.body?.User);
+            const user = mongoose.Types.ObjectId(req?.body?.user);
             try {
                 if (user) {
+                    console.log(res.body)
                     const receipt = new Receipt({ ...req.body })
                     if (receipt) {
+
                         receipt.save()
-                            .then(result => {
-                                return res.status(200).json({
-                                    success: true,
-                                    cart: result,
-                                    message: 'Create receipt success'
+                            .then((result) => {
+                                 Cart.findOneAndUpdate({ user }, { listProduct: [] }, (err, docs) => {
+                                    if (err) {
+                                        return res.status(200).json({
+                                            success: false,
+                                            status: 401,
+                                            refresh: 'Create receipt success'
+                                        })
+                                    } else {
+                                        return res.status(200).json({
+                                            success: true,
+                                            cart: result,
+                                            message: 'Create receipt success'
+                                        })
+                                    }
                                 })
                             })
                             .catch(err => {
