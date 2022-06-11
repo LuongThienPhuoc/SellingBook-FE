@@ -95,10 +95,10 @@ const addProduct = async(req, res) => {
                 throw new Error("Create product fail");
             })
     } else {
-        return res.status(200).json({
+        return res.status(401).json({
             success: false,
             status: 401,
-            refresh: 'Create product success'
+            refresh: 'Create product fail'
         })
     }
 }

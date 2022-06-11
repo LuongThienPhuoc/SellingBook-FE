@@ -7,6 +7,7 @@ const ConfirmModal = (props) => {
                 className='not-modal w-[100%] h-[100%]'
                 onClick={() => {
                     console.log("Notmodal");
+                    props.clickCancel();
                 }}
             >
             </div>

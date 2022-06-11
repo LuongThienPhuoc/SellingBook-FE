@@ -15,6 +15,8 @@ import { useRouter } from 'next/router'
 const ConfirmModal = dynamic(() => import('../../../component/BookPage/ConfirmModal'));
 import { showAlertSuccess, showAlertError } from '../../../redux/actions/alertAction'
 
+const AddTypeModal = dynamic(() => import('../../../component/BookPage/AddTypeModal'))
+
 interface ProductTypeItem {
     _id: string,
     type: string,
@@ -317,6 +319,10 @@ const AddBook: React.FC = () => {
     
     let [content, setContent] = useState("");
 
+    // Modal thêm sách
+    const [isShowAddTypeModal, setIsShowAddTypeModal] = useState(false);
+    
+
     return (
         <Layout activeNav={"book"} className='relative'>
             <Head>
@@ -333,6 +339,17 @@ const AddBook: React.FC = () => {
                 : null
             }
             
+            {
+                isShowAddTypeModal ?
+                <AddTypeModal
+                    clickCancel={() => {
+                        setIsShowAddTypeModal(false);
+                    }}
+                    clickConfirm={() => {
+                        setIsShowAddTypeModal(false);
+                    }}
+                /> : null
+            }
             <Container className='relative' maxWidth='lg'>
                 
                 <NavigationMobile option='product'></NavigationMobile>
@@ -545,6 +562,9 @@ const AddBook: React.FC = () => {
                                             "buy-button text-[16px] leading-[30px] bg-[#2BBCBA] px-[20px] text-white rounded-[4px] " +
                                             "hover:opacity-70 hover:cursor-pointer ml-2"
                                         }
+                                        onClick={() => {
+                                            setIsShowAddTypeModal(true);
+                                        }}
                                     >
                                         Thêm 
                                     </button>

@@ -27,7 +27,29 @@ const getCategory = async(req, res) => {
     })
 }
 
+const addCategory = async(req, res) => {
+    console.log("req.body", req.body);
+    const category = new Category({
+        type: req.body.type
+    })
+    if(category){
+        await category.save()
+            .then((data) => {
 
+            })
+            .catch(err => {
+                throw new Error("Create product type fail");
+            })
+    }
+    else {
+        return res.status(401).json({
+            success: false,
+            status: 401,
+            refresh: 'Create product type failed'
+        })
+    }
+    getCategory(req, res);
+}
 
 const categoryController = async (req, res, data) => {
     const { method } = req;
@@ -35,6 +57,9 @@ const categoryController = async (req, res, data) => {
     switch (method) {
         case 'GET':
             await getCategory(req, res);
+            break;
+        case 'POST':
+            await addCategory(req, res);
             break;
         case 'DELETE':
             res.status(200).send({

@@ -32,7 +32,7 @@ const datagridSx = {
     }
 };
 
-const TableManageMent = ({rowDocs,columnDocs, filter, heightProps}) => {
+const TableManageMent = ({rowDocs,columnDocs, filter, heightProps, manage}) => {
     // const navigate = use();
     const dispatch = useDispatch();
     const addManageDocument = () => {
@@ -117,6 +117,7 @@ const TableManageMent = ({rowDocs,columnDocs, filter, heightProps}) => {
 
     const onCellClick = (params, event) => {
         // console.log("params", params);
+        if(manage==false) return;
         if(params.field=='link'){
             // console.log("params", params.row.link);
             alert("document link was copy to clipboard");   

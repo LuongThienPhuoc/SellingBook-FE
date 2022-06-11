@@ -87,6 +87,7 @@ const BookPage: React.FC = () => {
     const status = useSelector((state: RootStateOrAny) => state.userReducer)
     const books = useSelector((state: RootStateOrAny) => state.bookReducer.books);
     const productTypes = useSelector((state: RootStateOrAny)=> {return state.categoryReducer.categories} ) || [];
+    const [filter, setFilter] = useState('');
     useEffect(() => {
         const fetchBook= async () => {
             axios.get( URL.URL_PRODUCT, {})
@@ -136,7 +137,7 @@ const BookPage: React.FC = () => {
     
     console.log("books", books)
 
-    const [filter, setFilter] = useState('');
+    
 
     return (
         <Layout activeNav={"book"}>
@@ -181,6 +182,7 @@ const BookPage: React.FC = () => {
                                         rowDocs={convertData(books)} 
                                         filter={filter}
                                         heightProps={500}
+                                        manage={true}
                                     />
                                 </Grid>
                                 
@@ -203,6 +205,7 @@ const BookPage: React.FC = () => {
                                         rowDocs={convertTypeData(productTypes, books)} 
                                         filter={''}
                                         heightProps={300}
+                                        manage={false}
                                     />
                                 </Grid>
                                 
