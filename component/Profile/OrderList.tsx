@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { ButtonGroup, Button } from '@mui/material';
+import { ButtonGroup, Button, CircularProgress, Stack } from '@mui/material';
 import style from '../../styles/Profile.module.css'
 import Pagination from '@mui/material/Pagination';
 import SearchIcon from '@mui/icons-material/Search';
@@ -8,10 +8,10 @@ import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
 import axios from 'axios';
 import * as URL from '../../services/api/config'
 const CardOrderList = dynamic(() => import('./CardOrderList'))
-
 const OrderList = (props) => {
     const userInfo = useSelector((state: RootStateOrAny) => state.userReducer.infoUser)
     const status = useSelector((state: RootStateOrAny) => state.userReducer)
+    const [isLoading, setIsLoading] = useState(false)
     const [receipts, setReceipts] = useState([])
     const [currentReceipts, setCurrentReceipts] = useState([])
     const [active, setActive] = useState('')
@@ -41,7 +41,7 @@ const OrderList = (props) => {
         setReceipts(a)
         if (active === 'All') {
             setCurrentReceipts(a)
-            
+
         } else {
             a = receipts.filter(value => value.deliveryStatus == active)
             setCurrentReceipts(a)
@@ -56,7 +56,7 @@ const OrderList = (props) => {
                 .then(res => {
                     setReceipts(res.data.receipts)
                     setCurrentReceipts(res.data.receipts)
-                    console.log(res)
+                    setIsLoading(true)
                 })
                 .catch(err => {
                     console.log(err)
@@ -64,7 +64,6 @@ const OrderList = (props) => {
         }
         if (status.isLogin) {
             fetApi()
-            console.log('call api')
         }
     }, [status.isLogin])
 
@@ -102,16 +101,27 @@ const OrderList = (props) => {
             </div>
             <div>
                 {
-                    currentReceipts.length !== 0 ? currentReceipts.map((value, index) => {
-                        if (index < currentSelect * 6 && index >= (currentSelect - 1) * 6)  {
-                            return  (
-                                <CardOrderList handleChangeStatus={handleChangeStatus} key={index} receipt={value} status={value.deliveryStatus}></CardOrderList>
-                            )
-                        }
-                    }) : (
-                        <h3 style={{ textAlign: 'center', padding: '30px' }}>Đơn hàng trống</h3>
+                    isLoading ? (
+                        <div>
+                            {
+                                currentReceipts.length !== 0 ? currentReceipts.map((value, index) => {
+                                    if (index < currentSelect * 6 && index >= (currentSelect - 1) * 6) {
+                                        return (
+                                            <CardOrderList handleChangeStatus={handleChangeStatus} key={index} receipt={value} status={value.deliveryStatus}></CardOrderList>
+                                        )
+                                    }
+                                }) : (
+                                    <h3 style={{ textAlign: 'center', padding: '30px' }}>Đơn hàng trống</h3>
+                                )
+                            }
+                        </div>
+                    ) : (
+                        <Stack sx={{ color: 'grey.500', display: 'flex', justifyContent: 'center' }} spacing={2} direction="row">
+                            <CircularProgress color="secondary" />
+                        </Stack>
                     )
                 }
+
             </div>
             <div className='mt-10 flex justify-center profile-pagination'>
                 <Pagination onChange={(e, num) => { setCurrentSelect(num) }} count={renderCount()} color="primary" variant="outlined" />

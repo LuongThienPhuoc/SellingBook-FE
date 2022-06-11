@@ -17,12 +17,12 @@ export const URL_UPDATE_AVATAR = URL_SYSTEM_V1 + '/user/update-avatar'
 export const URL_UPDATE_INFO_USER = URL_SYSTEM_V1 + '/user/update-info-user'
 export const URL_QUANTITY_CHANGE = URL_SYSTEM_V1 + '/cart/quantity-change'
 
-
 //Receipt
 export const URL_CREATE_RECEIPT = URL_SYSTEM_V1 + '/receipt/create-new-receipt'
+export const URL_GET_PURCHASED_BOOK = URL_SYSTEM_V1 + '/receipt/get-purchased-book'
+
 
 //Profile
-
 export const URL_GET_ORDER_LIST = URL_SYSTEM_V1 + '/receipt/get-order-list'
 export const URL_DELETE_RECEIPT = URL_SYSTEM_V1 + '/receipt/delete-receipt'
 

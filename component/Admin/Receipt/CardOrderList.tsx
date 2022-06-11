@@ -119,7 +119,13 @@ function CardOrderList(props) {
             <div style={{ display: isShowModalDetail ? 'block' : 'none' }}>
                 <ModalDetailOrder receipt={props.receipt} hideModal={() => { setIsShowModalDetail(false) }}></ModalDetailOrder>
             </div>
-            <Card onClick={() => { setIsShowModalDetail(true) }} className='px-9 py-6  border-solid border-1 border-black cursor-pointer' sx={{ display: 'flex' }}>
+            <Card onClick={() => { setIsShowModalDetail(true) }} className='px-9 py-6 mb-4 pt-12 border-solid border-1 border-black cursor-pointer relative' sx={{ display: 'flex' }}>
+                <div className='flex justify-end items-center absolute right-2 top-2'>
+                    {renderStatus()}
+                </div>
+                <div className='flex justify-end items-center absolute left-9 top-2'>
+                    Mã HD:  <span className='pl-1 font-bold'> {props.receipt._id}</span>
+                </div>
                 <div className='w-full'>
                     {
                         props.receipt.listProduct.map((value, key) => (
@@ -147,7 +153,7 @@ function CardOrderList(props) {
                         ))
                     }
                     <div className='flex justify-end mt-2'>
-                        
+
                         <div className='flex items-center'>
                             <ImSigma className='text-xl'></ImSigma>
                             <div className='ml-5 text-2xl font-medium'>220.000đ</div>
