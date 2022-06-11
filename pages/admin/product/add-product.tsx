@@ -16,6 +16,7 @@ const ConfirmModal = dynamic(() => import('../../../component/BookPage/ConfirmMo
 import { showAlertSuccess, showAlertError } from '../../../redux/actions/alertAction'
 
 const AddTypeModal = dynamic(() => import('../../../component/BookPage/AddTypeModal'))
+const AddImageModal = dynamic(() => import('../../../component/BookPage/AddImageModal'))
 
 interface ProductTypeItem {
     _id: string,
@@ -155,10 +156,10 @@ const AddBook: React.FC = () => {
 
     const [imgList, setImgList] = useState([]);
 
-    const removeImgInput = (imgItem) => {
+    const removeImgInput = (imgItem, imgIndex) => {
         var currentImgList = JSON.parse(JSON.stringify(imgList));
         currentImgList = currentImgList.filter(function(value, index, arr){ 
-            return value != imgItem;
+            return value != imgItem || index != imgIndex;
         });
         setImgList(currentImgList);
     } 
@@ -322,6 +323,8 @@ const AddBook: React.FC = () => {
     // Modal thêm sách
     const [isShowAddTypeModal, setIsShowAddTypeModal] = useState(false);
     
+    // Modal thêm hình ảnh
+    const [isShowAddImageModal, setIsShowAddImageModal] = useState(false);
 
     return (
         <Layout activeNav={"book"} className='relative'>
@@ -347,6 +350,21 @@ const AddBook: React.FC = () => {
                     }}
                     clickConfirm={() => {
                         setIsShowAddTypeModal(false);
+                    }}
+                /> : null
+            }
+
+            {
+                isShowAddImageModal ?
+                <AddImageModal
+                    clickCancel={() => {
+                        setIsShowAddImageModal(false);
+                    }}
+                    clickConfirm={(imgLink) => {
+                        var currentImgList = JSON.parse(JSON.stringify(imgList));
+                        currentImgList.push(imgLink);
+                        setImgList(currentImgList);
+                        setIsShowAddImageModal(false);
                     }}
                 /> : null
             }
@@ -425,7 +443,7 @@ const AddBook: React.FC = () => {
                                                             }
                                                             htmlFor="post-image-input"
                                                             onClick={() => {
-
+                                                                
                                                             }}
                                                         >
                                                             Thêm hình ảnh
@@ -433,8 +451,12 @@ const AddBook: React.FC = () => {
                                                         <div 
                                                             className={
                                                                 'add-from-link text-[16px] text-[#103262] ' + 
-                                                                'font-[600] px-2 py-1 underline ml-2'
+                                                                'font-[600] px-2 py-1 underline ml-2 ' +
+                                                                'hover:opacity-80 hover:cursor-pointer hover:text-[#2bbcba]'
                                                             }
+                                                            onClick={() => {
+                                                                setIsShowAddImageModal(true);
+                                                            }}
                                                         >
                                                             Thêm từ link
                                                         </div>
@@ -446,10 +468,10 @@ const AddBook: React.FC = () => {
                                             :   
                                             <div className='flex'>
                                                 {
-                                                    imgList.map((value) => {
+                                                    imgList.map((value,index) => {
                                                         return (
                                                             <div
-                                                                className='h-[180px] w-[180px] border-dashed border-[1px] border-[#999] mx-[10px] my-[10px] relative'    
+                                                                className='h-[180px] w-[180px] border-dashed border-[1px] border-[#999] mx-[10px] my-[10px] relative'   
                                                             >
                                                                 <img 
                                                                     className='h-[180px] w-[180px] object-contain'
@@ -460,7 +482,7 @@ const AddBook: React.FC = () => {
                                                                     className="absolute top-0 right-1 text-[#999] hover:cursor-pointer hover:text-[#2BBCBA]"
                                                                     size={24}
                                                                     onClick = {(e)=> {
-                                                                        removeImgInput(value);
+                                                                        removeImgInput(value, index);
                                                                     }}
                                                                 />
                                                             </div>
@@ -498,7 +520,7 @@ const AddBook: React.FC = () => {
                                                     <label
                                                         className={
                                                             'add-from-link text-[16px] bg-[#E5EFFD] text-[#103262] ' +
-                                                            'font-[600] px-2 py-1 hover:opacity-70 hover:cursor-pointer mt-[46px]'
+                                                            'font-[600] px-2 py-1 hover:opacity-70 hover:cursor-pointer mt-[46px] '
                                                         }
                                                         htmlFor="post-image-input-1"
                                                         onClick={() => {
@@ -510,8 +532,12 @@ const AddBook: React.FC = () => {
                                                     <div 
                                                         className={
                                                             'add-from-link text-[16px] text-[#103262] ' + 
-                                                            'font-[600] underline text-center mt-2'
+                                                            'font-[600] underline text-center mt-2 ' + 
+                                                            'hover:opacity-80 hover:cursor-pointer hover:text-[#2bbcba]'
                                                         }
+                                                        onClick={() => {
+                                                            setIsShowAddImageModal(true);
+                                                        }}
                                                     >
                                                         Thêm từ link
                                                     </div>
