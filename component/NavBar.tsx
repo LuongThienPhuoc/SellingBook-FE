@@ -169,7 +169,7 @@ const NavBar = (props) => {
                     <Tooltip title="Open settings">
                         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                             <Avatar alt="Remy Sharp" src={infoUser.avatar ? infoUser.avatar : ''} />
-                            <div className='text-base font-medium text-white ml-[5px] md:hidden lg:block'>Lương Thiện Phước</div>
+                            <div className='text-base font-medium text-white ml-[5px] md:hidden lg:block'></div>
                         </IconButton>
                     </Tooltip>
                     {/* Cart */}
@@ -261,7 +261,9 @@ const NavBar = (props) => {
                         </MenuItem>
                         <MenuItem onClick={handleCloseUserMenu}>
                             <Link href='/profile' passHref>
-                                <Typography textAlign="center">Profile</Typography>
+                                <div >
+                                    <Typography textAlign="center">Profile</Typography>
+                                </div>
                             </Link>
                         </MenuItem>
                         <Divider light />

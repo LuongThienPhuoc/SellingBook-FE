@@ -24,7 +24,7 @@ const Cart = () => {
   const User = useSelector((state: RootStateOrAny) => state.userReducer.infoUser)
   const isLogin = useSelector((state: RootStateOrAny) => state.userReducer.isLogin)
   const status = useSelector((state: RootStateOrAny) => state.userReducer)
-
+  console.log(cart.cart)
   if (!status.isLoading) return (<LinearProgress></LinearProgress>)
 
   const handleClickPayment = async (infoUser) => {
@@ -65,6 +65,13 @@ const Cart = () => {
     }
   }
 
+  const renderTotal = (listCart) => {
+    if (listCart.length == 0) {
+      return 0
+    }
+    return listCart.reduce((total, value) => { return total += value.product?.price * value.amount }, 0)
+  }
+
   return (
     <Layout>
       <Head>
@@ -99,7 +106,7 @@ const Cart = () => {
                   <div style={{ borderTop: '1px solid #00000021', borderBottom: '1px solid #00000021', marginTop: '20px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', margin: '15px 0', fontSize: '14px', fontWeight: '500' }}>
                       <div>Tạm tính</div>
-                      <div>{cart.cart.reduce((total, value) => { return total += value.product.price * value.amount }, 0).toLocaleString()}đ</div>
+                      <div>{renderTotal(cart.cart).toLocaleString()}đ</div>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', margin: '15px 0', fontSize: '14px', fontWeight: '500' }}>
                       <div>Giảm giá</div>
@@ -107,12 +114,12 @@ const Cart = () => {
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', margin: '15px 0', fontSize: '14px', fontWeight: '500' }}>
                       <div>Phí giao hàng</div>
-                      <div>+{cart.cart.reduce((total, value) => { return total += value.product.price * value.amount }, 0) > 1000000 ? 0 : (25000).toLocaleString()}đ</div>
+                      <div>+{renderTotal(cart.cart) > 1000000 ? 0 : (25000).toLocaleString()}đ</div>
                     </div>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', margin: '15px 0', fontSize: '18px', fontWeight: '600' }}>
                     <div>TỔNG</div>
-                    <div>{cart.cart.reduce((total, value) => { return total += value.product.price * value.amount }, 0) > 1000000 ? cart.cart.reduce((total, value) => { return total += value.product.price * value.amount }, 0).toLocaleString() : (25000 + cart.cart.reduce((total, value) => { return total += value.product.price * value.amount }, 0)).toLocaleString()}đ</div>
+                    <div>{renderTotal(cart.cart) > 1000000 ? renderTotal(cart.cart).toLocaleString() : (25000 + renderTotal(cart.cart)).toLocaleString()}đ</div>
                   </div>
                 </div>
               </div>

@@ -159,6 +159,13 @@ function InfoUserToPay(props) {
         props.handleClickPayment(infoReceipt)
     }
 
+    const renderTotal = (listCart) => {
+        if (listCart.length == 0) {
+          return 0
+        }
+        return listCart.reduce((total, value) => { return total += value.product?.price * value.amount }, 0)
+      }
+
     return (
         <div className={'p-4 relative'}>
             <div className={style.line}></div>
@@ -419,7 +426,7 @@ function InfoUserToPay(props) {
                     </Link>
                 </div>
                 <div onClick={handleClickPayment} className={'transition duration-300 ease-out cursor-pointer py-4 flex justify-center w-ful bg-black text-white rounded-lg' + ' ' + style.btnPay}>
-                    Thanh toán {(25000 + cart.cart.reduce((total, value) => { return total += value.product.price * value.amount }, 0)).toLocaleString()}k (Momo)
+                    Thanh toán {renderTotal(cart.cart) > 1000000 ? renderTotal(cart.cart).toLocaleString() : (25000 + renderTotal(cart.cart)).toLocaleString()}k (Momo)
                 </div>
             </div>
         </div>
