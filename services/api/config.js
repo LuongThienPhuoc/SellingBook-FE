@@ -37,3 +37,4 @@ export const URL_DELETE_USER = URL_SYSTEM_V1 + '/admin/delete-user'
 export const URL_CHANGE_ROLE_USER = URL_SYSTEM_V1 + '/admin/change-role-user'
 export const URL_GET_DASHBOARD = URL_SYSTEM_V1 + '/admin/dashboard'
 
+export const URL_TAG = URL_SYSTEM_V1 + '/tag';

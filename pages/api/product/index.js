@@ -80,7 +80,8 @@ const addProduct = async(req, res) => {
         detailInfomation: req.body.detailInformation,
         pageAmount: req.body.pageAmount,
         size: req.body.size,
-        slug: toSlug(req.body.title)
+        slug: toSlug(req.body.title),
+        tagID: req.body.tagIDList
     })
     if (product) {
         product.save()

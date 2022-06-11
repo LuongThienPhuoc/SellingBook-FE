@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useRef }from 'react'
 import Layout from '../../../component/Layout'
-import {Container, Grid} from '@mui/material';
+import {Container, Grid, Autocomplete, TextField, tablePaginationClasses} from '@mui/material';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
 const NavigationMobile = dynamic(() => import('../../../component/Admin/NavigationMobile'))
@@ -14,9 +14,10 @@ import { FiDelete } from "react-icons/fi";
 import { useRouter } from 'next/router'
 const ConfirmModal = dynamic(() => import('../../../component/BookPage/ConfirmModal'));
 import { showAlertSuccess, showAlertError } from '../../../redux/actions/alertAction'
-
+import { loadingAllTags } from '../../../redux/actions/bookAction';
 const AddTypeModal = dynamic(() => import('../../../component/BookPage/AddTypeModal'))
 const AddImageModal = dynamic(() => import('../../../component/BookPage/AddImageModal'))
+
 
 interface ProductTypeItem {
     _id: string,
@@ -43,7 +44,7 @@ const AddBook: React.FC = () => {
                 })
                 .catch((error)=>{
                     // navigate to login
-                    router.push('/login')
+                    router.push('/')
                     console.log(error)
                 })
             dispatch(getCategory(categoryList.categories));
@@ -182,6 +183,15 @@ const AddBook: React.FC = () => {
     }
 
     const addProduct = async() => {
+        console.log("selectTagList", selectTagList);
+        // convert
+        let tagIDList = [];
+        selectTagList.forEach(element => {
+            tagIDList.push(element._id);
+        });
+
+        // console.log("tagIDList", tagIDList);
+        // return;
         console.log("pageRef", pageRef)
         var addData = {
             author: pageRef.author.current.value,
@@ -202,6 +212,7 @@ const AddBook: React.FC = () => {
             detailInformation: pageRef.detailInformation.current.value,
             pageAmount: pageRef.pageAmount.current.value,
             size: pageRef.size.current.value,
+            tagIDList: tagIDList
         }
         // Check điều kiện thêm sản phẩm
         if(addData.author.length==0){
@@ -224,8 +235,16 @@ const AddBook: React.FC = () => {
             dispatch(showAlertError('Giá nhập sách không được để trống'));
             return false;
         }
+        else if(parseInt(addData.importPrice)<=0) {
+            dispatch(showAlertError('Giá nhập sách phải lớn hơn 0'));
+            return false;
+        }
         else if(addData.sellPrice.length==0) {
             dispatch(showAlertError('Giá bán sách không được để trống'));
+            return false;
+        }
+        else if(parseInt(addData.sellPrice)<=0) {
+            dispatch(showAlertError('Giá bán sách phải lớn hơn 0'));
             return false;
         }
         else if(addData.importDate.length==0) {
@@ -325,6 +344,117 @@ const AddBook: React.FC = () => {
     
     // Modal thêm hình ảnh
     const [isShowAddImageModal, setIsShowAddImageModal] = useState(false);
+    
+
+    // Từ khoá
+    const convertAutoComplete = (tags) => {
+        let res = [];
+        tags.forEach(tag => {
+            for(let i = 0; i < selectTagList.length; i++){
+                if(selectTagList[i]._id == tag._id){
+                    return;
+                }
+            } 
+            res.push({
+                label: tag.tag,
+                _id: tag._id,
+            })
+        });
+        return res;
+    }
+    const tags = useSelector((state: RootStateOrAny)=> {return state.bookReducer.tags} ) || [];
+    useEffect(() => {
+        const getAllTag = async() => {
+            // var categoryList;
+            await axios.get(URL.URL_TAG)
+                .then((data)=>{
+                    console.log("data.data", data.data)
+                    // categoryList = data.data;
+                    dispatch(loadingAllTags(data.data.tags));
+                })
+                .catch((error)=>{
+                    // navigate to login
+                    router.push('/')
+                    dispatch(showAlertError("Không thể lấy dự liệu từ khoá của sách"));
+                    // console.log(error)
+                })
+            // dispatch(getCategory(categoryList.categories));
+            
+        }
+        getAllTag();
+    }, [])
+
+    console.log('tags', tags);
+    // Add new tag
+    const tagRef = useRef(null);
+    let currentTag = "";
+
+    const checkValidationAddTag = (inputTag) =>{
+        if(inputTag.length==0){
+            dispatch(showAlertError("Tag không thể để trống hoặc đang chọn tag có sẵn"));
+            return false;
+        }
+        tags.forEach(tag => {
+            if(tag.tag == inputTag){
+                dispatch(showAlertError("Tag bị trùng tên"));
+                return false;
+            }
+        });
+        return true;
+    }
+
+    const addNewTag = async() => {
+        // console.log(currentTag)
+        console.log("Vô được đây rồ")
+        const dataToAdd = {
+            tag: currentTag
+        }
+        console.log(tagRef);
+        (document.querySelector('#combo-box-demo') as HTMLInputElement).value = '';
+        await axios.post(URL.URL_TAG, dataToAdd)
+            .then((data)=>{
+                console.log("data.data", data.data)
+                // categoryList = data.data;
+                dispatch(loadingAllTags(data.data.tags));
+                dispatch(showAlertSuccess("Thêm tag mới thành công"));
+                
+            })
+            .catch((error)=>{
+                // navigate to login
+                router.push('/')
+                // dispatch(showAlertError("Không thể lấy dự liệu từ khoá của sách"));
+                // console.log(error)
+            })
+        // console.log("co", tagRef.current.inputValue)
+        
+    }
+
+    interface ISlectVal {
+        label: String,
+        _id: String
+    }
+
+    const [autoSelectValue, setAutoSelectValue] = useState([]);
+    const onSelectChange = (e, value) => {
+        setAutoSelectValue(value);
+    };
+
+    const [selectTagList, setSelectTagList] = useState([]);
+    const addToSelectTag = () => {
+        var currentSelectTagList = selectTagList;
+        // console.log(autoSelectValue);
+        currentSelectTagList.push(autoSelectValue);
+        setSelectTagList(currentSelectTagList);
+    }
+
+    const removeSelectedTag = (removeIndex) => {
+        var currentSelectTagList = selectTagList;
+        currentSelectTagList = currentSelectTagList.filter((value, index) => {
+            return index!=removeIndex;
+        })
+        // currentSelectTagListID.push(autoSelectValue._id);
+        setSelectTagList(currentSelectTagList);
+    }
 
     return (
         <Layout activeNav={"book"} className='relative'>
@@ -669,6 +799,10 @@ const AddBook: React.FC = () => {
                                                 onChange={() => {
                                                     calculateAmount();
                                                 }}
+                                                onWheel={(e) => {
+                                                    (e.target as HTMLElement).blur();
+                                                    return false;
+                                                }}
                                             >
 
                                             </input>
@@ -689,6 +823,10 @@ const AddBook: React.FC = () => {
                                                 className="border-[1px] border-[#999] focus-visible:outline-none
                                                 focus:outline-none py-1 px-1 rounded-2"
                                                 ref={pageRef.sellPrice}
+                                                onWheel={(e) => {
+                                                    (e.target as HTMLElement).blur();
+                                                    return false;
+                                                }}
                                             >
 
                                             </input>
@@ -762,6 +900,7 @@ const AddBook: React.FC = () => {
                                                     className="border-[1px] border-[#999] focus-visible:outline-none
                                                     focus:outline-none py-1 px-1 rounded-2"
                                                     ref={pageRef.totalValue}
+                                                    readOnly={true}
                                                 >
 
                                                 </input>
@@ -794,51 +933,90 @@ const AddBook: React.FC = () => {
                                     <div className='title h-8 text-right leading-[22px] mr-4'>Từ khoá</div>
                                 </Grid>
                                 <Grid item xs={10} sm={10} md={10} lg={10} xl={10}
-                                    className='mt-2 flex'
+                                    className='flex flex-wrap'
                                 >
-                                    <input name="product-type" id="product-type"
+                                    <Autocomplete
+                                        // disablePortal
+                                        ref={tagRef}
+                                        id="combo-box-demo"
+                                        options={convertAutoComplete(tags)}
+                                        sx={{ width: 200, height: 35 }}
+                                        renderInput={(params) => <TextField {...params}/>}
+                                        className='mt-2'
+                                        onInputChange={(e,val)=> {
+                                            currentTag = val;
+                                        }}
+                                        disableClearable
+                                        onChange={(e, val) => {
+                                            onSelectChange(e, val);
+                                        }}
+                                        value={autoSelectValue}
+                                        // inputValue={autoValue}
+                                        clearOnBlur={false}
+                                    />
+                                    <button
                                         className={
-                                            "border-[1px] !border-[#e5e5e5] py-[4px] focus:border-[#e5e5e5]  focus-visible:border-[#e5e5e5] " +     
-                                            "focus-visible:outline-none focus:outline-none"
+                                            "buy-button text-[16px] leading-[30px] bg-[#5ed44b] px-[20px] text-white rounded-[4px] " +
+                                            "hover:opacity-70 hover:cursor-pointer ml-2 h-[35px] mt-2"
                                         }
+                                        onClick={() => {
+                                            if(checkValidationAddTag(currentTag))
+                                                addNewTag();
+                                        }}
                                     >
-                                    </input>
+                                        Thêm tag
+                                    </button>
                                     <button
                                         className={
                                             "buy-button text-[16px] leading-[30px] bg-[#2BBCBA] px-[20px] text-white rounded-[4px] " +
-                                            "hover:opacity-70 hover:cursor-pointer ml-2"
+                                            "hover:opacity-70 hover:cursor-pointer ml-2 h-[35px] mt-2 mr-6"
                                         }
+                                        onClick={() => {
+                                            // addNewTag();
+                                            // console.log("autoSelectValue", autoSelectValue)
+                                            if(autoSelectValue.length==0) return;
+                                            addToSelectTag();  
+                                            setAutoSelectValue([]);
+                                        }}
                                     >
-                                        Thêm 
+                                        Chọn
                                     </button>
                                     <div 
                                         className={
                                             "display-type-selected " + 
-                                            "flex ml-[24px]"
+                                            "flex mt-2"
                                         }
                                     >
                                         {
-                                            currentKeyWord.map((item, value, key)=>{
+                                            selectTagList.map((item, index)=>{
                                                 return (
                                                     <div
                                                         className="relative"
                                                     >
                                                         <div 
                                                             className={
-                                                                "py-[4px] px-[8px] ml-[16px] "+
+                                                                "py-[4px] px-[8px] mr-[16px] "+
                                                                 "bg-[#7E97B9] text-[#fff] rounded-[4px] leading-[25px] "
                                                             }
                                                         >
-                                                            {item   }
+                                                            {
+                                                                tags.map((value, index) => {
+                                                                    if(value._id == item._id) 
+                                                                    return value.tag;
+                                                                })
+                                                            }
                                                         </div>
                                                         <div
                                                             className={
                                                                 "rounded-[100%] bg-[#F16F61] w-4 h-4 text-[#fff] " + 
-                                                                "absolute top-[-4px] right-[-6px]"
+                                                                "absolute top-[-4px] right-[10px]"
                                                             }
                                                         >
                                                             <p
-                                                                className='close-icon mt-[-4px] ml-[4px]'
+                                                                className='close-icon mt-[-4px] ml-[4px] hover:cursor-pointer hover:opacity-70'
+                                                                onClick={() => {
+                                                                    removeSelectedTag(index);
+                                                                }}
                                                             >
                                                                 x
                                                             </p>

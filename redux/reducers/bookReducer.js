@@ -2,7 +2,8 @@ import * as type from '../types'
 
 const initalState = {
     books: [],
-    currentBook: {}
+    currentBook: {},
+    tags: [],
 }
 
 const bookReducer = (state = initalState, action) => {
@@ -16,6 +17,11 @@ const bookReducer = (state = initalState, action) => {
             return {
                 ...state,
                 currentBook: action.book
+            }
+        case type.SET_ALL_TAGS:
+            return {
+                ...state,
+                tags: action.tags
             }
         default:
             return state

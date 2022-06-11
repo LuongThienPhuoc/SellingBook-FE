@@ -35,3 +35,4 @@ export const SET_CATEGORY = 'GET_CATEGORY'
 // Book
 export const GET_ALL_BOOKS = "GET_ALL_BOOKS"
 export const GET_BOOK_BY_SLUG = "GET_BOOK_BY_SLUG"
+export const SET_ALL_TAGS = "SET_ALL_TAGS"

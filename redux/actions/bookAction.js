@@ -13,3 +13,10 @@ export const loadingCurrentBook = (book) => dispatch => {
         book: book,
     })
 }
+
+export const loadingAllTags = (tags) => dispatch => {
+    dispatch({
+        type: type.SET_ALL_TAGS,
+        tags: tags,
+    })
+}

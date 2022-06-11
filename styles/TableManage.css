@@ -166,3 +166,17 @@
     /* left: 0px; */
     right: 0px;
 }
+
+.MuiAutocomplete-hasPopupIcon.css-1f6lnmf-MuiAutocomplete-root .MuiOutlinedInput-root, .MuiAutocomplete-hasClearIcon.css-1f6lnmf-MuiAutocomplete-root .MuiOutlinedInput-root{
+    margin-top: 0px;
+    height: 35px;
+}
+
+.MuiInputLabel-formControl {
+    margin-top: -9px;
+}
+
+.css-1f6lnmf-MuiAutocomplete-root .MuiOutlinedInput-root .MuiAutocomplete-input {
+    padding: 7.5px 4px 7.5px 6px;
+    margin-top: -10px;
+}
