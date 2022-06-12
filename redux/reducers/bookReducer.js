@@ -4,7 +4,8 @@ const initalState = {
     books: [],
     currentBook: {},
     tags: [],
-    currentEditBook: {}
+    currentEditBook: {},
+    currentDisplayBooksInAllBook: [],
 }
 
 const bookReducer = (state = initalState, action) => {
@@ -28,6 +29,11 @@ const bookReducer = (state = initalState, action) => {
             return {
                 ...state,
                 currentEditBook: action.book
+            }
+        case type.SET_DISPLAY_BOOKS_IN_ALL_BOOK:
+            return {
+                ...state,
+                currentDisplayBooksInAllBook: action.books
             }
         default:
             return state

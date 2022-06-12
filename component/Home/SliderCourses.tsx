@@ -9,6 +9,7 @@ const CardPurchasedList = dynamic(() => import('./CardPurchasedList'))
 export default class SliderCourses extends Component {
     constructor(props) {
         super(props);
+        console.log("props", this.props.books);
         this.state = {
         }
     }
@@ -61,14 +62,19 @@ export default class SliderCourses extends Component {
         return (
             <div>
                 <Slider {...settings}>
+                    {
+                        this.props.books ? this.props.books.map(() => {
+                            return <CardPurchasedList></CardPurchasedList>
+                        }): null
+                    }
+                    {/* <CardPurchasedList index={0}></CardPurchasedList> */}
+                    {/* <CardPurchasedList></CardPurchasedList>
+                    
                     <CardPurchasedList index={0}></CardPurchasedList>
                     <CardPurchasedList></CardPurchasedList>
                     <CardPurchasedList></CardPurchasedList>
-                    <CardPurchasedList index={0}></CardPurchasedList>
                     <CardPurchasedList></CardPurchasedList>
-                    <CardPurchasedList></CardPurchasedList>
-                    <CardPurchasedList></CardPurchasedList>
-                    <CardPurchasedList></CardPurchasedList>
+                    <CardPurchasedList></CardPurchasedList> */}
                 </Slider>
             </div>
         );

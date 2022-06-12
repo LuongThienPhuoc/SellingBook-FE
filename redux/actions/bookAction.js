@@ -27,3 +27,10 @@ export const loadingCurrentEditBook = (book) => dispatch => {
         book: book,
     })
 }
+
+export const loadingDisplayInAllBook = (books) => dispatch => {
+    dispatch({
+        type: type.SET_DISPLAY_BOOKS_IN_ALL_BOOK,
+        books: books,
+    })
+}

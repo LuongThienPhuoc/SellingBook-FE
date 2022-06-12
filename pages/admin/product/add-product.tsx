@@ -52,9 +52,9 @@ const AddBook: React.FC = () => {
         getAllCategory();
     }, [])
 
-    useSelector((state:RootStateOrAny) => {
-        console.log("state", state.categoryReducer.categories);
-    })
+    // useSelector((state:RootStateOrAny) => {
+    //     console.log("state", state.categoryReducer.categories);
+    // })
 
 
     const productType = useSelector((state: RootStateOrAny)=> {return state.categoryReducer.categories} ) || [];

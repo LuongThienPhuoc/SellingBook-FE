@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import dynamic from 'next/dynamic';
 import LinearProgress from '@mui/material/LinearProgress';
 import axios from 'axios';
 import { Card, Divider, Grid, TextField, Box, Button, CardContent, Container, Tab, Tabs } from '@mui/material';
 import style from '../styles/Home.module.css'
+import { useDispatch } from 'react-redux';
+import * as URL from '../services/api/config';
+import { useRouter } from 'next/router';
 
 const Layout = dynamic(() =>
   import('../component/Layout'),
@@ -15,10 +18,49 @@ const AllBook = dynamic(() => import('../component/Home/AllBook'))
 const BookByKeyword = dynamic(() => import('../component/Home/BookByKeyword'))
 const GoodBook = dynamic(() => import('../component/Home/GoodBook')) 
 const NewBook = dynamic(() => import('../component/Home/NewBook'))
+import {getCategory} from '../redux/actions/categoryAction'; 
+import {loadingBook } from '../redux/actions/bookAction';
+
 
 const Home = () => {
- 
-  
+    const dispatch = useDispatch();
+    const router = useRouter();
+
+
+    useEffect(() => {
+      const getAllCategory = async() => {
+          // console.log("dispatch category rồi");
+          var categoryList;
+          await axios.get(URL.URL_CATEGORY)
+              .then((data)=>{
+                  categoryList = data.data;
+              })
+              .catch((error)=>{
+                  // navigate to login
+                  router.push('/')
+                  console.log(error)
+              })
+          dispatch(getCategory(categoryList.categories));
+      }
+      getAllCategory();
+      const fetchBook= async () => {
+        axios.get( URL.URL_PRODUCT, {})
+        .then((data) => {
+            console.log("get data", data);
+            // // alert("Thêm sản phẩm thành công");
+            // dispatch(showAlertSuccess("Lấy dữ liệu sách thành công"));
+            // // console.log(router);
+            // router.push('/admin/product/');
+            // return true;
+            dispatch(loadingBook(data.data.product))
+        })
+        .catch((error) => {
+            // dispatch(showAlertSuccess("Lấy dữ liệu sách thất bại"));
+            // alert(error);
+        })
+    }
+    fetchBook()
+  }, [])
 
   return (
     <Layout active="home">
