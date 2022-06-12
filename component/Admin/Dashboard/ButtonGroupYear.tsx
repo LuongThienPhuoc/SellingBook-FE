@@ -15,7 +15,7 @@ for(let i = date.getFullYear();i >= 2000; i--) {
     options.push(i);
 }
 
-export default function SplitButton() {
+export default function SplitButton(props) {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef<HTMLDivElement>(null);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
@@ -28,6 +28,7 @@ export default function SplitButton() {
     event: React.MouseEvent<HTMLLIElement, MouseEvent>,
     index: number,
   ) => {
+    props.setYear((event.target as HTMLInputElement).value)
     setSelectedIndex(index);
     setOpen(false);
   };
@@ -88,6 +89,7 @@ export default function SplitButton() {
                       key={option}
                       selected={index === selectedIndex}
                       onClick={(event) => handleMenuItemClick(event, index)}
+                      value={option}
                     >
                       {option}
                     </MenuItem>

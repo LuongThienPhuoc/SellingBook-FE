@@ -67,10 +67,8 @@ function dashboard(props) {
                     <Grid className='mt-16 ' item sm={12} md={9}>
                         <div style={{ boxShadow: 'rgb(0 0 0 / 60%) 0px 3px 8px' }} className='rounded-lg pb-3'>
                             <GeneralStatistics dataDashboard={dataDashboard}></GeneralStatistics>
-                            <Traffic></Traffic>
+                            <Traffic dataDashboard={dataDashboard}></Traffic>
                             <UserChart users={dataDashboard.users} ></UserChart>
-                            <Traffic></Traffic>
-                            <Traffic></Traffic>
                             <div className='flex justify-end mr-5 mt-3'>
                                 <div className='flex bg-[#2BBCBA] shadow-sm rounded text-lg items-center py-1 px-2 text-white cursor-pointer'>
                                     <PictureAsPdfIcon className='mr-2'></PictureAsPdfIcon>
