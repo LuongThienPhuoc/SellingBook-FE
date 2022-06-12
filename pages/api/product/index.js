@@ -133,4 +133,4 @@ const productController = async (req, res, data) => {
     }
 }
 
-export default AuthMiddleware(productController)
+export default productController

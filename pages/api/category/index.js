@@ -78,4 +78,4 @@ const categoryController = async (req, res, data) => {
     }
 }
 
-export default AuthMiddleware(categoryController)
+export default categoryController

@@ -70,10 +70,12 @@ export default class SliderCourses extends Component<SliderCardProp> {
                     {
                         this.props.books ? this.props.books.map((book) => {
                             let isFind = false;
-                            if((book["categoryID"] as string[]).includes(this.props.productType))
+                            if((book["categoryID"] as string[]).includes(this.props.productType) 
+                                || this.props.productType=="")
                             return (
                                 <CardPurchasedList book={book}/>
                             )
+            
                         }): null
                     }
                     {/* <CardPurchasedList index={0}></CardPurchasedList> */}

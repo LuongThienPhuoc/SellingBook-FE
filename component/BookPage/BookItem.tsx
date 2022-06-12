@@ -33,7 +33,7 @@ const BookItem = (props) =>{
             <img 
                 src={props.bookInfo.imgList[0]} 
                 alt={props.bookInfo.title}
-                className='w-[100%]'
+                className='w-[100%] h-[380px] rounded-[8px]'
             />
             <div className='book-detail absolute w-[240px] h-[140px] bg-white right-[0px] bottom-0 rounded-b-[8px]'>
                 <div className="publish-place text-[#555555] text-[18px] text-center pt-[8px]">
