@@ -37,12 +37,12 @@ const pages = [
         url: '/',
         active: 'home',
     },
-    {
-        id: 'book',
-        name: 'Sách',
-        url: '/store',
-        active: 'store'
-    }
+    // {
+    //     id: 'book',
+    //     name: 'Sách',
+    //     url: '/store',
+    //     active: 'store'
+    // }
 ]
 
 const Search = styled('div')(({ theme }) => ({
