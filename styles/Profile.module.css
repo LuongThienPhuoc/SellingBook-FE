@@ -3,7 +3,7 @@
     font-weight: 500;
 }
 
-.active::after{
+.active::after {
     content: "";
     position: absolute;
     background-color: #2BBCBA;
@@ -32,4 +32,14 @@
 
 .transitionModal {
     transition: all ease-in-out .2;
+}
+
+.line {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 25px;
+    -webkit-line-clamp: 2;
+    height: 50px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
 }

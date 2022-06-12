@@ -128,8 +128,8 @@ const ProfileDetail = (props) => {
                             </Grid>
                             <Grid className='flex items-end ml-6' item md={5} sm={12} xs={12}>
                                 <div >
-                                    <div className='font-sans text-xl font-bold'>{infoUser.name ? infoUser.name : 'No name'}</div>
-                                    <div className='font-sans text-base'>Thành viên bạc</div>
+                                    <div className='font-sans text-xl font-bold pb-3'>{infoUser.name ? infoUser.name : 'No name'}</div>
+                                    <div className='font-sans text-base pb-2'>Thành viên bạc</div>
                                     <div className='items-center mt-1 flex' >
                                         <AiOutlineMail className='mr-3.5 text-xl'></AiOutlineMail>
                                         <span className='overflow-hidden'>{infoUser.mail ? infoUser.mail : 'No mail'}</span>
@@ -143,12 +143,12 @@ const ProfileDetail = (props) => {
                         </Grid>
                     </div>
                 </Grid>
-                <Grid item md={3} sm={12} xs={12}>
+                <Grid item md={2} sm={12} xs={12}>
                     <div className='items-end h-full' style={{ display: 'flex' }}>
                         <div className='ml-6'>
                             <div className='mt-3.5 items-center' style={{ display: 'flex' }}>
                                 <CgUserList className='mr-3.5 text-xl'></CgUserList>
-                                <span>{infoUser.username ? infoUser.username : 'No username'}</span>
+                                <span>{infoUser.username?.includes('googleId') ? "Google Account" : infoUser.username}</span>
                             </div>
                             <div className='items-center mt-1 ' style={{ display: 'flex' }}>
                                 <FaBirthdayCake className='mr-3.5 text-xl'></FaBirthdayCake>
@@ -157,7 +157,7 @@ const ProfileDetail = (props) => {
                         </div>
                     </div>
                 </Grid>
-                <Grid item md={4} sm={12} xs={12}>
+                <Grid item md={5} sm={12} xs={12}>
                     <div className='h-full flex justify-between'>
                         <div className='items-end' style={{ display: 'flex' }}>
                             <div className='ml-6'>
