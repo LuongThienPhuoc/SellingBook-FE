@@ -22,7 +22,6 @@ function receipt(props) {
     const infoUser = useSelector((state: RootStateOrAny) => state.userReducer.infoUser)
     const status = useSelector((state: RootStateOrAny) => state.userReducer)
     const router = useRouter()
-    const refInput = useRef()
     const [receipts, setReceipts] = useState([])
     const [currentReceipts, setCurrentReceipts] = useState([])
     const [active, setActive] = useState('');

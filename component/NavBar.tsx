@@ -40,7 +40,7 @@ const pages = [
     {
         id: 'book',
         name: 'Sách',
-        url: 'store',
+        url: '/store',
         active: 'store'
     }
 ]

@@ -17,8 +17,12 @@ function CardOrderList(props) {
     const handleConform = async (type) => {
         await axios.post(URL.URL_POST_CONFORM_RECEIPT, { deliveryStatus: type, receipt: props.receipt })
             .then(res => {
-                dispatch(showAlertSuccess(`Chuyển trạng thái sang ${type} thành công`))
-                props.handleChangeStatus(props.receipt._id, type)
+                if (res.data.status == 202) {
+                    dispatch(showAlertError(res.data.message))
+                } else {
+                    dispatch(showAlertSuccess(`Chuyển trạng thái sang ${type} thành công`))
+                    props.handleChangeStatus(props.receipt._id, type)
+                }
             })
             .catch(err => {
                 dispatch(showAlertError(`Lỗi hệ thống`))
@@ -164,12 +168,18 @@ function CardOrderList(props) {
             <div className='flex justify-center mt-2 '>
                 {
                     props.status == 'Đã giao' ? null : (
-                        <>
-                            <div onClick={() => handleConform('Đã hủy')} className='px-3 py-1 bg-[#d48026] text-white text-sm rounded cursor-pointer mx-2'>HUỶ ĐƠN</div>
-                            <div onClick={() => handleConform('Đã xác nhận')} className='px-3 py-1 bg-[#5fd078] text-white text-sm rounded cursor-pointer mx-2'>XÁC NHẬN</div>
-                            <div onClick={() => handleConform('Đang giao')} className='px-3 py-1 bg-[#74BFCF] text-white text-sm rounded cursor-pointer mx-2'>ĐANG GIAO</div>
-                            <div onClick={() => handleConform('Đã giao')} className='px-3 py-1 bg-[#AE75D0] text-white text-sm rounded cursor-pointer mx-2'>ĐÃ GIAO</div>
-                        </>
+                        props.status == 'Đã hủy' ? (
+                            <>
+                                <div onClick={() => handleConform('Chờ xác nhận')} className='px-3 py-1 bg-[#5fd078] text-white text-sm rounded cursor-pointer mx-2'>MUA LẠI</div>
+                            </>
+                        ) : (
+                            <>
+                                <div onClick={() => handleConform('Đã hủy')} className='px-3 py-1 bg-[#d48026] text-white text-sm rounded cursor-pointer mx-2'>HUỶ ĐƠN</div>
+                                <div onClick={() => handleConform('Đã xác nhận')} className='px-3 py-1 bg-[#5fd078] text-white text-sm rounded cursor-pointer mx-2'>XÁC NHẬN</div>
+                                <div onClick={() => handleConform('Đang giao')} className='px-3 py-1 bg-[#74BFCF] text-white text-sm rounded cursor-pointer mx-2'>ĐANG GIAO</div>
+                                <div onClick={() => handleConform('Đã giao')} className='px-3 py-1 bg-[#AE75D0] text-white text-sm rounded cursor-pointer mx-2'>ĐÃ GIAO</div>
+                            </>
+                        )
                     )
                 }
             </div>

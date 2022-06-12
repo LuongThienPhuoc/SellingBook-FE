@@ -7,7 +7,7 @@ import { Card, CardHeader, Box, Container, Grid, TextField } from '@mui/material
 import BaseOptionChart from './BaseOptionChart';
 
 // ----------------------------------------------------------------------
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 const SplitButtonYear = dynamic(() => import('./ButtonGroupYear'))
 const SplitButtonMonth = dynamic(() => import('./ButtonGroupMonth'))
 
@@ -39,6 +39,12 @@ export default function Traffic(props) {
         }
     ];
 
+    useEffect(() => {
+        setTypeData(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'])
+        CalculateAnnualRevenue(props.dataDashboard.receipts, year)
+        titleGrowthYear(props.dataDashboard.receipts, month, year)
+    }, [props.dataDashboard.receipts])
+
 
     const chartOptions = merge(BaseOptionChart(), {
         stroke: { width: [1, 2, 3] },
@@ -55,7 +61,7 @@ export default function Traffic(props) {
             intersect: false,
             y: {
                 formatter: (y) => {
-                    return y.toFixed(0).toLocaleString();
+                    return y.toLocaleString();
                 }
             }
         }

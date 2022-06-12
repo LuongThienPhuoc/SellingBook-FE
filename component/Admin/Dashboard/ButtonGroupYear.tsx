@@ -44,7 +44,6 @@ export default function SplitButton(props) {
     ) {
       return;
     }
-
     setOpen(false);
   };
 

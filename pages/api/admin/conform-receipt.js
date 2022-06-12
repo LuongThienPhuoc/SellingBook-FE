@@ -14,6 +14,8 @@ const GetAllReceipt = async (req, res, data) => {
                 if (user.role == 'admin') {
                     const receipt = await Receipt.findById(req.body?.receipt?._id).exec()
                     receipt.deliveryStatus = req.body?.deliveryStatus
+                    let isFound = false
+                    let message
                     const products = await Product.find().exec()
                     console.log(products)
                     if (req.body?.deliveryStatus == "Đã giao") {
@@ -25,28 +27,38 @@ const GetAllReceipt = async (req, res, data) => {
                                         products[key].quantity -= productPurchased.quantity
                                         products[key].purchased += productPurchased.quantity
                                     } else {
-                                        res.status(401).send(JSON.stringify({
-                                            status: 401
-                                        }))
+                                        message = productPurchased.product.title + ' chỉ còn ' + product.quantity + ' sản phẩm'
+                                        isFound = true
                                     }
                                 }
                             })
-                            product.save()
                         })
                     }
 
-                    receipt.save()
-                        .then(result => {
-                            res.status(200).send(JSON.stringify({
-                                isAdmin: true,
-                                receipt: result
-                            }))
+                    if (isFound) {
+                        res.status(202).send(JSON.stringify({
+                            status: 202,
+                            message: message
+                        }))
+                    } else {
+                        products.forEach(product => {
+                            product.save()
                         })
-                        .catch(err => {
-                            res.status(401).send(JSON.stringify({
-                                status: 401
-                            }))
-                        })
+
+                        receipt.save()
+                            .then(result => {
+                                res.status(200).send(JSON.stringify({
+                                    isAdmin: true,
+                                    receipt: result
+                                }))
+                            })
+                            .catch(err => {
+                                res.status(401).send(JSON.stringify({
+                                    status: 401,
+                                    err: err
+                                }))
+                            })
+                    }
                 } else {
                     res.status(200).send(JSON.stringify({
                         isAdmin: false,
