@@ -9,8 +9,6 @@ function ModalDetailOrder(props) {
         e.stopPropagation()
     }
 
-    console.log(props.receipt)
-
     return (
         <div onClick={props.hideModal} className='profile-modal bg-[#00000040] fixed top-0 left-0 bottom-0 right-0 z-50 flex items-center justify-center'>
             <div

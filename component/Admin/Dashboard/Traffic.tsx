@@ -103,7 +103,7 @@ export default function Traffic(props) {
             let thangTienGoc = 0;
             let thangTienLai = 0;
             let thangDoanhThu = 0;
-            receipts.map((receipt) => {
+            receipts?.map((receipt) => {
                 let timeCreate = new Date(receipt.createdAt)
                 if (timeCreate.getMonth() == (selectMonth - 1) && timeCreate.getFullYear() == selectYear) {
                     if (receipt.deliveryStatus == 'Đã giao' && timeCreate.getDate() >= 4 * i && timeCreate.getDate() < 4 * (i + 1)) {
@@ -126,7 +126,7 @@ export default function Traffic(props) {
             let thangTienLai = 0;
             let thangDoanhThu = 0;
             for (let i = 29; i <= new Date(selectYear, selectMonth, 0).getDate(); i++) {
-                receipts.map((receipt) => {
+                receipts?.map((receipt) => {
                     let timeCreate = new Date(receipt.createdAt)
                     if (receipt.deliveryStatus == 'Đã giao' && timeCreate.getMonth() == (selectMonth - 1) && timeCreate.getFullYear() == selectYear && timeCreate.getDate() == i) {
                         thangDoanhThu += receipt.total
@@ -150,7 +150,7 @@ export default function Traffic(props) {
         let currentDoanhThu = 0
         let lastDoanhThu = 0
 
-        receipts.map((receipt) => {
+        receipts?.map((receipt) => {
             let timeCreate = new Date(receipt.createdAt)
             if (receipt.deliveryStatus == 'Đã giao' && timeCreate.getMonth() == (selectMonth - 1) && timeCreate.getFullYear() == selectYear) {
                 currentDoanhThu += receipt.total
@@ -158,14 +158,14 @@ export default function Traffic(props) {
         })
 
         if (selectMonth == 1) {
-            receipts.map((receipt) => {
+            receipts?.map((receipt) => {
                 let timeCreate = new Date(receipt.createdAt)
                 if (receipt.deliveryStatus == 'Đã giao' && timeCreate.getMonth() == 11 && timeCreate.getFullYear() == (selectYear - 1)) {
                     lastDoanhThu += receipt.total
                 }
             })
         } else {
-            receipts.map((receipt) => {
+            receipts?.map((receipt) => {
                 let timeCreate = new Date(receipt.createdAt)
                 if (receipt.deliveryStatus == 'Đã giao' && timeCreate.getMonth() == (selectMonth - 2) && timeCreate.getFullYear() == selectYear) {
                     lastDoanhThu += receipt.total
@@ -199,7 +199,7 @@ export default function Traffic(props) {
             }
         })
 
-        receipts.map((receipt) => {
+        receipts?.map((receipt) => {
             let timeCreate = new Date(receipt.createdAt)
             if (receipt.deliveryStatus == 'Đã giao' && timeCreate.getFullYear() == (selectYear - 1)) {
                 lastDoanhThu += receipt.total

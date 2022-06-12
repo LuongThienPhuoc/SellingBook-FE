@@ -69,12 +69,12 @@ function dashboard(props) {
                             <GeneralStatistics dataDashboard={dataDashboard}></GeneralStatistics>
                             <Traffic dataDashboard={dataDashboard}></Traffic>
                             <UserChart users={dataDashboard.users} ></UserChart>
-                            <div className='flex justify-end mr-5 mt-3'>
+                            {/* <div className='flex justify-end mr-5 mt-3'>
                                 <div className='flex bg-[#2BBCBA] shadow-sm rounded text-lg items-center py-1 px-2 text-white cursor-pointer'>
                                     <PictureAsPdfIcon className='mr-2'></PictureAsPdfIcon>
                                     <div>XUẤT PDF1</div>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </Grid>
                 </Grid>

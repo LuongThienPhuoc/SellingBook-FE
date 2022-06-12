@@ -15,8 +15,8 @@ import * as URL from '../../services/api/config'
 import { showAlertSuccess, showAlertError } from '../../redux/actions/alertAction'
 import { useDispatch } from 'react-redux'
 import ModalDetailOrder from './ModalDetailOrder';
+
 function CardOrderList(props) {
-    console.log(props.receipt.listProduct)
     const dispatch = useDispatch()
     const [isShowModalDetail, setIsShowModalDetail] = useState(false)
     const handleBuyAgain = async (e) => {
@@ -100,6 +100,7 @@ function CardOrderList(props) {
         }
     }
 
+
     const renderButton = () => {
         switch (props.status) {
             case 'Chờ xác nhận':
@@ -111,8 +112,7 @@ function CardOrderList(props) {
             case 'Đã giao':
                 return (
                     <>
-                        <div className='mr-2 py-1 px-2 text-xs rounded text-black bg-white border-solid border-1 border-black'>ĐÁNH GIÁ</div>
-                        <div className='py-1 px-2 text-xs rounded text-white bg-[#2BBCBA]'>MUA LẠI</div>
+                        {/* <div onClick={handleClickReview} className='mr-2 py-1 px-2 text-xs rounded text-black bg-white border-solid border-1 border-black'>ĐÁNH GIÁ</div> */}
                     </>
                 )
             case 'Đã hủy':

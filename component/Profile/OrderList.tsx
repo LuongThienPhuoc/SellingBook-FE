@@ -83,7 +83,7 @@ const OrderList = (props) => {
     return (
         <div>
             <div className='text-xl text-[#2BBCBA]'>Danh sách đơn hàng</div>
-            <div className='flex justify-center mt-6'>
+            <div className='flex justify-center my-6'>
                 <ButtonGroup variant="outlined" size='medium' aria-label=" button group small">
                     <Button onClick={handleClickActive} name='All' className={active === 'All' ? style.orderListActive + ' normal-case border-slate-600 hover:opacity-80 hover:bg-[#2BBCBA] text-white' : 'normal-case border-slate-600'}>Tất cả</Button>
                     <Button onClick={handleClickActive} name='Chờ xác nhận' className={active === 'Chờ xác nhận' ? style.orderListActive + ' normal-case border-slate-600 hover:opacity-80 hover:bg-[#2BBCBA] text-white' : 'normal-case border-slate-600 '}>Chờ xác nhận</Button>
@@ -93,12 +93,12 @@ const OrderList = (props) => {
                     <Button onClick={handleClickActive} name='Đã hủy' className={active === 'Đã hủy' ? style.orderListActive + ' normal-case border-slate-600 hover:opacity-80 hover:bg-[#2BBCBA] text-white' : 'normal-case border-slate-600 '}>Đã hủy</Button>
                 </ButtonGroup>
             </div>
-            <div className='flex justify-center mb-2.5'>
+            {/* <div className='flex justify-center mb-2.5'>
                 <div className='rounded-2xl flex  px-4 py-2 mt-10' style={{ border: '1px solid black', width: '90%' }}>
                     <SearchIcon className='pr-1 text-3xl cursor-pointer text-[#979797] mr-4' />
                     <input className='w-full outline-none' type='text' placeholder='Tìm kiếm theo ID sách, tên sách, ID đơn hàng'></input>
                 </div>
-            </div>
+            </div> */}
             <div>
                 {
                     isLoading ? (

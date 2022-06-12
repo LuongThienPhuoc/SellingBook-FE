@@ -162,10 +162,16 @@ function CardOrderList(props) {
                 </div>
             </Card>
             <div className='flex justify-center mt-2 '>
-                <div onClick={() => handleConform('Đã hủy')} className='px-3 py-1 bg-[#d48026] text-white text-sm rounded cursor-pointer mx-2'>HUỶ ĐƠN</div>
-                <div onClick={() => handleConform('Đã xác nhận')} className='px-3 py-1 bg-[#5fd078] text-white text-sm rounded cursor-pointer mx-2'>XÁC NHẬN</div>
-                <div onClick={() => handleConform('Đang giao')} className='px-3 py-1 bg-[#74BFCF] text-white text-sm rounded cursor-pointer mx-2'>ĐANG GIAO</div>
-                <div onClick={() => handleConform('Đã giao')} className='px-3 py-1 bg-[#AE75D0] text-white text-sm rounded cursor-pointer mx-2'>ĐÃ GIAO</div>
+                {
+                    props.status == 'Đã giao' ? null : (
+                        <>
+                            <div onClick={() => handleConform('Đã hủy')} className='px-3 py-1 bg-[#d48026] text-white text-sm rounded cursor-pointer mx-2'>HUỶ ĐƠN</div>
+                            <div onClick={() => handleConform('Đã xác nhận')} className='px-3 py-1 bg-[#5fd078] text-white text-sm rounded cursor-pointer mx-2'>XÁC NHẬN</div>
+                            <div onClick={() => handleConform('Đang giao')} className='px-3 py-1 bg-[#74BFCF] text-white text-sm rounded cursor-pointer mx-2'>ĐANG GIAO</div>
+                            <div onClick={() => handleConform('Đã giao')} className='px-3 py-1 bg-[#AE75D0] text-white text-sm rounded cursor-pointer mx-2'>ĐÃ GIAO</div>
+                        </>
+                    )
+                }
             </div>
             <Divider className='rounded-xl  my-4' style={{ height: '2px' }}></Divider>
         </div>
