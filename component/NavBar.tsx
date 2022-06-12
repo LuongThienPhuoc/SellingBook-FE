@@ -155,6 +155,8 @@ const NavBar = (props) => {
         }
     }
 
+    // console.log("", cart.cart.reduce((total, item) => (total += item.quantity), 0));
+    console.log("cart.cart",cart.cart);
     const renderStatusLogin = () => {
         if (isLogin) {
             return (
@@ -296,7 +298,7 @@ const NavBar = (props) => {
 
     return (
         <AppBar style={{ backgroundColor: '#2BBCBA' }} position="static">
-            <Container>
+            <Container maxWidth={"xl"}>
                 <Toolbar disableGutters>
                     <Typography
                         variant="h6"

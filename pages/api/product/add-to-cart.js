@@ -36,7 +36,7 @@ const addToCart = async(req, res) => {
     if(!isFind) {
         listProduct.push({
             product : req.body.productID,
-            amount: req.body.amount,
+            quantity: req.body.amount,
             _id: new mongoose.Types.ObjectId(),
         })
     }
