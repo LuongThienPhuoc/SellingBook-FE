@@ -17,7 +17,6 @@ const CreateNewReceipt = async (req, res, data) => {
                     console.log(res.body)
                     const receipt = new Receipt({ ...req.body })
                     if (receipt) {
-
                         receipt.save()
                             .then((result) => {
                                  Cart.findOneAndUpdate({ user }, { listProduct: [] }, (err, docs) => {

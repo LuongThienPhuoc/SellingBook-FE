@@ -19,6 +19,10 @@ const productSchema  = new Schema({
     size: String,
     author: String,
     slug: String,
+    purchased: {
+        type: Number,
+        default: 0
+    }
 },
     { timestamps: true }
 );
