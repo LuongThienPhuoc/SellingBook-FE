@@ -7,12 +7,17 @@ const initalState = {
 
 const cartReducer = (state = initalState, action) => {
     switch (action.type) {
+        case type.RESET_CART:
+            return {
+                ...state,
+                cart: []
+            }
         case type.MINUS_ITEM:
             return {
                 ...state,
                 cart: state.cart.map(value => {
                     if (value.product._id === action.id) {
-                        value.amount--
+                        value.quantity--
                     }
                     return value
                 })
@@ -22,7 +27,7 @@ const cartReducer = (state = initalState, action) => {
                 ...state,
                 cart: state.cart.map(value => {
                     if (value.product._id === action.id) {
-                        value.amount++
+                        value.quantity++
                     }
                     return value
                 })

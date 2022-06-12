@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import LinearProgress from '@mui/material/LinearProgress';
 import Head from 'next/head';
 import style from '../../styles/Profile.module.css'
-import { ButtonGroup, Button } from '@mui/material';
+import { ButtonGroup, Button, CircularProgress, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
 import { Container, Grid, Divider } from '@mui/material';
@@ -12,6 +12,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import Layout from '../../component/Layout'
 import axios from 'axios';
 import * as URL from '../../services/api/config'
+import RemoveAccents from '../../helper/RemoveAccents'
+
 const NavigationMobile = dynamic(() => import('../../component/Admin/NavigationMobile'))
 const Navigation = dynamic(() => import('../../component/Admin/Navigation'))
 const CardOrderList = dynamic(() => import('../../component/Admin/Receipt/CardOrderList'))
@@ -24,7 +26,7 @@ function receipt(props) {
     const [currentReceipts, setCurrentReceipts] = useState([])
     const [active, setActive] = useState('');
     const [currentSelect, setCurrentSelect] = useState(1)
-
+    const [isLoading, setIsLoading] = useState(false)
     useEffect(() => {
         setActive('All')
     }, [])
@@ -45,13 +47,14 @@ function receipt(props) {
                 .then(res => {
                     setReceipts(res.data.receipts)
                     setCurrentReceipts(res.data.receipts)
+                    setIsLoading(true)
                 })
                 .catch(err => {
                     console.log(err)
                 })
         }
 
-        if (status.isLogin) {
+        if (status.isLogin && infoUser.role == 'admin') {
             fetApi()
         }
     }, [status.isLogin])
@@ -84,6 +87,8 @@ function receipt(props) {
         setCurrentSelect(1)
     }
 
+    
+
     const renderCount = () => {
         let index = currentReceipts.length
         if (index % 6 == 0) {
@@ -107,7 +112,7 @@ function receipt(props) {
                     <Grid className='mt-16' sm={12} item md={9}>
                         <div style={{ boxShadow: 'rgb(0 0 0 / 60%) 0px 3px 8px', padding: '25px' }} className='rounded-lg '>
                             <div className='text-xl font-medium'>Danh sách đơn hàng</div>
-                            <div className='flex justify-center mt-6'>
+                            <div className='flex justify-center my-6'>
                                 <ButtonGroup variant="outlined" size='medium' aria-label=" button group small">
                                     <Button onClick={handleClickActive} name='All' className={active === 'All' ? style.orderListActive + ' normal-case border-slate-600 hover:opacity-80 hover:bg-[#2BBCBA] text-white' : 'normal-case border-slate-600'}>Tất cả</Button>
                                     <Button onClick={handleClickActive} name='Chờ xác nhận' className={active === 'Chờ xác nhận' ? style.orderListActive + ' normal-case border-slate-600 hover:opacity-80 hover:bg-[#2BBCBA] text-white' : 'normal-case border-slate-600 '}>Chờ xác nhận</Button>
@@ -117,23 +122,32 @@ function receipt(props) {
                                     <Button onClick={handleClickActive} name='Đã hủy' className={active === 'Đã hủy' ? style.orderListActive + ' normal-case border-slate-600 hover:opacity-80 hover:bg-[#2BBCBA] text-white' : 'normal-case border-slate-600 '}>Đã hủy</Button>
                                 </ButtonGroup>
                             </div>
-                            <div className='flex justify-center mb-3'>
+                            {/* <div className='flex justify-center mb-3'>
                                 <div className='rounded-2xl flex  px-4 py-2 mt-5' style={{ border: '1px solid black', width: '90%' }}>
                                     <SearchIcon className='pr-1 text-3xl cursor-pointer text-[#979797] mr-4' />
-                                    <input className='w-full outline-none' type='text' placeholder='Tìm kiếm theo ID sách, tên sách, ID đơn hàng'></input>
+                                    <input ref={refInput} onChange={handleChangeSearch} className='w-full outline-none' type='text' placeholder='Tìm kiếm theo ID sách, tên sách, ID đơn hàng'></input>
                                 </div>
-                            </div>
-                            <Grid spacing={2}>
-                                {
-                                    currentReceipts ? currentReceipts.map((value, index) => {
-                                        if (index < currentSelect * 6 && index >= (currentSelect - 1) * 6) {
-                                            return (
-                                                <CardOrderList handleChangeStatus={handleChangeStatus} key={index} receipt={value} status={value.deliveryStatus}></CardOrderList>
-                                            )
+                            </div> */}
+                            {
+                                !isLoading ? (
+                                    <Stack sx={{ color: 'grey.500', display: 'flex', justifyContent: 'center' }} spacing={2} direction="row">
+                                        <CircularProgress color="secondary" />
+                                    </Stack>
+
+                                ) : (
+                                    <Grid spacing={2}>
+                                        {
+                                            currentReceipts ? currentReceipts.map((value, index) => {
+                                                if (index < currentSelect * 6 && index >= (currentSelect - 1) * 6) {
+                                                    return (
+                                                        <CardOrderList handleChangeStatus={handleChangeStatus} key={index} receipt={value} status={value.deliveryStatus}></CardOrderList>
+                                                    )
+                                                }
+                                            }) : (<h3 style={{ textAlign: 'center', padding: '30px' }}>Đơn hàng trống</h3>)
                                         }
-                                    }) : (<h3 style={{ textAlign: 'center', padding: '30px' }}>Đơn hàng trống</h3>)
-                                }
-                            </Grid>
+                                    </Grid>
+                                )
+                            }
                             <div className='mt-10 flex justify-center profile-pagination'>
                                 <Pagination onChange={(e, num) => { setCurrentSelect(num) }} count={renderCount()} color="primary" variant="outlined" />
                             </div>

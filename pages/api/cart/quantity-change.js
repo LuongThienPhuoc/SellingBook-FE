@@ -24,14 +24,14 @@ const QuantityChange = async (req, res, data) => {
                     } else if (type == 'PLUS') {
                         cart.listProduct = cart.listProduct.map(value => {
                             if (value.product._id == idProduct) {
-                                value.amount += 1
+                                value.quantity += 1
                             }
                             return value
                         })
                     } else {
                         cart.listProduct = cart.listProduct.map(value => {
                             if (value.product._id == idProduct) {
-                                value.amount -= 1
+                                value.quantity -= 1
                             }
                             return value
                         })

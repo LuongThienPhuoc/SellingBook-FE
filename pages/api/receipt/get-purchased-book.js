@@ -5,28 +5,39 @@ import { JWTAuthToken, AuthMiddleware } from '../../../helper/JWT.js';
 import Receipt from '../../../models/receipt.js';
 
 dbConnect();
-const GetOrderList = async (req, res, data) => {
+const GetPurchasedBook = async (req, res, data) => {
     const { method } = req;
     // Refresh
     switch (method) {
-        case 'GET':
-            const id = mongoose.Types.ObjectId(req?.query?.id);
+        case 'POST':
+            const id = mongoose.Types.ObjectId(req?.body?.id);
             try {
-                console.log(id)
                 Receipt.find({ user: id })
                     .then(result => {
-                        console.log('result: ' + result)
+                        console.log(result)
+                        let idPurchased = []
+                        let productPurchased = []
+                        result.map((receipt, index) => {
+                            receipt.listProduct.map(product => {
+                                console.log(product.product.slug)
+                                if (!idPurchased.includes(product.product.slug)) {
+                                    idPurchased.push(product.product.slug)
+                                    productPurchased.push(product.product)
+                                }
+                            })
+                        })
+                        
                         if (result) {
                             res.status(200).send(JSON.stringify({
                                 success: true,
-                                receipts: result,
-                                message: 'Get receipt user success'
+                                products: productPurchased,
+                                message: 'Get receipt purchased success'
                             }))
                         } else {
                             res.status(200).send(JSON.stringify({
                                 success: false,
                                 status: 401,
-                                refresh: 'Get receipt user fail'
+                                refresh: 'Get receipt purchased fail'
                             }))
                         }
                     })
@@ -38,6 +49,7 @@ const GetOrderList = async (req, res, data) => {
                             refresh: 'Get receipt user fail'
                         }))
                     })
+
             }
             catch (error) {
                 throw new Error("Create receipt fail");
@@ -48,4 +60,4 @@ const GetOrderList = async (req, res, data) => {
     }
 }
 
-export default AuthMiddleware(GetOrderList)
+export default AuthMiddleware(GetPurchasedBook)

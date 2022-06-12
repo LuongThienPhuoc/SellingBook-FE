@@ -21,7 +21,12 @@ function GeneralStatistics(props) {
                     <div className='h-[130px] rounded-md text-white py-[10px] px-[21px] ' style={{ backgroundColor: '#0060B9' }}>
                         <p className=' h-[24px] font-bold text-xl pt-2 flex items-center'>
                             <AiOutlineDollarCircle className='mr-3'></AiOutlineDollarCircle>
-                            <div>15.322.000</div>
+                            <div>{props.dataDashboard.receipts ? props.dataDashboard.receipts.reduce((total, receipt) => {
+                                if (receipt.deliveryStatus == 'Đã giao') {
+                                    total += receipt.totalFinal
+                                }
+                                return total
+                            }, 0).toLocaleString() : 0} đ</div>
                         </p>
                         <p className='text-base pt-2'>Tổng doanh thu</p>
                     </div>

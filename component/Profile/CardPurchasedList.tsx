@@ -1,17 +1,18 @@
 import React from 'react';
 import { Grid } from '@mui/material';
 import Card from '@mui/material/Card';
-
+import { useRouter } from 'next/router';
 function CardPurchasedList(props) {
+    const router = useRouter()
     return (
-        <Grid item md={4}>
+        <Grid className='cursor-pointer'  onClick={() => { router.push(`/bookpage/${props.product.slug}`) }} item md={4}>
             <Card className='rounded-lg border-[#2BBCBA] border-1 border-solid mb-6'>
-                <img className='w-full h-56' src='https://upload.wikimedia.org/wikipedia/vi/6/61/Ng%E1%BB%93i_kh%C3%B3c_tr%C3%AAn_c%C3%A2y_cover.jpg'></img>
+                <img className='w-full h-56' src={props.product.imgList[0]}></img>
                 <div className='w-full'>
                     <div className='flex flex-column items-center h-auto pt-2 px-3 pb-6'>
-                        <div className='text-[#555555] text-base'>Nhà xuất bản trẻ</div>
-                        <div className='text-xl text-[#2BBCBA] text-center'>Cánh chim xanh biết bay về</div>
-                        <div className='font-medium mt-2'>143.000 VNĐ</div>
+                        <div className='text-[#555555] text-base'>{props.product.author}</div>
+                        <div className='text-xl text-[#2BBCBA] text-center'>{props.product.title}</div>
+                        <div className='font-medium mt-2'>{props.product.price.toLocaleString()} VNĐ</div>
                     </div>
                 </div>
             </Card>

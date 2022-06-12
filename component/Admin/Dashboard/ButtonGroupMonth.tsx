@@ -64,7 +64,7 @@ const options = [
   }
 ];
 
-export default function SplitButtonMonth() {
+export default function SplitButtonMonth(props) {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef<HTMLDivElement>(null);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
@@ -77,6 +77,7 @@ export default function SplitButtonMonth() {
     event: React.MouseEvent<HTMLLIElement, MouseEvent>,
     index: number,
   ) => {
+    props.setMonth(index)
     setSelectedIndex(index);
     setOpen(false);
   };

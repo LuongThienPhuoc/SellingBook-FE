@@ -6,6 +6,7 @@ import Head from 'next/head';
 import { useSelector, RootStateOrAny, useDispatch } from 'react-redux';
 import { showAlertSuccess, showAlertError } from '../../redux/actions/alertAction';
 import { useRouter } from 'next/router';
+import { resetCart } from '../../redux/actions/cartAction';
 const Layout = dynamic(() =>
   import('../../component/Layout'),
   {
@@ -24,17 +25,18 @@ const Cart = () => {
   const User = useSelector((state: RootStateOrAny) => state.userReducer.infoUser)
   const isLogin = useSelector((state: RootStateOrAny) => state.userReducer.isLogin)
   const status = useSelector((state: RootStateOrAny) => state.userReducer)
-
+  console.log(cart.cart)
   if (!status.isLoading) return (<LinearProgress></LinearProgress>)
 
   const handleClickPayment = async (infoUser) => {
     if (isLogin) {
       let a = {
         ...infoUser,
-        total: cart.cart.reduce((total, value) => { return total += value.product.price * value.amount }, 0),
-        totalFinal: cart.cart.reduce((total, value) => { return total += value.product.price * value.amount }, 0) > cart.cart.reduce((total, value) => { return total += value.product.price * value.amount }, 0) ? 0 : cart.cart.reduce((total, value) => { return total += value.product.price * value.amount }, 0) + 25000,
-        deliveryMoney: cart.cart.reduce((total, value) => { return total += value.product.price * value.amount }, 0) > 1000000 ? 0 : 25000,
-        user: User._id
+        total: cart.cart.reduce((total, value) => { return total += value.product.price * value.quantity }, 0),
+        totalFinal: cart.cart.reduce((total, value) => { return total += value.product.price * value.quantity }, 0) > cart.cart.reduce((total, value) => { return total += value.product.price * value.quantity }, 0) ? 0 : cart.cart.reduce((total, value) => { return total += value.product.price * value.quantity }, 0) + 25000,
+        deliveryMoney: cart.cart.reduce((total, value) => { return total += value.product.price * value.quantity }, 0) > 1000000 ? 0 : 25000,
+        user: User._id,
+        listProduct: cart.cart
       }
       if (a.name == '') {
         a.name = User.name
@@ -43,17 +45,18 @@ const Cart = () => {
         a.phone = User.phone
       }
 
-      console.log(a)
-
 
       if (a.district == '' || a.province == '' || a.commune == '' || a.address == '' || a.note == '' || a.paymentMethod == '') {
         dispatch(showAlertError("Nhập đầy đủ thông tin!"))
+      } else if (cart.cart.length == 0) {
+        dispatch(showAlertError("Giỏ hàng trống!"))
       } else {
         await axios.post(URL.URL_CREATE_RECEIPT, { ...a })
           .then(res => {
             console.log(res)
             if (res.data.success) {
               dispatch(showAlertSuccess('Đặt hàng thành công'))
+              dispatch(resetCart())
             }
           })
           .catch(err => {
@@ -63,6 +66,13 @@ const Cart = () => {
     } else {
       router.push('/login')
     }
+  }
+
+  const renderTotal = (listCart) => {
+    if (listCart.length == 0) {
+      return 0
+    }
+    return listCart.reduce((total, value) => { return total += value.product?.price * value.quantity }, 0)
   }
 
   return (
@@ -99,7 +109,7 @@ const Cart = () => {
                   <div style={{ borderTop: '1px solid #00000021', borderBottom: '1px solid #00000021', marginTop: '20px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', margin: '15px 0', fontSize: '14px', fontWeight: '500' }}>
                       <div>Tạm tính</div>
-                      <div>{cart.cart.reduce((total, value) => { return total += value.product.price * value.amount }, 0).toLocaleString()}đ</div>
+                      <div>{renderTotal(cart.cart).toLocaleString()}đ</div>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', margin: '15px 0', fontSize: '14px', fontWeight: '500' }}>
                       <div>Giảm giá</div>
@@ -107,12 +117,12 @@ const Cart = () => {
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', margin: '15px 0', fontSize: '14px', fontWeight: '500' }}>
                       <div>Phí giao hàng</div>
-                      <div>+{cart.cart.reduce((total, value) => { return total += value.product.price * value.amount }, 0) > 1000000 ? 0 : (25000).toLocaleString()}đ</div>
+                      <div>+{renderTotal(cart.cart) > 1000000 ? 0 : (25000).toLocaleString()}đ</div>
                     </div>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', margin: '15px 0', fontSize: '18px', fontWeight: '600' }}>
                     <div>TỔNG</div>
-                    <div>{cart.cart.reduce((total, value) => { return total += value.product.price * value.amount }, 0) > 1000000 ? cart.cart.reduce((total, value) => { return total += value.product.price * value.amount }, 0).toLocaleString() : (25000 + cart.cart.reduce((total, value) => { return total += value.product.price * value.amount }, 0)).toLocaleString()}đ</div>
+                    <div>{renderTotal(cart.cart) > 1000000 ? renderTotal(cart.cart).toLocaleString() : (25000 + renderTotal(cart.cart)).toLocaleString()}đ</div>
                   </div>
                 </div>
               </div>
