@@ -1,6 +1,8 @@
 import React , {useState} from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from 'next/router';
+
 const datagridSx = {
     borderRadius: 2,
         "& .MuiDataGrid-main": { borderRadius: 2 },
@@ -34,6 +36,7 @@ const datagridSx = {
 
 const TableManageMent = ({rowDocs,columnDocs, filter, heightProps, manage}) => {
     // const navigate = use();
+    const router = useRouter();
     const dispatch = useDispatch();
     const addManageDocument = () => {
         if(document.querySelector('.MuiDataGrid-selectedRowCount') != null){
@@ -92,6 +95,7 @@ const TableManageMent = ({rowDocs,columnDocs, filter, heightProps, manage}) => {
         // navigate(`/quan-ly/tai-lieu/chinh-sua/${stringUtils.replaceSpaceWithDash(
         //     stringUtils.removeVietnameseTones(getCurrentName(idSelect[0]))
         //   ).toLowerCase()}`);
+        router.push('/admin/product/modify-book/' + idSelect[0]);
 
         setidSelect([]);
         if(editButton.parentNode!=null)

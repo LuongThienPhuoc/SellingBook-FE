@@ -1,22 +1,22 @@
 
 import React, { useState, useEffect, useRef }from 'react'
-import Layout from '../../../component/Layout'
+import Layout from '../../../../component/Layout'
 import {Container, Grid, Autocomplete, TextField, tablePaginationClasses} from '@mui/material';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
-const NavigationMobile = dynamic(() => import('../../../component/Admin/NavigationMobile'))
-const Navigation = dynamic(() => import('../../../component/Admin/Navigation'))
-import {getCategory} from '../../../redux/actions/categoryAction'; 
+const NavigationMobile = dynamic(() => import('../../../../component/Admin/NavigationMobile'))
+const Navigation = dynamic(() => import('../../../../component/Admin/Navigation'))
+import {getCategory} from '../../../../redux/actions/categoryAction'; 
 import { useDispatch, useSelector, RootStateOrAny } from 'react-redux'
-import * as URL from '../../../services/api/config'
+import * as URL from '../../../../services/api/config'
 import axios from 'axios';
 import { FiDelete } from "react-icons/fi";
 import { useRouter } from 'next/router'
-const ConfirmModal = dynamic(() => import('../../../component/BookPage/ConfirmModal'));
-import { showAlertSuccess, showAlertError } from '../../../redux/actions/alertAction'
-import { loadingAllTags } from '../../../redux/actions/bookAction';
-const AddTypeModal = dynamic(() => import('../../../component/BookPage/AddTypeModal'))
-const AddImageModal = dynamic(() => import('../../../component/BookPage/AddImageModal'))
+const ConfirmModal = dynamic(() => import('../../../../component/BookPage/ConfirmModal'));
+import { showAlertSuccess, showAlertError } from '../../../../redux/actions/alertAction'
+import { loadingAllTags, loadingCurrentEditBook } from '../../../../redux/actions/bookAction';
+const AddTypeModal = dynamic(() => import('../../../../component/BookPage/AddTypeModal'))
+const AddImageModal = dynamic(() => import('../../../../component/BookPage/AddImageModal'))
 
 
 interface ProductTypeItem {
@@ -25,7 +25,7 @@ interface ProductTypeItem {
 }
 
 
-const AddBook: React.FC = () => {  
+const ModifyBook: React.FC = () => {  
     const dispatch = useDispatch();
     const router = useRouter(); 
 
@@ -44,7 +44,7 @@ const AddBook: React.FC = () => {
                 })
                 .catch((error)=>{
                     // navigate to login
-                    router.push('/')
+                    // router.push('/')
                     console.log(error)
                 })
             dispatch(getCategory(categoryList.categories));
@@ -73,8 +73,6 @@ const AddBook: React.FC = () => {
         });
         setSelectedTypeID(currentList);
     }
-
-    const currentKeyWord : string[] = ["Nguyễn Nhật Ánh", "Rùa"]
 
     const inputSection = (name: string, typeValue: inputType, hasDivider: boolean, 
         ref: React.RefObject<HTMLInputElement>, refTextArea: React.RefObject<HTMLTextAreaElement>) => {
@@ -456,10 +454,69 @@ const AddBook: React.FC = () => {
         setSelectTagList(currentSelectTagList);
     }
 
+    // Get initial editbook
+    const { id } = router.query;
+
+    useEffect(() => {
+        if(typeof id == 'undefined') return;
+        // console.log("id", id)
+        // console.log("router", router.asPath);
+        const getConcreteProduct = async() => {
+            // if(id)
+            await axios.get(URL.URL_PRODUCT + '/get-by-id/' + id)
+                .then((data)=>{
+                    // console.log("data get", data.data.product[0])
+                    dispatch(loadingCurrentEditBook(data.data.product))
+                    console.log("data.data.product", data.data.product);
+                    pageRef.title.current.value = data.data.product.title;
+                    pageRef.introduction.current.value = data.data.product.introduction;
+                    pageRef.author.current.value = data.data.product.author; 
+                    pageRef.importPrice.current.value = data.data.product.historyPrice[0];
+                    pageRef.sellPrice.current.value = data.data.product.historyPrice[data.data.product.historyPrice.length - 1];
+                    pageRef.importDate.current.value = data.data.product.importDate;
+                    pageRef.quantity.current.value = data.data.product.quantity;
+                    pageRef.totalValue.current.value = data.data.product.totalValue;
+                    pageRef.publisher.current.value = data.data.product.publisher;
+                    pageRef.format.current.value = data.data.product.format;
+                    pageRef.publishYear.current.value = data.data.product.publishYear;
+                    pageRef.detailInformation.current.value = data.data.product.detailInfomation;
+                    pageRef.pageAmount.current.value = data.data.product.pageAmount;
+                    pageRef.size.current.value = data.data.product.size;
+                    setImgList(data.data.product.imgList);
+                    setSelectedTypeID(data.data.product.categoryID);
+                    let tagList = [];
+                    for(let i = 0; i < data.data.product.tagID.length; i++){
+                        tags.forEach(element => {
+                            if(element._id == data.data.product.tagID[i])
+                                tagList.push({
+                                    label: element.tag,
+                                    _id: data.data.product.tagID[i]
+                                })
+                        });
+                    }
+                    setSelectTagList(tagList)
+                })
+                .catch((error)=>{
+                    // navigate to login
+                    // router.push('/')
+                    console.log(error)
+                })
+        }
+        getConcreteProduct();
+    },[id])
+
+    const currentEditBook = useSelector((state: RootStateOrAny) => {
+        console.log(state);
+        return state.bookReducer.currentEditBook
+    });
+
+    console.log("currentEditBook", currentEditBook);
+
+
     return (
         <Layout activeNav={"book"} className='relative'>
             <Head>
-                <title>Thêm sản phẩm</title>
+                <title>Chỉnh sửa sản phẩm</title>
             </Head>
             {
                 isShowModal ?
@@ -507,7 +564,7 @@ const AddBook: React.FC = () => {
                     </Grid>
                     <Grid className='mt-16 font-primary font-[500] text-[#000]' sm={12} item md={9}>
                         <div className='title text-[#2BBCBA] text-[24px]'>
-                            Thêm sản phẩm
+                            Chỉnh sửa sản phẩm
                         </div>
                         <div style={{ boxShadow: 'rgb(0 0 0 / 60%) 0px 3px 8px', padding: '25px' }} className='rounded-lg'>
                             <div className='title 
@@ -1085,4 +1142,4 @@ const AddBook: React.FC = () => {
 }
 
 
-export default AddBook
+export default ModifyBook

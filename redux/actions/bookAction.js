@@ -20,3 +20,10 @@ export const loadingAllTags = (tags) => dispatch => {
         tags: tags,
     })
 }
+
+export const loadingCurrentEditBook = (book) => dispatch => {
+    dispatch({
+        type: type.SET_CURRENT_EDIT_BOOK,
+        book: book,
+    })
+}

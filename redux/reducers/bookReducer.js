@@ -4,6 +4,7 @@ const initalState = {
     books: [],
     currentBook: {},
     tags: [],
+    currentEditBook: {}
 }
 
 const bookReducer = (state = initalState, action) => {
@@ -22,6 +23,11 @@ const bookReducer = (state = initalState, action) => {
             return {
                 ...state,
                 tags: action.tags
+            }
+        case type.SET_CURRENT_EDIT_BOOK:
+            return {
+                ...state,
+                currentEditBook: action.book
             }
         default:
             return state
