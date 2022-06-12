@@ -19,6 +19,9 @@ function AllBook(props) {
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
+    console.log(value);
+
+
 
     const productType = useSelector((state: RootStateOrAny)=> {return state.categoryReducer.categories} ) || [];
     const listBook = useSelector((state: RootStateOrAny) => {
@@ -26,9 +29,14 @@ function AllBook(props) {
             ...state.bookReducer.books,
             ...state.bookReducer.books,
             ...state.bookReducer.books,
+            ...state.bookReducer.books,
+            ...state.bookReducer.books,
+            ...state.bookReducer.books,
+            ...state.bookReducer.books,
         ]
     })
 
+    
 
     return (
         <div className='mt-20 mb-5' style={{ boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px' }} >
@@ -56,6 +64,7 @@ function AllBook(props) {
                     <div className='my-3'>Tiểu thuyết là một thể loại văn xuôi có hư cấu, thông qua nhân vật, hoàn cảnh, sự việc để phản ánh bức tranh xã hội rộng lớn và những vấn đề của cuộc sống con người, biểu hiện tính chất tường thuật, tính chất kể chuyện bằng ngôn ngữ văn xuôi theo những chủ đề xác định</div>
                     <SliderCourses
                         // books
+                        productType={productType[value]._id}
                         books = {listBook}
                     />
                 </CardContent>
