@@ -57,6 +57,7 @@ const Cart = () => {
             if (res.data.success) {
               dispatch(showAlertSuccess('Đặt hàng thành công'))
               dispatch(resetCart())
+              router.push('/profile')
             }
           })
           .catch(err => {
@@ -82,10 +83,10 @@ const Cart = () => {
       </Head>
       <Container>
         <Grid container spacing={2}>
-          <Grid sm={6}>
+          <Grid item sm={12} md={6} >
             <InfoUserToPay handleClickPayment={handleClickPayment}></InfoUserToPay>
           </Grid>
-          <Grid sm={6}>
+          <Grid item sm={12} md={6} >
             <div className={'p-4 relative'}>
               <div className='pt-10'>
                 <div className='text-3xl font-bold mb-10'>Giỏ hàng</div>
@@ -102,10 +103,10 @@ const Cart = () => {
                       )
                     }
                   </div>
-                  <div style={{ display: 'flex', height: '50px', border: '1px solid black', borderRadius: '20px', backgroundColor: '#D9d9d9', overflow: 'hidden' }}>
+                  {/* <div style={{ display: 'flex', height: '50px', border: '1px solid black', borderRadius: '20px', backgroundColor: '#D9d9d9', overflow: 'hidden' }}>
                     <input placeholder='Mã giảm giá' style={{ fontWeight: '500', paddingBottom: '5px', paddingLeft: '20px', width: '70%', height: '50px', borderRight: '1px solid black', outline: 'none', borderRadius: '20px' }} type='text'></input>
                     <div style={{ cursor: 'not-allowed', width: '30%', fontWeight: '600', height: '50px', textAlign: 'center', lineHeight: '45px' }}>Áp dụng</div>
-                  </div>
+                  </div> */}
                   <div style={{ borderTop: '1px solid #00000021', borderBottom: '1px solid #00000021', marginTop: '20px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', margin: '15px 0', fontSize: '14px', fontWeight: '500' }}>
                       <div>Tạm tính</div>
@@ -118,7 +119,7 @@ const Cart = () => {
                     <div style={{ display: 'flex', justifyContent: 'space-between', margin: '15px 0', fontSize: '14px', fontWeight: '500' }}>
                       <div>Phí giao hàng</div>
                       <div>+{renderTotal(cart.cart) > 1000000 ? 0 : (25000).toLocaleString()}đ</div>
-                    </div>
+                    </div>  
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', margin: '15px 0', fontSize: '18px', fontWeight: '600' }}>
                     <div>TỔNG</div>

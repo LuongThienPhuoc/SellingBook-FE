@@ -61,10 +61,10 @@ function Profile(props) {
             </Head>
             <Container maxWidth='lg'>
                 <Grid className='mb-16' container spacing={3}>
-                    <Grid className=' mt-16' item md={12}>
+                    <Grid className=' mt-16' item md={12} sm={12}>
                         <ProfileDetail></ProfileDetail>
                     </Grid>
-                    <Grid className=' mt-16' item md={4}>
+                    <Grid className=' mt-16' item md={4} sm={12}>
                         <div style={{ boxShadow: 'rgb(0 0 0 / 60%) 0px 3px 8px', padding: '25px' }} className='rounded-lg '>
                             <div className='text-xl font-bold mb-2'>Thông tin</div>
                             <Divider></Divider>
@@ -82,7 +82,7 @@ function Profile(props) {
                             </button>
                         </div>
                     </Grid>
-                    <Grid className='mt-16' item md={8}>
+                    <Grid className='mt-16' item md={8} sm={12}>
                         <div style={{ boxShadow: 'rgb(0 0 0 / 60%) 0px 3px 8px', padding: '25px' }} className='rounded-lg '>
                             {render()}
                         </div>

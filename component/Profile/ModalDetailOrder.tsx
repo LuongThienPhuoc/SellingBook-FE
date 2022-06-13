@@ -25,7 +25,7 @@ function ModalDetailOrder(props) {
                         Họ tên
                     </Grid>
                     <Grid xs={6}>
-                        <TextField value={props.receipt.name} disabled fullWidth id="outlined-basic" label='Họ tên' variant="outlined" size='small' />
+                        <TextField value={props.receipt.name} className="text-[#333]" fullWidth id="outlined-basic" label='Họ tên' variant="outlined" size='small' />
                     </Grid>
                 </Grid>
                 <Divider className='h-[1px] w-full text-slate-300 mb-3'></Divider>
@@ -34,7 +34,7 @@ function ModalDetailOrder(props) {
                         Số điện thoại
                     </Grid>
                     <Grid xs={6}>
-                        <TextField value={props.receipt.phone} disabled fullWidth id="outlined-basic" label='Họ tên' variant="outlined" size='small' />
+                        <TextField value={props.receipt.phone} fullWidth id="outlined-basic" label='Họ tên' variant="outlined" size='small' />
                     </Grid>
                 </Grid>
                 <Divider className='h-[1px] w-full text-slate-300 mb-3'></Divider>
@@ -43,7 +43,7 @@ function ModalDetailOrder(props) {
                         Ghi chú
                     </Grid>
                     <Grid xs={6}>
-                        <TextField value={props.receipt.note} disabled fullWidth id="outlined-basic" label='Họ tên' variant="outlined" size='small' />
+                        <TextField value={props.receipt.note} fullWidth id="outlined-basic" label='Họ tên' variant="outlined" size='small' />
                     </Grid>
                 </Grid>
                 <Divider className='h-[1px] w-full text-slate-300 mb-3'></Divider>
@@ -52,7 +52,7 @@ function ModalDetailOrder(props) {
                         Địa chỉ
                     </Grid>
                     <Grid xs={6}>
-                        <TextField value={props.receipt.address+', '+props.receipt.commune+', '+props.receipt.district+', '+props.receipt.province} disabled fullWidth multiline maxRows={4} id="standard-multiline-flexible" label='Họ tên' variant="outlined" size='small' />
+                        <TextField value={props.receipt.address+', '+props.receipt.commune+', '+props.receipt.district+', '+props.receipt.province} fullWidth multiline maxRows={4} id="standard-multiline-flexible" label='Họ tên' variant="outlined" size='small' />
                     </Grid>
                 </Grid>
                 <Divider className='h-[1px] w-full text-slate-300 mb-3'></Divider>
@@ -61,7 +61,7 @@ function ModalDetailOrder(props) {
                         Phương thức giao dịch
                     </Grid>
                     <Grid xs={6}>
-                        <TextField value={props.receipt.paymentMethod} disabled fullWidth id="outlined-basic" label='Họ tên' variant="outlined" size='small' />
+                        <TextField value={props.receipt.paymentMethod} fullWidth id="outlined-basic" label='Họ tên' variant="outlined" size='small' />
                     </Grid>
                 </Grid>
                 <Divider className='h-[1px] w-full text-slate-300 mb-3'></Divider>
@@ -70,7 +70,7 @@ function ModalDetailOrder(props) {
                     Tổng tiền
                     </Grid>
                     <Grid xs={6}>
-                        <TextField value={props.receipt.total.toLocaleString()} disabled fullWidth id="outlined-basic" label='Họ tên' variant="outlined" size='small' />
+                        <TextField value={props.receipt.total.toLocaleString()} fullWidth id="outlined-basic" label='Họ tên' variant="outlined" size='small' />
                     </Grid>
                 </Grid>
                 <Divider className='h-[1px] w-full text-slate-300 mb-3'></Divider>
@@ -79,7 +79,7 @@ function ModalDetailOrder(props) {
                         Phí giao hàng
                     </Grid>
                     <Grid xs={6}>
-                        <TextField value={props.receipt.deliveryMoney.toLocaleString()} disabled fullWidth id="outlined-basic" label='Họ tên' variant="outlined" size='small' />
+                        <TextField value={props.receipt.deliveryMoney.toLocaleString()} fullWidth id="outlined-basic" label='Họ tên' variant="outlined" size='small' />
                     </Grid>
                 </Grid>
                 <Divider className='h-[1px] w-full text-slate-300 mb-3'></Divider>
@@ -88,7 +88,7 @@ function ModalDetailOrder(props) {
                         TỔNG TIỀN CUỐI CÙNG
                     </Grid>
                     <Grid xs={6}>
-                        <TextField value={props.receipt.totalFinal.toLocaleString()} disabled fullWidth id="outlined-basic" label='Họ tên' variant="outlined" size='small' />
+                        <TextField value={props.receipt.totalFinal.toLocaleString()} fullWidth id="outlined-basic" label='Họ tên' variant="outlined" size='small' />
                     </Grid>
                 </Grid>
             </div>

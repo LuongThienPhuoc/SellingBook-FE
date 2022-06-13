@@ -425,7 +425,7 @@ function InfoUserToPay(props) {
                         <span className='cursor-pointer font-bold'> tại đây.</span>
                     </Link>
                 </div>
-                <div onClick={handleClickPayment} className={'transition duration-300 ease-out cursor-pointer py-4 flex justify-center w-ful bg-black text-white rounded-lg' + ' ' + style.btnPay}>
+                <div onClick={handleClickPayment} className={'transition duration-300 ease-out cursor-pointer py-4 flex justify-center w-ful bg-[#2BBCBA] text-white rounded-lg' + ' ' + style.btnPay}>
                     Thanh toán {renderTotal(cart.cart) > 1000000 ? renderTotal(cart.cart).toLocaleString() : (25000 + renderTotal(cart.cart)).toLocaleString()}k (Momo)
                 </div>
             </div>

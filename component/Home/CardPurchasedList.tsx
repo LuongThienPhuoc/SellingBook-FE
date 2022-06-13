@@ -24,14 +24,14 @@ function CardPurchasedList(props) {
                     <Rating name="half-rating-read" defaultValue={2.5} precision={0.5} readOnly />
                 </div>
             </div>
-            <div className={'absolute top-0 right-1 p-2 bg-[#fed738] flex flex-col justify-center items-center ' + style.discount }>
+            {/* <div className={'absolute top-0 right-1 p-2 bg-[#fed738] flex flex-col justify-center items-center ' + style.discount }>
                 <div className='text-xs font-medium' style={{color: 'red'}}>
                     50%
                 </div>
                 <div className='text-xs ' style={{color: 'white'}}>
                     GIẢM
                 </div>
-            </div>
+            </div> */}
             {
                 props.index == 0 ? (
                     <div>

@@ -21,6 +21,8 @@ function CartItem(props) {
       })
   }
 
+  // console.log("props", props);
+
   const handleMinus = async () => {
     if (props.detailCart.quantity <= 1) {
       await axios.post(URL.URL_QUANTITY_CHANGE, { id: infoUser?._id, type: 'DELETE', idProduct: props.detailCart.product?._id })
@@ -57,7 +59,8 @@ function CartItem(props) {
       <Grid className={style.cartItem + ' rounded-2xl'} container spacing={2}>
         <Grid className='pt-1 pb-1' sm={3}>
           <Badge badgeContent={props.detailCart.quantity} color={'warning'}>
-            <img height='150px' className=' rounded-2xl' src={props.detailCart.product?.imgList[0]} alt={props.detailCart.product?.title} />
+            <img height='150px' 
+              className='w-[120px] rounded-2xl object-cover' src={props.detailCart.product?.imgList[0]} alt={props.detailCart.product?.title} />
           </Badge>
         </Grid>
         <Grid className='pl-4' sm={7}>
@@ -65,7 +68,7 @@ function CartItem(props) {
             {props.detailCart.product?.title}
           </div>
           <div className='mb-2'>
-            Thể loại: <span className='font-medium'>Pháp luật</span>
+            Tác giả: <span className='font-medium'>{props.detailCart.product?.author}</span>
           </div>
           <div className='flex items-center'>
             <span onClick={handleMinus} className='text-2xl cursor-pointer'>

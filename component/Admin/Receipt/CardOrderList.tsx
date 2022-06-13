@@ -123,7 +123,7 @@ function CardOrderList(props) {
             <div style={{ display: isShowModalDetail ? 'block' : 'none' }}>
                 <ModalDetailOrder receipt={props.receipt} hideModal={() => { setIsShowModalDetail(false) }}></ModalDetailOrder>
             </div>
-            <Card onClick={() => { setIsShowModalDetail(true) }} className='px-9 py-6 mb-4 pt-12 border-solid border-1 border-black cursor-pointer relative' sx={{ display: 'flex' }}>
+            <Card onClick={() => { setIsShowModalDetail(true) }} className='px-9 py-6 mb-4 pt-12 border-solid border-1 border-[#999] cursor-pointer relative' sx={{ display: 'flex' }}>
                 <div className='flex justify-end items-center absolute right-2 top-2'>
                     {renderStatus()}
                 </div>

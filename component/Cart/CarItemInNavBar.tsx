@@ -23,24 +23,26 @@ const CartItemInNavBar = (props) => {
     return (
         <Grid className='mb-3' container spacing={0}>
             <Grid sm={3}>
-                <img height='120px' className=' rounded-2xl' src={props.detailCart.product ? props.detailCart.product.imgList[0] : null} alt={props.detailCart.product ? props.detailCart.product.title : 'Lỗi'} />
+                <img height='120px' 
+                    className='w-[60px] rounded-2xl' 
+                    src={props.detailCart.product ? props.detailCart.product.imgList[0] : null} alt={props.detailCart.product ? props.detailCart.product.title : 'Lỗi'} />
             </Grid>
             <Grid sm={9}>
                 <div className='flex pl-2  justify-between'>
                     <div className='font-medium w-3/4 text-sm'>
                         <p className={'pb-0 mb-1 ' + style.limitText}>{props.detailCart.product?.title}</p>
-                        <div className='font-normal'>
-                            Thể loại: <span className='font-medium'>Pháp luật</span>
-                        </div>
-                        <div className='font-normal'>
+                        <p className='font-normal mt-[0px] w-[150px] text-ellipsis overflow-hidden whitespace-nowrap mb-0'>
+                            Tác giả: <span className='font-medium'>{props.detailCart.product?.author}</span>
+                        </p>
+                        <div className='font-normal mt-[6px]'>
                             Số lượng: <span className='font-medium'>{props.detailCart.quantity}</span>
                         </div>
                     </div>
                     <div className='w-1/4 flex flex-column justify-between items-end'>
-                        <div onClick={handleDelete} className={'cursor-pointer hover:scale-110'}>
+                        <div onClick={handleDelete} className={'cursor-pointer hover:scale-110  mt-[2px]'}>
                             <MdDelete></MdDelete>
                         </div>
-                        <div>
+                        <div className='mt-[4px]'>
                             <div className='font-medium'>
                                 {props.detailCart.product?.price.toLocaleString()}đ
                             </div>
