@@ -23,7 +23,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "component/Layout.tsx"  ],
+, "component/Layout.tsx", "pages/post/testredux.tsx"  ],
   "exclude": [
     "node_modules"
   ]

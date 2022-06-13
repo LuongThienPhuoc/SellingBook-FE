@@ -10,7 +10,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 const PostDetail = ({ post }) => {
 
     const router = useRouter()
-    // nếu trang chưa tạo ra, isFallback của router === true
+    //Nếu trang chưa tạo ra, isFallback của router === true
     //va trang tạm thời sau đấy sẽ đc render
     if (router.isFallback) {
         return (
