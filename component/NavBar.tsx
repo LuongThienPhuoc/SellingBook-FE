@@ -357,7 +357,7 @@ const NavBar = (props) => {
                                     <MenuItem onClick={handleCloseNavMenu}>
                                         <Typography textAlign="center">
                                             <Link href={'/admin/dashboard'} passHref>
-                                                <Button style={{ color: 'black', fontWeight: '500' }}>Thống kê</Button>
+                                                <Button style={{ color: 'black', fontWeight: '500' }}>Quản lý</Button>
                                             </Link>
                                         </Typography>
                                     </MenuItem>
@@ -400,7 +400,7 @@ const NavBar = (props) => {
                             (!infoUser.role || infoUser.role === 'user') ? null : (
                                 <div style={{ position: 'relative' }}>
                                     <Link href={'/admin/dashboard'} passHref>
-                                        <Button className={props.active === 'admin' ? style.activeItem + ' ' + style.navItemLine : style.navItemLine} style={{ color: 'white', fontWeight: '600' }}>Thống kê</Button>
+                                        <Button className={props.active === 'admin' ? style.activeItem + ' ' + style.navItemLine : style.navItemLine} style={{ color: 'white', fontWeight: '600' }}>Quản lý</Button>
                                     </Link>
                                 </div>
                             )
