@@ -21,6 +21,8 @@ export const HIDE_ALERT = "HIDE_ALERT"
 
 // Search
 export const SET_SEARCH = 'SET_SEARCH'
+export const SET_CATEGORY_FILTER = 'SET_CATEGORY_FILTER'
+export const SET_SELL_RANGE = 'SET_SELL_RANGE'
 
 // Cart
 export const GET_CART_USER = 'GET_CART_USER'
