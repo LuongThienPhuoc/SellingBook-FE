@@ -75,4 +75,4 @@ const tagController = async (req, res, data) => {
     }
 }
 
-export default AuthMiddleware(tagController)
+export default tagController

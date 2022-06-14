@@ -61,7 +61,9 @@ function AllBook(props) {
                             </Tabs>
                         </Box>
                     </Box>
-                    <div className='my-3'>Tiểu thuyết là một thể loại văn xuôi có hư cấu, thông qua nhân vật, hoàn cảnh, sự việc để phản ánh bức tranh xã hội rộng lớn và những vấn đề của cuộc sống con người, biểu hiện tính chất tường thuật, tính chất kể chuyện bằng ngôn ngữ văn xuôi theo những chủ đề xác định</div>
+                    <div className='my-3'>
+                        {/* Tiểu thuyết là một thể loại văn xuôi có hư cấu, thông qua nhân vật, hoàn cảnh, sự việc để phản ánh bức tranh xã hội rộng lớn và những vấn đề của cuộc sống con người, biểu hiện tính chất tường thuật, tính chất kể chuyện bằng ngôn ngữ văn xuôi theo những chủ đề xác định */}
+                    </div>
                     <SliderCourses
                         // books
                         productType={productType[value]&&(typeof productType[value]._id != 'undefined') ? productType[value]._id : ""}

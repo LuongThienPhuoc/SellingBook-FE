@@ -9,14 +9,16 @@ const CardPurchasedList = dynamic(() => import('./CardPurchasedList'))
 interface SliderCardProp {
     books: [],
     productType: string,
+    keyword: {
+        _id: string,
+    },
 }
 
 export default class SliderCourses extends Component<SliderCardProp> {
     constructor(props) {
         super(props);
-        console.log("props", this.props.books);
-        this.state = {
-        }
+        console.log("props", this.props);
+        this.state = {}
     }
 
 
@@ -68,6 +70,7 @@ export default class SliderCourses extends Component<SliderCardProp> {
             <div>
                 <Slider {...settings}>
                     {
+                        this.props.productType ? 
                         this.props.books ? this.props.books.map((book) => {
                             let isFind = false;
                             if((book["categoryID"] as string[]).includes(this.props.productType) 
@@ -76,7 +79,26 @@ export default class SliderCourses extends Component<SliderCardProp> {
                                 <CardPurchasedList book={book}/>
                             )
             
-                        }): null
+                        }): null : null
+                    }
+                    {
+                        this.props.keyword ? 
+                        this.props.books ? this.props.books.map((book) => {
+                            // let isFind = false;
+                            // console.log((book["tagID"] as string[]).includes(this.props.keyword._id));
+                            if((book["tagID"] as string[]).includes(this.props.keyword._id))
+                            return (
+                                <CardPurchasedList book={book}/>
+                            )
+            
+                        }): null : null
+                    }
+                    {
+                        !this.props.keyword && !this.props.productType && this.props.books ? this.props.books.map((book) => {
+                            return (
+                                <CardPurchasedList book={book}/>
+                            )
+                        }):null
                     }
                     {/* <CardPurchasedList index={0}></CardPurchasedList> */}
                     {/* <CardPurchasedList></CardPurchasedList>

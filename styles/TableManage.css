@@ -188,3 +188,7 @@
     padding: 7.5px 4px 7.5px 6px;
     margin-top: -10px;
 }
+
+.slick-dots {
+    display: none!important;
+}

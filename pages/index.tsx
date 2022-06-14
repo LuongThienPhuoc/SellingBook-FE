@@ -19,7 +19,8 @@ const BookByKeyword = dynamic(() => import('../component/Home/BookByKeyword'))
 const GoodBook = dynamic(() => import('../component/Home/GoodBook')) 
 const NewBook = dynamic(() => import('../component/Home/NewBook'))
 import {getCategory} from '../redux/actions/categoryAction'; 
-import {loadingBook } from '../redux/actions/bookAction';
+import {loadingBook, loadingAllTags } from '../redux/actions/bookAction';
+import { showAlertSuccess, showAlertError } from '../redux/actions/alertAction'
 
 
 const Home = () => {
@@ -62,6 +63,27 @@ const Home = () => {
     fetchBook()
   }, [])
 
+    useEffect(() => {
+      const getAllTag = async() => {
+          // var categoryList;
+          await axios.get(URL.URL_TAG)
+              .then((data)=>{
+                  console.log("data.data", data.data)
+                  // categoryList = data.data;
+                  dispatch(loadingAllTags(data.data.tags));
+              })
+              .catch((error)=>{
+                  // navigate to login
+                  router.push('/')
+                  dispatch(showAlertError("Không thể lấy dự liệu từ khoá của sách"));
+                  // console.log(error)
+              })
+          // dispatch(getCategory(categoryList.categories));
+          
+      }
+      getAllTag();
+  }, [])
+
   return (
     <Layout active="home">
       <div className={style.backgroundHome}>
@@ -71,7 +93,12 @@ const Home = () => {
           SELLING BOOK
         </div>
         <div
-          className='rounded-xl cursor-pointer absolute  bg-[#2BBCBA] text-white xl:text-4xl   xl:py-3 xl:px-6 lg:text-3xl  lg:py-3 lg:px-6 900px:text-3xl  900px:py-2 900px:px-4 md:text-2xl  md:py-2 md:px-4 sm:text-xl  sm:py-2 sm:px-4 min:text-base min:bottom-1/4 min:right-1/4 min:py-1 min:px-3'
+          className='rounded-xl cursor-pointer absolute  bg-[#2BBCBA] text-white xl:text-4xl   xl:py-3 xl:px-6 lg:text-3xl  lg:py-3 lg:px-6 900px:text-3xl  900px:py-2 900px:px-4 md:text-2xl  md:py-2 md:px-4 sm:text-xl  sm:py-2 sm:px-4 min:text-base min:bottom-1/4 min:right-1/4 min:py-1 min:px-3
+            mt-0
+          '
+          onClick={() => {
+            router.push('/');
+          }}
         >
           XEM TẤT CẢ
         </div>

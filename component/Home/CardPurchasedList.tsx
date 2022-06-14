@@ -7,6 +7,29 @@ import { useRouter } from 'next/router';
 function CardPurchasedList(props) {
     // console.log("props",props);
     const router = useRouter();
+    const convertToMoreReadablePrice = (price) => {
+        let res = "";
+        let priceNum = parseInt(price);  
+        // console.log(priceNum);
+        while(priceNum>0){
+            let stringPlus = (priceNum%1000).toString();
+            // console.log("stringPlus", stringPlus)
+            if(priceNum >= 1000){
+                while(stringPlus.length < 3){
+                    stringPlus = '0' + stringPlus;
+                }
+            }
+            
+            if(res.length == 0){
+                res = stringPlus;
+            }
+            else res = stringPlus + "." + res;
+            
+            priceNum = Math.floor(priceNum/1000);
+        }
+        // console.log(res);
+        return res;
+    }
     return (
         <Card className='rounded-lg border-[#2BBCBA] border-1 border-solid mb-6 mx-2 relative
             hover:cursor-pointer hover:opacity-80
@@ -18,9 +41,11 @@ function CardPurchasedList(props) {
             <img className='w-full h-56 object-cover' src={props.book.imgList[0]}></img>
             <div className='w-full'>
                 <div className='flex flex-column items-center h-auto pt-2 px-3 pb-6'>
-                    <div className='text-[#555555] text-base'>{props.book.publisher}</div>
+                    <div className='text-[#555555] text-base h-[23px] text-ellipsis overflow whitespace-nowrap'>
+                        {props.book.publisher}
+                    </div>
                     <div className='text-xl text-[#2BBCBA] text-center h-[56px]'>{props.book.title}</div>
-                    <div className='font-medium mt-2'>{props.book.price} VNĐ</div>
+                    <div className='font-medium mt-2'>{convertToMoreReadablePrice(props.book.price)} VNĐ</div>
                     <Rating name="half-rating-read" defaultValue={2.5} precision={0.5} readOnly />
                 </div>
             </div>
