@@ -19,6 +19,8 @@ import { showAlertSuccess, showAlertError } from '../../redux/actions/alertActio
 import { loadingBook } from '../../redux/actions/bookAction';
 import { getCategory } from '../../redux/actions/categoryAction'; 
 import { loadingAllTags } from '../../redux/actions/bookAction';
+const ConfirmModal = dynamic(() => import('../../component/BookPage/ConfirmModal'));
+
 const columnDocs = [
     // {field: , headerName: , width: }
     {field: 'stt', headerName: "STT", width: 40},
@@ -182,14 +184,31 @@ const BookPage: React.FC = () => {
     
     console.log("books", books)
 
-    
+    const [confirmShow, setConfirmShow] = useState(true);
 
+    const confirmFunction = () => {
+        setConfirmShow(false);
+    } 
+
+    const cancelClick = () => {
+        setConfirmShow(false);
+    }
     return (
         <Layout activeNav={"book"}>
             <Head>
                 <title>Quản lý sản phẩm</title>
             </Head>
             <Container className='relative' maxWidth='lg'>
+                {
+                    confirmShow ?
+                    <ConfirmModal
+                        title="Xác nhận"
+                        content="Bạn có muốn xoá sản phẩm"
+                        clickConfirm={() => confirmFunction()}
+                        clickCancel={() => cancelClick()}
+                    />: null
+                }
+                
                 <NavigationMobile option='product'></NavigationMobile>
                 <Grid className='mb-16' container spacing={3}>
                     <Grid className='mt-16 min:hidden 900px:block' item md={3}>
@@ -228,6 +247,9 @@ const BookPage: React.FC = () => {
                                         filter={filter}
                                         heightProps={500}
                                         manage={true}
+                                        openDeleteConfirm={() => {
+                                            setConfirmShow(true);
+                                        }}
                                     />
                                 </Grid>
                                 
@@ -251,6 +273,9 @@ const BookPage: React.FC = () => {
                                         filter={''}
                                         heightProps={300}
                                         manage={false}
+                                        openDeleteConfirm={() => {
+                                            setConfirmShow(true);
+                                        }}
                                     />
                                 </Grid> 
                                 <Grid item md={6} lg={6} sm={6} className="mb-6">
@@ -260,6 +285,9 @@ const BookPage: React.FC = () => {
                                         filter={''}
                                         heightProps={300}
                                         manage={false}
+                                        openDeleteConfirm={() => {
+                                            setConfirmShow(true);
+                                        }}
                                     />
                                 </Grid>         
                             </Grid>

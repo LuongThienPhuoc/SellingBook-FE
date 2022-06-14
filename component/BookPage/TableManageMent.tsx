@@ -35,7 +35,9 @@ const datagridSx = {
     }
 };
 
-const TableManageMent = ({rowDocs,columnDocs, filter, heightProps, manage}) => {
+const TableManageMent = ({rowDocs,columnDocs, filter, heightProps, manage,
+    openDeleteConfirm
+}) => {
     // const navigate = use();
     const router = useRouter();
     const dispatch = useDispatch();
@@ -72,12 +74,13 @@ const TableManageMent = ({rowDocs,columnDocs, filter, heightProps, manage}) => {
     const deleteDocument = ()  => {
         console.log("delete Doc");
         console.log("idSelect", idSelect);
+        openDeleteConfirm();
         // dispatch(documentActions.deleteMultiDocuments({data: {...idSelect}}));
-        if(deleteButton.parentNode!=null)
-            deleteButton.parentNode.removeChild(deleteButton);
-        if(editButton.parentNode!=null)
-            editButton.parentNode.removeChild(editButton);
-        setidSelect([]);
+        // if(deleteButton.parentNode!=null)
+        //     deleteButton.parentNode.removeChild(deleteButton);
+        // if(editButton.parentNode!=null)
+        //     editButton.parentNode.removeChild(editButton);
+        // setidSelect([]);
         
     }
 
@@ -197,7 +200,7 @@ const TableManageMent = ({rowDocs,columnDocs, filter, heightProps, manage}) => {
         <div 
             style={{ height: heightProps, width: '100%' }}
             className = "datagrid-container"
-            
+
         >
             <DataGrid
                 rows={getShowingData(filter)}

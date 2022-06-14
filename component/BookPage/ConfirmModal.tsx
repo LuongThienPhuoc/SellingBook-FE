@@ -12,7 +12,7 @@ const ConfirmModal = (props) => {
             >
             </div>
             <div 
-                className='w-[60%] bg-[#fff] z-[160] absolute top-[15%] left-[20%]'
+                className='w-[30%] bg-[#fff] z-[160] absolute top-[15%] left-[35%]'
             >
                 <div 
                     className='text-center text-[20px] py-[12px]'
