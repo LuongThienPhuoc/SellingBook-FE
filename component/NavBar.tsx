@@ -29,7 +29,7 @@ import * as URL from '../services/api/config'
 import { loadingCart } from '../redux/actions/cartAction'
 import axios from 'axios';
 const CartItemInNavBar = dynamic(() => import('./Cart/CarItemInNavBar'))
-
+import { useRouter } from 'next/router';
 const pages = [
     {
         id: 'home',
@@ -93,6 +93,7 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 
 const NavBar = (props) => {
     const dispatch = useDispatch();
+    const router = useRouter();
     const isLogin = useSelector((state: RootStateOrAny) => state.userReducer.isLogin)
     const infoUser = useSelector((state: RootStateOrAny) => state.userReducer.infoUser)
     const search = useSelector((state: RootStateOrAny) => state.searchReducer.search)
@@ -306,6 +307,10 @@ const NavBar = (props) => {
                         component="div"
                         sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
                         className="hover:opacity-70 cursor-pointer"
+                        onClick={() => {
+                            console.log("to home");
+                            router.push('/');
+                        }}
                     >
                         <img
                             alt=""

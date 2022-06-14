@@ -456,6 +456,8 @@ const AddBook: React.FC = () => {
         setSelectTagList(currentSelectTagList);
     }
 
+    const [inputVal, setInputVal] = useState("");
+
     return (
         <Layout activeNav={"book"} className='relative'>
             <Head>
@@ -944,15 +946,27 @@ const AddBook: React.FC = () => {
                                         renderInput={(params) => <TextField {...params}/>}
                                         className='mt-2'
                                         onInputChange={(e,val)=> {
+                                            if(currentTag.length > 1 && val.length ==0){
+                                                return;
+                                            }
                                             currentTag = val;
+                                            setInputVal(val);
+                                            // console.log(inputVal);
                                         }}
                                         disableClearable
                                         onChange={(e, val) => {
                                             onSelectChange(e, val);
                                         }}
                                         value={autoSelectValue}
-                                        // inputValue={autoValue}
+                                        inputValue={inputVal}
                                         clearOnBlur={false}
+                                        onBlur={(e) => {
+                                            console.log("ACCC");
+                                            var valueInput = (document.querySelector('#combo-box-demo') as HTMLInputElement).value;
+                                            currentTag = valueInput;
+                                            setInputVal(valueInput);
+                                            // (document.querySelector('#combo-box-demo') as HTMLInputElement).value = currentTag;
+                                        }}
                                     />
                                     <button
                                         className={
