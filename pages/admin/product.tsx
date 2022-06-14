@@ -18,7 +18,7 @@ import axios from 'axios';
 import { showAlertSuccess, showAlertError } from '../../redux/actions/alertAction';
 import { loadingBook } from '../../redux/actions/bookAction';
 import { getCategory } from '../../redux/actions/categoryAction'; 
-
+import { loadingAllTags } from '../../redux/actions/bookAction';
 const columnDocs = [
     // {field: , headerName: , width: }
     {field: 'stt', headerName: "STT", width: 40},
@@ -56,8 +56,14 @@ const convertData = (books) => {
 }
 
 const columnType = [
-    {field: 'stt', headerName: "STT", width: 40},
+    {field: 'stt', headerName: "STT", width: 60},
     {field: 'name', headerName: "Tên loại", width: 130},
+    {field: 'number', headerName: "Số sách", width: 130},
+]
+
+const columnTag = [
+    {field: 'stt', headerName: "STT", width: 60},
+    {field: 'name', headerName: "Tên tag", width: 130},
     {field: 'number', headerName: "Số sách", width: 130},
 ]
 
@@ -80,6 +86,25 @@ const convertTypeData = (dataType, books) => {
     return res;
 }
 
+const convertTagData = (dataTag, books) => {
+    var res = [];
+    for(var i = 0; i < dataTag.length; i++){
+        let countType = 0;
+        books.forEach((value) => {
+            if(value.tagID.includes(dataTag[i]._id)){
+                countType++;
+            }
+        })
+        res.push({
+            id: dataTag[i]._id,
+            stt: i+1,
+            name: dataTag[i].tag,
+            number: countType,
+        })
+    }
+    return res;
+}
+
 const BookPage: React.FC = () => { 
     const router = useRouter();
     const dispatch = useDispatch(); 
@@ -88,6 +113,7 @@ const BookPage: React.FC = () => {
     const books = useSelector((state: RootStateOrAny) => state.bookReducer.books);
     const productTypes = useSelector((state: RootStateOrAny)=> {return state.categoryReducer.categories} ) || [];
     const [filter, setFilter] = useState('');
+    const tags = useSelector((state: RootStateOrAny)=> {return state.bookReducer.tags} ) || [];
     useEffect(() => {
         const fetchBook= async () => {
             axios.get( URL.URL_PRODUCT, {})
@@ -121,9 +147,28 @@ const BookPage: React.FC = () => {
             dispatch(getCategory(categoryList.categories));
         }
 
+        const getAllTag = async() => {
+            // var categoryList;
+            await axios.get(URL.URL_TAG)
+                .then((data)=>{
+                    console.log("data.data", data.data)
+                    // categoryList = data.data;
+                    dispatch(loadingAllTags(data.data.tags));
+                })
+                .catch((error)=>{
+                    // navigate to login
+                    router.push('/')
+                    dispatch(showAlertError("Không thể lấy dự liệu từ khoá của sách"));
+                    // console.log(error)
+                })
+            // dispatch(getCategory(categoryList.categories));
+            
+        }
+        
         if (status.isLogin) {
             fetchBook();
             getAllCategory();
+            getAllTag();
         }
     }, [status.isLogin])
 
@@ -207,8 +252,16 @@ const BookPage: React.FC = () => {
                                         heightProps={300}
                                         manage={false}
                                     />
-                                </Grid>
-                                
+                                </Grid> 
+                                <Grid item md={6} lg={6} sm={6} className="mb-6">
+                                    <TableManageMent
+                                        columnDocs={columnTag} 
+                                        rowDocs={convertTagData(tags, books)} 
+                                        filter={''}
+                                        heightProps={300}
+                                        manage={false}
+                                    />
+                                </Grid>         
                             </Grid>
                         </div>
                     </Grid>

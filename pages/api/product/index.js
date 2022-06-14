@@ -104,6 +104,12 @@ const addProduct = async(req, res) => {
     }
 }
 
+const deleteProduct = async(req,res) => {
+    console.log("req.body", req.body);
+    res.status(200).send({
+        success: true
+    })
+}
 
 
 const productController = async (req, res, data) => {
@@ -117,10 +123,7 @@ const productController = async (req, res, data) => {
             await addProduct(req, res);
             break;
         case 'DELETE':
-            res.status(200).send({
-                run: true,
-                ok: true
-            })
+            await deleteProduct(req, res);
             break;
         case 'PUT':
             res.status(200).send({

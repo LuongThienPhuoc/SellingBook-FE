@@ -2,6 +2,7 @@ import React , {useState} from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from 'next/router';
+import axios from 'axios';
 
 const datagridSx = {
     borderRadius: 2,
@@ -77,6 +78,7 @@ const TableManageMent = ({rowDocs,columnDocs, filter, heightProps, manage}) => {
         if(editButton.parentNode!=null)
             editButton.parentNode.removeChild(editButton);
         setidSelect([]);
+        
     }
 
     const getCurrentName = (id) => {
@@ -195,13 +197,14 @@ const TableManageMent = ({rowDocs,columnDocs, filter, heightProps, manage}) => {
         <div 
             style={{ height: heightProps, width: '100%' }}
             className = "datagrid-container"
+            
         >
             <DataGrid
                 rows={getShowingData(filter)}
                 columns={columnDocs}
                 pageSize={10}
                 // rowsPerPageOptions={[5,10]}
-                checkboxSelection
+                checkboxSelection={manage ? true : false}
                 sx = {datagridSx}
                 rowHeight={48}
                 onCellClick={(params, event) => onCellClick(params, event)}

@@ -1063,17 +1063,17 @@ const AddBook: React.FC = () => {
                             </div>
                             
                             <div className='right'>
-                                <button
-                                    className={
-                                        "buy-button text-[16px] leading-[30px] bg-[#999] px-[20px] text-white rounded-[4px] " +
-                                        "hover:opacity-70 hover:cursor-pointer ml-2 uppercase py-[6px]"
-                                    }
-                                    onClick={() => {
-                                        
-                                    }}
-                                >
-                                    Xem trước
-                                </button>
+                                    {/* <button
+                                        className={
+                                            "buy-button text-[16px] leading-[30px] bg-[#999] px-[20px] text-white rounded-[4px] " +
+                                            "hover:opacity-70 hover:cursor-pointer ml-2 uppercase py-[6px]"
+                                        }
+                                        onClick={() => {
+                                            
+                                        }}
+                                    >
+                                        Xem trước
+                                    </button> */}
                                 <button
                                     className={
                                         "buy-button text-[16px] leading-[30px] bg-[#2BBCBA] px-[20px] text-white rounded-[4px] " +

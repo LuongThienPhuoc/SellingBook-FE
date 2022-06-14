@@ -1106,7 +1106,7 @@ const ModifyBook: React.FC = () => {
                             </div>
                             
                             <div className='right'>
-                                <button
+                                {/* <button
                                     className={
                                         "buy-button text-[16px] leading-[30px] bg-[#999] px-[20px] text-white rounded-[4px] " +
                                         "hover:opacity-70 hover:cursor-pointer ml-2 uppercase py-[6px]"
@@ -1116,7 +1116,7 @@ const ModifyBook: React.FC = () => {
                                     }}
                                 >
                                     Xem trước
-                                </button>
+                                </button> */}
                                 <button
                                     className={
                                         "buy-button text-[16px] leading-[30px] bg-[#2BBCBA] px-[20px] text-white rounded-[4px] " +
