@@ -29,7 +29,7 @@ function ForgetPassword(props) {
     const status = useSelector((state: RootStateOrAny) => state.userReducer)
 
     if (!status.isLoading) return (<LinearProgress></LinearProgress>)
-    
+
     if (status.isLogin) router.push('/')
 
     const HandleClickButton = async (e) => {
@@ -51,7 +51,7 @@ function ForgetPassword(props) {
                     console.log(elenmentConfirmCode)
                     elenmentConfirmCode.click()
                     // if (sendCode(code, email.value)) {
-
+                    sendCode(code, email.value)
                     // }
                 }
             })

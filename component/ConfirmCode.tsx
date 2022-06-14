@@ -180,7 +180,6 @@ function ConfirmCode(props) {
                 <div style={{ fontSize: props.isMobile ? '1.4rem' : '2rem', fontWeight: '500', color: '#2BBCBA' }}>Quên mật khẩu</div>
                 <div style={{ marginBottom: '15px', display: 'flex', textDecoration: 'none', justifyContent: 'start', paddingLeft: '60px', paddingRight: '60px', width: '100%', marginTop: '20px' }}>
                     <p>Mã code đã được gửi về email {email}</p>
-                    <p>{code}</p>
                 </div>
                 <div style={{ paddingLeft: '60px', paddingRight: '60px', width: '100%', marginTop: '5px' }}>
                     <TextField
