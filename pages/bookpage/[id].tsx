@@ -304,6 +304,30 @@ const BookPage: React.FC = () => {
         return `${diff} ngày trước`;  
     }
 
+    const convertToMoreReadablePrice = (price) => {
+        let res = "";
+        let priceNum = parseInt(price);  
+        // console.log(priceNum);
+        while(priceNum>0){
+            let stringPlus = (priceNum%1000).toString();
+            // console.log("stringPlus", stringPlus)
+            if(priceNum >= 1000){
+                while(stringPlus.length < 3){
+                    stringPlus = '0' + stringPlus;
+                }
+            }
+            
+            if(res.length == 0){
+                res = stringPlus;
+            }
+            else res = stringPlus + "." + res;
+            
+            priceNum = Math.floor(priceNum/1000);
+        }
+        // console.log(res);
+        return res;
+    }
+
     const commentItem = (comment) => {
         return (
             <div className ='comment-item-container border-[1px] border-[#333] rounded-[12px] w-[100%] flex font-primary font-[600] mb-3'>
@@ -516,7 +540,7 @@ const BookPage: React.FC = () => {
                 dispatch(loadingBook(data.data.product))
             })
             .catch((error) => {
-                dispatch(showAlertSuccess("Lấy dữ liệu sách thất bại"));
+                dispatch(showAlertError("Lấy dữ liệu sách thất bại"));
                 // alert(error);
             })
         }
@@ -526,14 +550,15 @@ const BookPage: React.FC = () => {
     console.log("currentBook", currentBook);
     console.log("listBook", listBook);
 
-    const addToCart = () => {
+    const addToCart = async() => {
         var dataToAdd = {
             userID: userInfo._id,
             amount: quantityChoosed,
             productID: currentBook._id
-        }        
-        console.log("dataToAdd", dataToAdd);
-        axios.post(URL.URL_ADD_CART, dataToAdd)
+        }      
+        console.log("type", typeof userInfo._id)  
+        console.log("dataToAdd1", dataToAdd);
+        await axios.post(URL.URL_ADD_CART, dataToAdd)
             .then((data) => {
                 console.log("data", data);
             })
@@ -545,8 +570,20 @@ const BookPage: React.FC = () => {
             dispatch(loadingCart(res.data.cart.listProduct))
         })
         .catch(err => {
-            console.log('Lỗi')
+            dispatch(showAlertError("Lấy dữ liệu giỏ hàng thất bại"));
         })
+        // const fetApi = async () => {
+        //     if (isLogin) {
+        //         axios.post(URL.URL_GET_CART, { id: infoUser._id })
+        //             .then(res => {
+        //                 dispatch(loadingCart(res.data.cart.listProduct))
+        //             })
+        //             .catch(err => {
+        //                 console.log('Lỗi')
+        //             })
+        //     }
+        // }
+        // fetApi()
 
     }
 
@@ -597,7 +634,7 @@ const BookPage: React.FC = () => {
                                 <div className="descrip-container">
                                     <div className='price-container flex mb-3'>
                                         <p className='price font-primary text-2xl font-[700]'>
-                                            {!currentBook ? "":currentBook.price}
+                                            {!currentBook ? "":convertToMoreReadablePrice(currentBook.price)}
                                         </p>
                                         <p className='currentcy font-primary text-lg font-[600] ml-[3px]'>
                                             VNĐ
@@ -636,16 +673,33 @@ const BookPage: React.FC = () => {
                                                     hover:bg-[#e5e5e5] hover:cursor-pointer select-none'
                                             >+</div>
                                         </div>
-                                        <div 
-                                            onClick={() => {
-                                                addToCart();
-                                            }}
-                                            className='buy-button text-[16px] leading-[40px] bg-[#2BBCBA] px-[20px] text-white rounded-[4px]
-                                                hover:opacity-80 hover:cursor-pointer
-                                            '
-                                        >
-                                            MUA HÀNG
-                                        </div>
+                                        {
+                                            (typeof userInfo._id != 'undefined') ? 
+                                            <div 
+                                                onClick={() => {
+                                                    addToCart();
+                                                    console.log("Mua hàng")
+                                                }}
+                                                className='buy-button text-[16px] leading-[40px] bg-[#2BBCBA] px-[20px] text-white rounded-[4px]
+                                                    hover:opacity-80 hover:cursor-pointer
+                                                '
+                                            >
+                                                MUA HÀNG
+                                            </div> : null
+                                        }
+                                        {
+                                            (typeof userInfo._id == 'undefined') ? 
+                                            <div 
+                                                onClick={() => {
+                                                    router.push('/login')
+                                                }}
+                                                className='buy-button text-[16px] leading-[40px] bg-[#2BBCBA] px-[20px] text-white rounded-[4px]
+                                                    hover:opacity-80 hover:cursor-pointer
+                                                '
+                                            >
+                                                ĐĂNG NHẬP ĐỂ MUA HÀNG
+                                            </div> : null
+                                        }
                                     </div>
                                 </div>
                             </div>

@@ -8,6 +8,29 @@ const BookItem = (props) =>{
     const router = useRouter();
     const dispatch = useDispatch();
     // console.log("props.bookInfo", props.bookInfo);
+    const convertToMoreReadablePrice = (price) => {
+        let res = "";
+        let priceNum = parseInt(price);  
+        // console.log(priceNum);
+        while(priceNum>0){
+            let stringPlus = (priceNum%1000).toString();
+            // console.log("stringPlus", stringPlus)
+            if(priceNum >= 1000){
+                while(stringPlus.length < 3){
+                    stringPlus = '0' + stringPlus;
+                }
+            }
+            
+            if(res.length == 0){
+                res = stringPlus;
+            }
+            else res = stringPlus + "." + res;
+            
+            priceNum = Math.floor(priceNum/1000);
+        }
+        // console.log(res);
+        return res;
+    }
     return(
         <div className="book-item-wrapper relative w-[240px] 
             h-[380px] shadow-[0px_2px_2px_2px_rgba(0,0,0,0.25)]
@@ -39,11 +62,11 @@ const BookItem = (props) =>{
                 <div className="publish-place text-[#555555] text-[18px] text-center pt-[8px]">
                     {props.bookInfo.publisher}
                 </div>
-                <p className='book-title text-[22px] text-center leading-[24px] pt-[4px] px-[8px] font-[600] text-[#2BBCBA]'>
+                <p className='book-title text-[22px] text-center leading-[24px] pt-[4px] px-[8px] font-[600] text-[#2BBCBA]  h-[52px]'>
                     {props.bookInfo.title}
                 </p>
                 <p className='price text-[20px] font-[600] mt-[8px] text-center'>
-                    {props.bookInfo.price}VNĐ
+                    {convertToMoreReadablePrice(props.bookInfo.price)}VNĐ
                 </p>
             </div>
             {

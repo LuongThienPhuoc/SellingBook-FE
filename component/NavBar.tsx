@@ -305,6 +305,7 @@ const NavBar = (props) => {
                         noWrap
                         component="div"
                         sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+                        className="hover:opacity-70 cursor-pointer"
                     >
                         <img
                             alt=""
